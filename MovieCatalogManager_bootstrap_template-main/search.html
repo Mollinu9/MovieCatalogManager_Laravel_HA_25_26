@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Search Movies - Movie Catalog</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand text-uppercase" href="index.html">            
+            <strong>Movie</strong> Catalog
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            
+        <!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="navbar-toggler">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="movies.html" class="nav-link">Movies</a></li>
+            <li class="nav-item active"><a href="search.html" class="nav-link">Search</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
+            <li class="nav-item"><a href="register.html" class="nav-link btn btn-primary text-white ml-2">Get Started</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Search Section -->
+    <main class="py-5">
+      <div class="container">
+        <!-- Search Header -->
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <h2 class="font-weight-bold">Search Movies</h2>
+            <p class="text-muted">Find your next favorite movie with our advanced search</p>
+          </div>
+        </div>
+
+        <!-- Search Filters Card -->
+        <div class="row mb-4">
+          <div class="col-md-12">
+            <div class="card shadow-sm">
+              <div class="card-body p-4">
+                <form>
+                  <!-- Search Input -->
+                  <div class="row mb-3">
+                    <div class="col-md-12">
+                      <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" placeholder="Search by title, actor, or director..." aria-label="Search movies">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button">
+                            <i class="fa fa-search"></i> Search
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Advanced Filters -->
+                  <div class="row">
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Genre</label>
+                      <select class="custom-select">
+                        <option value="" selected>All Genres</option>
+                        <option value="action">Action</option>
+                        <option value="adventure">Adventure</option>
+                        <option value="animation">Animation</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="crime">Crime</option>
+                        <option value="documentary">Documentary</option>
+                        <option value="drama">Drama</option>
+                        <option value="fantasy">Fantasy</option>
+                        <option value="horror">Horror</option>
+                        <option value="mystery">Mystery</option>
+                        <option value="romance">Romance</option>
+                        <option value="scifi">Sci-Fi</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="western">Western</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Year</label>
+                      <select class="custom-select">
+                        <option value="" selected>All Years</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2010s">2010-2019</option>
+                        <option value="2000s">2000-2009</option>
+                        <option value="1990s">1990-1999</option>
+                        <option value="1980s">1980-1989</option>
+                        <option value="older">Before 1980</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Rating</label>
+                      <select class="custom-select">
+                        <option value="" selected>Any Rating</option>
+                        <option value="9">9+ Excellent</option>
+                        <option value="8">8+ Very Good</option>
+                        <option value="7">7+ Good</option>
+                        <option value="6">6+ Above Average</option>
+                        <option value="5">5+ Average</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Sort By</label>
+                      <select class="custom-select">
+                        <option value="relevance" selected>Relevance</option>
+                        <option value="rating-desc">Rating (High to Low)</option>
+                        <option value="rating-asc">Rating (Low to High)</option>
+                        <option value="year-desc">Year (Newest First)</option>
+                        <option value="year-asc">Year (Oldest First)</option>
+                        <option value="title-asc">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                        <option value="popularity">Popularity</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Additional Filters -->
+                  <div class="row">
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Language</label>
+                      <select class="custom-select">
+                        <option value="" selected>All Languages</option>
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                        <option value="de">German</option>
+                        <option value="it">Italian</option>
+                        <option value="ja">Japanese</option>
+                        <option value="ko">Korean</option>
+                        <option value="zh">Chinese</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Runtime</label>
+                      <select class="custom-select">
+                        <option value="" selected>Any Length</option>
+                        <option value="short">Under 90 min</option>
+                        <option value="medium">90-120 min</option>
+                        <option value="long">120-150 min</option>
+                        <option value="epic">Over 150 min</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">Country</label>
+                      <select class="custom-select">
+                        <option value="" selected>All Countries</option>
+                        <option value="us">United States</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="fr">France</option>
+                        <option value="de">Germany</option>
+                        <option value="jp">Japan</option>
+                        <option value="kr">South Korea</option>
+                        <option value="in">India</option>
+                        <option value="cn">China</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label class="col-form-label">&nbsp;</label>
+                      <button type="button" class="btn btn-outline-secondary btn-block">
+                        <i class="fa fa-refresh"></i> Reset Filters
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Header -->
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Search Results <span class="text-muted">(24 movies found)</span></h5>
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary active">
+                  <i class="fa fa-th"></i> Grid
+                </button>
+                <button type="button" class="btn btn-outline-primary">
+                  <i class="fa fa-list"></i> List
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Results Grid -->
+        <div class="row">
+          <!-- Movie Card 1 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">The Dark Knight</h5>
+                <p class="text-muted small mb-2">2008 • Action, Drama</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 9.0/10</p>
+                <p class="card-text small">When the menace known as the Joker wreaks havoc on Gotham, Batman must accept one of the greatest tests.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 2 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">Inception</h5>
+                <p class="text-muted small mb-2">2010 • Sci-Fi, Thriller</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.8/10</p>
+                <p class="card-text small">A thief who steals corporate secrets through dream-sharing technology is given the inverse task.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 3 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">The Shawshank Redemption</h5>
+                <p class="text-muted small mb-2">1994 • Drama</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 9.3/10</p>
+                <p class="card-text small">Two imprisoned men bond over years, finding solace and eventual redemption through acts of decency.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 4 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">Pulp Fiction</h5>
+                <p class="text-muted small mb-2">1994 • Crime, Drama</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.9/10</p>
+                <p class="card-text small">The lives of two mob hitmen, a boxer, and a pair of diner bandits intertwine in four tales of violence.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 5 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">Forrest Gump</h5>
+                <p class="text-muted small mb-2">1994 • Drama, Romance</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.8/10</p>
+                <p class="card-text small">The presidencies of Kennedy and Johnson unfold through the perspective of an Alabama man.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 6 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">The Matrix</h5>
+                <p class="text-muted small mb-2">1999 • Sci-Fi, Action</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.7/10</p>
+                <p class="card-text small">A computer hacker learns about the true nature of reality and his role in the war against its controllers.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 7 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">Interstellar</h5>
+                <p class="text-muted small mb-2">2014 • Sci-Fi, Drama</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.6/10</p>
+                <p class="card-text small">A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Movie Card 8 -->
+          <div class="col-md-3 col-sm-6 mb-4">
+            <div class="card search-movie-card h-100">
+              <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+              <div class="card-body">
+                <h5 class="card-title">The Godfather</h5>
+                <p class="text-muted small mb-2">1972 • Crime, Drama</p>
+                <p class="mb-2"><i class="fa fa-star text-warning"></i> 9.2/10</p>
+                <p class="card-text small">The aging patriarch of an organized crime dynasty transfers control to his reluctant son.</p>
+                <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <nav>
+              <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-white py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12 text-center">
+            <h5><strong>Movie</strong> Catalog</h5>
+            <p class="text-muted">Your ultimate movie collection manager</p>
+          </div>
+        </div>
+        <hr class="bg-secondary">
+        <div class="text-center text-muted">
+          <p class="mb-0">&copy; 2025 Movie Catalog J.M. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>
+
