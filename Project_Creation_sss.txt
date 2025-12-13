@@ -11,5 +11,11 @@ Creating Database on sss
 inside database/migrations/create_users
 
 add : $table->boolean('is_admin')->default(false);
-
 12:30am
+
+13/12/2025 18:20
+
+Uploaded MovieCatalogManager_bootstrap_template to github
+Can be found https://github.com/Mollinu9/MovieCatalogManager_bootstrap_template.git
+
+Will be changed in future developments
