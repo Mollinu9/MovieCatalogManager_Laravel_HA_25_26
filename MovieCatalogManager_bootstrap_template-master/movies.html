@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Movie Catalog</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand text-uppercase" href="movies.html">            
+            <strong>Movie</strong> Catalog
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            
+        <!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="navbar-toggler">
+          <ul class="navbar-nav">
+            <li class="nav-item active"><a href="movies.html" class="nav-link">Movies</a></li>
+            <li class="nav-item"><a href="watchlist.html" class="nav-link">My Watchlist</a></li>
+            <li class="nav-item"><a href="requests.html" class="nav-link">Request Movie</a></li>
+            <li class="nav-item"><a href="admin-movies.html" class="nav-link">Admin</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content -->
+    <main class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+                <div class="card-header card-title">
+                  <div class="d-flex align-items-center">
+                    <h2 class="mb-0">All Movies</h2>
+                  </div>
+                </div>
+              <div class="card-body">
+                <!-- Filters -->
+                <div class="row mb-3">
+                  <div class="col-md-4">
+                    <select class="custom-select">
+                      <option value="" selected>All Genres</option>
+                      <option value="1">Action</option>
+                      <option value="2">Comedy</option>
+                      <option value="3">Drama</option>
+                      <option value="4">Horror</option>
+                      <option value="5">Sci-Fi</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="custom-select">
+                      <option value="" selected>All Years</option>
+                      <option value="2024">2024</option>
+                      <option value="2023">2023</option>
+                      <option value="2022">2022</option>
+                      <option value="2021">2021</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <select class="custom-select">
+                      <option value="" selected>Sort By</option>
+                      <option value="popularity">Popularity</option>
+                      <option value="rating">Rating</option>
+                      <option value="title">Title</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Movie Grid -->
+                <div class="row">
+                  <!-- Movie Card 1 -->
+                  <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                      <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+                      <div class="card-body">
+                        <h5 class="card-title">The Dark Knight</h5>
+                        <p class="text-muted small">2008 • Action, Drama</p>
+                        <p class="mb-2"><i class="fa fa-star text-warning"></i> 9.0/10</p>
+                        <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Movie Card 2 -->
+                  <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                      <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+                      <div class="card-body">
+                        <h5 class="card-title">Inception</h5>
+                        <p class="text-muted small">2010 • Sci-Fi, Thriller</p>
+                        <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.8/10</p>
+                        <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Movie Card 3 -->
+                  <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                      <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+                      <div class="card-body">
+                        <h5 class="card-title">The Shawshank Redemption</h5>
+                        <p class="text-muted small">1994 • Drama</p>
+                        <p class="mb-2"><i class="fa fa-star text-warning"></i> 9.3/10</p>
+                        <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Movie Card 4 -->
+                  <div class="col-md-3 mb-4">
+                    <div class="card h-100">
+                      <img src="https://via.placeholder.com/300x450" class="card-img-top" alt="Movie Poster">
+                      <div class="card-body">
+                        <h5 class="card-title">Pulp Fiction</h5>
+                        <p class="text-muted small">1994 • Crime, Drama</p>
+                        <p class="mb-2"><i class="fa fa-star text-warning"></i> 8.9/10</p>
+                        <a href="movie-detail.html" class="btn btn-sm btn-primary btn-block">View Details</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

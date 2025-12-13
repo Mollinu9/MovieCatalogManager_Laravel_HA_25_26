@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Login - Movie Catalog</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand text-uppercase" href="movies.html">            
+            <strong>Movie</strong> Catalog
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            
+        <!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="navbar-toggler">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a href="movies.html" class="nav-link">Movies</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
+            <li class="nav-item"><a href="register.html" class="nav-link">Register</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content -->
+    <main class="py-5">
+      <div class="container">
+        <div class="row justify-content-md-center">
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-header card-title text-center">
+                <h4 class="mb-0"><i class="fa fa-sign-in"></i> Login to Your Account</h4>
+              </div>           
+              <div class="card-body">
+                <form>
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+                  </div>
+
+                  <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">Remember me</label>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fa fa-sign-in"></i> Login
+                  </button>
+
+                  <hr>
+
+                  <div class="text-center">
+                    <p class="mb-0">Don't have an account? <a href="register.html" class="text-primary">Register here</a></p>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Movie Details</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
+    <!-- Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet>
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand text-uppercase" href="movies.html">            
+            <strong>Movie</strong> Catalog
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            
+        <!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="navbar-toggler">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a href="movies.html" class="nav-link">Movies</a></li>
+            <li class="nav-item"><a href="watchlist.html" class="nav-link">My Watchlist</a></li>
+            <li class="nav-item"><a href="requests.html" class="nav-link">Request Movie</a></li>
+            <li class="nav-item"><a href="admin-movies.html" class="nav-link">Admin</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- content -->
+    <main class="py-5">
+      <div class="container">
+        <div class="row">
+          <!-- Movie Info -->
+          <div class="col-md-4">
+            <img src="https://via.placeholder.com/300x450" class="img-fluid rounded" alt="Movie Poster">
+            <div class="mt-3">
+              <button class="btn btn-success btn-block"><i class="fa fa-plus"></i> Add to Watchlist</button>
+              <button class="btn btn-info btn-block"><i class="fa fa-check"></i> Mark as Watched</button>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title">The Dark Knight</h2>
+                <p class="text-muted">
+                  <span class="badge badge-secondary">Action</span>
+                  <span class="badge badge-secondary">Drama</span>
+                  <span class="badge badge-secondary">Crime</span>
+                </p>
+                <p><strong>Release Date:</strong> July 18, 2008</p>
+                <p><strong>Runtime:</strong> 152 minutes</p>
+                <p><strong>Language:</strong> English</p>
+                <p><strong>Rating:</strong> <i class="fa fa-star text-warning"></i> 9.0/10 (245 reviews)</p>
+                
+                <hr>
+                
+                <h5>Synopsis</h5>
+                <p class="text-muted">
+                  When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, 
+                  Batman must accept one of the greatest psychological and physical tests of his ability 
+                  to fight injustice.
+                </p>
+
+                <hr>
+
+                <h5>Trailer</h5>
+                <div class="embed-responsive embed-responsive-16by9">
+                  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/EXeTwQWrcwY" allowfullscreen></iframe>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div class="card mt-4">
+              <div class="card-header">
+                <h5 class="mb-0">User Reviews</h5>
+              </div>
+              <div class="card-body">
+                <!-- Add Review Form (Only for logged in users who watched) -->
+                <div class="alert alert-info">
+                  <i class="fa fa-info-circle"></i> Mark this movie as watched to submit a review.
+                </div>
+
+                <!-- Review Form (shown when user has watched) -->
+                <form class="mb-4" style="display:none;">
+                  <div class="form-group">
+                    <label>Your Rating</label>
+                    <select class="form-control" name="rating">
+                      <option value="1">1 - Poor</option>
+                      <option value="2">2 - Fair</option>
+                      <option value="3">3 - Good</option>
+                      <option value="4">4 - Very Good</option>
+                      <option value="5" selected>5 - Excellent</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Your Review</label>
+                    <textarea class="form-control" name="comment" rows="3" placeholder="Share your thoughts..."></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+
+                <hr>
+
+                <!-- Existing Reviews -->
+                <div class="media mb-3">
+                  <div class="media-body">
+                    <h6 class="mt-0">John Doe <small class="text-muted">• 2 days ago</small></h6>
+                    <p class="mb-1"><i class="fa fa-star text-warning"></i> 5/5</p>
+                    <p class="text-muted">
+                      Absolutely phenomenal! Heath Ledger's performance as the Joker is unforgettable. 
+                      This movie redefined superhero films.
+                    </p>
+                    <button class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i> Delete</button>
+                  </div>
+                </div>
+
+                <hr>
+
+                <div class="media mb-3">
+                  <div class="media-body">
+                    <h6 class="mt-0">Jane Smith <small class="text-muted">• 1 week ago</small></h6>
+                    <p class="mb-1"><i class="fa fa-star text-warning"></i> 4.5/5</p>
+                    <p class="text-muted">
+                      A masterpiece of modern cinema. The action sequences are incredible and the story is gripping.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+  </body>
+</html>
