@@ -19,3 +19,22 @@ Uploaded MovieCatalogManager_bootstrap_template to github
 Can be found https://github.com/Mollinu9/MovieCatalogManager_bootstrap_template.git
 
 Will be changed in future developments
+
+18:40
+
+Created 6 classes using following artisan commands
+
+php artisan make:migration create_movies_table
+
+php artisan make:migration create_genres_table
+
+php artisan make:migration create_reviews_table
+
+php artisan make:migration create_genre_movie_table
+
+php artisan make:migration create_user_movie_table
+
+php artisan make:migration create_movie_requests_table
+
+
+After done run php artisan migrate
