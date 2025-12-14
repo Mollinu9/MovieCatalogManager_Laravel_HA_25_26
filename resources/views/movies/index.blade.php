@@ -4,6 +4,16 @@
 <!-- content -->
     <main class="py-5">
       <div class="container">
+        <!-- Success Message -->
+        @if(session('success'))
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa fa-check-circle"></i> {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        @endif
+
         <!-- Header -->
         <div class="row mb-4">
           <div class="col-md-12">

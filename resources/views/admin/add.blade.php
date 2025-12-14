@@ -117,7 +117,9 @@
                 <hr>
                 <div class="form-group row mb-0">
                   <div class="col-md-9 offset-md-3">
-                      <button type="submit" class="btn btn-primary">Save Movie</button>
+                      <button type="button" class="btn btn-primary" id="preview-btn">
+                        <i class="fa fa-eye"></i> Preview Movie
+                      </button>
                       <a href="{{ route('movies.index') }}" class="btn btn-outline-secondary">Cancel</a>
                   </div>
                 </div>
@@ -129,6 +131,43 @@
     </div>
   </div>
 </div>
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Movie Preview</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <img id="preview-poster" src="https://via.placeholder.com/300x450" class="img-fluid" alt="Movie Poster">
+          </div>
+          <div class="col-md-8">
+            <h3 id="preview-title">Movie Title</h3>
+            <p class="text-muted" id="preview-meta">Year • Genre</p>
+            <p id="preview-description">Description will appear here...</p>
+            <p><strong>Runtime:</strong> <span id="preview-runtime">N/A</span></p>
+            <p><strong>Language:</strong> <span id="preview-language">N/A</span></p>
+            <p><strong>Genres:</strong> <span id="preview-genres">N/A</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+          <i class="fa fa-arrow-left"></i> Go Back
+        </button>
+        <button type="button" class="btn btn-success" id="save-from-preview">
+          <i class="fa fa-check"></i> Confirm & Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
