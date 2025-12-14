@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -16,11 +15,10 @@
   </head>
   
   <body>
-    <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container">
         <a class="navbar-brand text-uppercase" href="{{ url('/') }}">            
-            <strong>Movie</strong> Catalog
+            <strong>Movie Catalog </strong> J.M.
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -28,22 +26,17 @@
             
         <!-- /.navbar-header -->
         <div class="collapse navbar-collapse" id="navbar-toggler">
-          @auth
           <ul class="navbar-nav">
-            <li class="nav-item"><a href="#" class="nav-link">Movies</a></li>
+            <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Search</a></li>
             <li class="nav-item"><a href="#" class="nav-link">My Watchlist</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Request Movie</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Admin</a></li>
+            <li class="nav-item"><a href="{{ route('admin.movies.create') }}" class="nav-link">Add Movie</a></li>
           </ul>
-          @else
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a href="#" class="nav-link">Movies</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Search</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
-            <li class="nav-item"><a href="#" class="nav-link btn btn-primary text-white ml-2">Get Started</a></li>
+            <li class="nav-item"><a href="#" class="nav-link btn btn-primary text-white ml-2">Register</a></li>
           </ul>
-          @endauth
         </div>
       </div>
     </nav>

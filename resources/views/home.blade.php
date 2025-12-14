@@ -1,7 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Movie Catalog - Your Ultimate Movie Collection')
-
 @section('content')
 <!-- Hero Section -->
 <section class="hero-section py-5">
