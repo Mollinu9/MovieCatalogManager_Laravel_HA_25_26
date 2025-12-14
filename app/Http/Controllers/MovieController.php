@@ -11,7 +11,8 @@ class MovieController extends Controller
 {
     public function index()
     {
-        return view('movies.index'); // Main movies catalog page
+        $genres = Genre::with('movies')->get();
+        return view('movies.index', compact('genres'));
     }
 
     public function create()

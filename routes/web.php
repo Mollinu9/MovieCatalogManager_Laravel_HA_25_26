@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MovieController; // MovieController for handling movie-related routes
+
+use App\Models\Movie; // Movie model to fetch 3 rnadom movies for the home page
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,8 +17,10 @@ use App\Http\Controllers\MovieController;
 */
 
 // Home Page refers to home.blade.php
-Route::get('/', function () {
-    return view('home');
+Route::get('/', function () 
+{
+    $movies = Movie::inRandomOrder()->take(3)->get();
+    return view('home', compact('movies'));
 });
 
 

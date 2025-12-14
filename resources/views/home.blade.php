@@ -72,68 +72,38 @@
   </div>
 </section>
 
-<!-- Featured Movies Section -->
+<!-- Movies Section -->
 <section class="py-5 bg-light">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-5">
-      <h2 class="font-weight-bold mb-0">Featured Movies</h2>
-      <a href="#" class="btn btn-outline-primary">View All <i class="fa fa-arrow-right"></i></a>
+      <h2 class="font-weight-bold mb-0">Movies</h2>
+      <a href="{{ route('movies.index') }}" class="btn btn-outline-primary">View All <i class="fa fa-arrow-right"></i></a>
     </div>
     
     <div class="row justify-content-center">
-      <!-- Movie Card 1 -->
-      <div class="col-md-4 mb-4">
-        <div class="card featured-movie-card shadow-lg">
-          <div class="featured-movie-overlay">
-            <div class="featured-movie-info">
-              <h4 class="movie-title">The Dark Knight</h4>
-              <p class="movie-meta"><i class="fa fa-calendar"></i> 2008</p>
-              <p class="movie-meta"><i class="fa fa-film"></i> Action, Drama, Crime</p>
-              <p class="movie-meta"><i class="fa fa-clock-o"></i> 152 minutes</p>
-              <p class="movie-meta"><i class="fa fa-language"></i> English</p>
-              <p class="movie-rating"><i class="fa fa-star"></i> 9.0/10</p>
-              <a href="#" class="btn btn-primary btn-block mt-3">View Details</a>
+      @forelse($movies as $movie)
+        <div class="col-md-4 mb-4">
+          <div class="card featured-movie-card shadow-lg">
+            <div class="featured-movie-overlay">
+              <div class="featured-movie-info">
+                <h4 class="movie-title">{{ $movie->title }}</h4>
+                <p class="movie-meta"><i class="fa fa-calendar"></i> {{ $movie->release_date ? $movie->release_date->format('Y') : 'N/A' }}</p>
+                <p class="movie-meta"><i class="fa fa-film"></i> {{ $movie->genres->pluck('name')->join(', ') ?: 'N/A' }}</p>
+                <p class="movie-meta"><i class="fa fa-clock-o"></i> {{ $movie->runtime ?? 'N/A' }} minutes</p>
+                <p class="movie-meta"><i class="fa fa-language"></i> {{ strtoupper($movie->language ?? 'N/A') }}</p>
+                <a href="#" class="btn btn-primary btn-block mt-3">View Details</a>
+              </div>
             </div>
+            <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/400x600' }}" class="card-img" alt="{{ $movie->title }} Poster">
           </div>
-          <img src="https://via.placeholder.com/400x600" class="card-img" alt="The Dark Knight Poster">
         </div>
-      </div>
-
-      <!-- Movie Card 2 -->
-      <div class="col-md-4 mb-4">
-        <div class="card featured-movie-card shadow-lg">
-          <div class="featured-movie-overlay">
-            <div class="featured-movie-info">
-              <h4 class="movie-title">Inception</h4>
-              <p class="movie-meta"><i class="fa fa-calendar"></i> 2010</p>
-              <p class="movie-meta"><i class="fa fa-film"></i> Sci-Fi, Thriller</p>
-              <p class="movie-meta"><i class="fa fa-clock-o"></i> 148 minutes</p>
-              <p class="movie-meta"><i class="fa fa-language"></i> English</p>
-              <p class="movie-rating"><i class="fa fa-star"></i> 8.8/10</p>
-              <a href="#" class="btn btn-primary btn-block mt-3">View Details</a>
-            </div>
-          </div>
-          <img src="https://via.placeholder.com/400x600" class="card-img" alt="Inception Poster">
+      @empty
+        <div class="col-md-12 text-center py-5">
+          <i class="fa fa-film fa-5x text-muted mb-3"></i>
+          <p class="text-muted">No movies available yet. Add some movies to get started!</p>
+          <a href="{{ route('admin.movies.create') }}" class="btn btn-primary">Add Your First Movie</a>
         </div>
-      </div>
-
-      <!-- Movie Card 3 -->
-      <div class="col-md-4 mb-4">
-        <div class="card featured-movie-card shadow-lg">
-          <div class="featured-movie-overlay">
-            <div class="featured-movie-info">
-              <h4 class="movie-title">The Shawshank Redemption</h4>
-              <p class="movie-meta"><i class="fa fa-calendar"></i> 1994</p>
-              <p class="movie-meta"><i class="fa fa-film"></i> Drama</p>
-              <p class="movie-meta"><i class="fa fa-clock-o"></i> 142 minutes</p>
-              <p class="movie-meta"><i class="fa fa-language"></i> English</p>
-              <p class="movie-rating"><i class="fa fa-star"></i> 9.3/10</p>
-              <a href="#" class="btn btn-primary btn-block mt-3">View Details</a>
-            </div>
-          </div>
-          <img src="https://via.placeholder.com/400x600" class="card-img" alt="The Shawshank Redemption Poster">
-        </div>
-      </div>
+      @endforelse
     </div>
   </div>
 </section>

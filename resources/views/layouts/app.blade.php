@@ -41,6 +41,9 @@
       </div>
     </nav>
 
+    <!-- Genre Filter Bar (only on movies page) -->
+    @yield('genre-filter')
+
     <!-- content -->
     <main class="py-5">
         @yield('content')
