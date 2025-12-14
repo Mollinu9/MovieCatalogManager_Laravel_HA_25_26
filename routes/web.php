@@ -25,3 +25,4 @@ Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
 
 // Admin Routes (only admins)
 Route::get('/admin/movies/create', [MovieController::class, 'create'])->name('admin.movies.create');
+Route::post('/admin/movies', [MovieController::class, 'store'])->name('admin.movies.store');
