@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Genre;
 
 class MovieController extends Controller
 {
@@ -14,6 +15,7 @@ class MovieController extends Controller
 
     public function create()
     {
-        return view('admin.add'); // Form to add a new movie
+        $genres = Genre::all(); // Fetch all genres for the dropdown
+        return view('admin.add', compact('genres')); // Form to add a new movie
     }
 }

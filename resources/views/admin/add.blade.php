@@ -13,7 +13,24 @@
             @csrf
             <div class="row">
               <div class="col-md-12">
+                <!-- Input Method Selection -->
                 <div class="form-group row">
+                  <label class="col-md-3 col-form-label">Input Method</label>
+                  <div class="col-md-9">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-outline-primary active" id="tmdb-option">
+                        <input type="radio" name="input_method" value="tmdb" checked> TMDB Import
+                      </label>
+                      <label class="btn btn-outline-primary" id="manual-option">
+                        <input type="radio" name="input_method" value="manual"> Manual Entry
+                      </label>
+                    </div>
+                    <small class="form-text text-muted">Choose TMDB for automatic data or Manual for local movies</small>
+                  </div>
+                </div>
+
+                <!-- TMDB ID Field (shown only for TMDB import) -->
+                <div class="form-group row" id="tmdb-section">
                   <label for="tmdb_id" class="col-md-3 col-form-label">TMDb ID</label>
                   <div class="col-md-9">
                     <input type="number" name="tmdb_id" id="tmdb_id" class="form-control" placeholder="e.g., 155">
@@ -71,19 +88,19 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="genres" class="col-md-3 col-form-label">Genres</label>
+                  <label class="col-md-3 col-form-label">Genres</label>
                   <div class="col-md-9">
-                    <select name="genres[]" id="genres" class="form-control" multiple size="5">
-                      <option value="1">Action</option>
-                      <option value="2">Comedy</option>
-                      <option value="3">Drama</option>
-                      <option value="4">Horror</option>
-                      <option value="5">Sci-Fi</option>
-                      <option value="6">Thriller</option>
-                      <option value="7">Romance</option>
-                      <option value="8">Crime</option>
-                    </select>
-                    <small class="form-text text-muted">Hold Ctrl/Cmd to select multiple</small>
+                    <div class="d-flex flex-wrap">
+                      @forelse($genres as $genre)
+                        <label class="btn btn-outline-warning btn-sm m-1 genre-badge" style="cursor: pointer;">
+                          <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;">
+                          {{ $genre->name }}
+                        </label>
+                      @empty
+                        <p class="text-muted">No genres available</p>
+                      @endforelse
+                    </div>
+                    <small class="form-text text-muted">Click to select multiple genres</small>
                   </div>
                 </div>
 
@@ -103,3 +120,7 @@
   </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="{{ asset('assets/js/admin.js') }}"></script>
+@endpush
