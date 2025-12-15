@@ -91,7 +91,7 @@
                 <p class="movie-meta"><i class="fa fa-film"></i> {{ $movie->genres->pluck('name')->join(', ') ?: 'N/A' }}</p>
                 <p class="movie-meta"><i class="fa fa-clock-o"></i> {{ $movie->runtime ?? 'N/A' }} minutes</p>
                 <p class="movie-meta"><i class="fa fa-language"></i> {{ strtoupper($movie->language ?? 'N/A') }}</p>
-                <a href="#" class="btn btn-primary btn-block mt-3">View Details</a>
+                <a href="{{ route('movies.details', $movie->id) }}" class="btn btn-primary btn-block mt-3">View Details</a>
               </div>
             </div>
             <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/400x600' }}" class="card-img" alt="{{ $movie->title }} Poster">
