@@ -636,94 +636,6 @@ h6 {
   display: none;
 }
 
-/* Featured Movie Cards */
-.featured-movie-card {
-  position: relative;
-  overflow: hidden;
-  border: none;
-  border-radius: 8px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.featured-movie-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 25px rgba(255, 140, 66, 0.4) !important;
-}
-
-.featured-movie-card .card-img {
-  width: 100%;
-  height: 600px;
-  object-fit: cover;
-  display: block;
-}
-
-.featured-movie-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(30, 58, 95, 0.95) 0%, rgba(30, 58, 95, 0.85) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 10;
-}
-
-.featured-movie-card:hover .featured-movie-overlay {
-  opacity: 1;
-}
-
-.featured-movie-info {
-  text-align: center;
-  color: var(--white);
-}
-
-.featured-movie-info .movie-title {
-  color: var(--white) !important;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 15px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.featured-movie-info .movie-meta {
-  color: var(--white) !important;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.featured-movie-info .movie-meta i {
-  color: var(--orange);
-  font-size: 1rem;
-}
-
-.featured-movie-info .movie-rating {
-  color: var(--orange) !important;
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-.featured-movie-info .movie-rating i {
-  color: var(--orange);
-}
-
-.featured-movie-info .btn {
-  margin-top: 15px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
 /* Movies Browse Page */
 .movies-browse {
   background-color: transparent !important;
@@ -830,23 +742,48 @@ h6 {
 }
 
 /* Search Page Styles */
+
+/* Search Filter Card Enhancement */
 .search-movie-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--white);
 }
 
 .search-movie-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(255, 140, 66, 0.3) !important;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(255, 140, 66, 0.4) !important;
 }
 
 .search-movie-card .card-img-top {
-  height: 350px;
+  height: 400px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.search-movie-card:hover .card-img-top {
+  transform: scale(1.05);
 }
 
 .search-movie-card .card-body {
   display: flex;
   flex-direction: column;
+  padding: 1.25rem;
+}
+
+.search-movie-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--dark-blue) !important;
+  margin-bottom: 0.75rem;
+  min-height: 2.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .search-movie-card .card-text {
@@ -857,10 +794,116 @@ h6 {
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
+  color: var(--medium-gray) !important;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
+.search-movie-card .btn-primary {
+  margin-top: auto;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* Search Input Enhancement */
 .input-group-lg .form-control {
   font-size: 1.1rem;
+  border-radius: 8px 0 0 8px;
+  border: 2px solid var(--border-gray);
+  padding: 0.75rem 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.input-group-lg .form-control:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+}
+
+.input-group-lg .btn-primary {
+  border-radius: 0 8px 8px 0;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Filter Labels */
+.col-form-label {
+  font-weight: 600;
+  color: var(--dark-blue) !important;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Custom Select Enhancement */
+.custom-select {
+  border: 2px solid var(--border-gray);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.custom-select:hover {
+  border-color: var(--light-blue);
+}
+
+.custom-select:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+}
+
+/* Reset Button Enhancement */
+.btn-outline-secondary {
+  border: 2px solid var(--medium-gray);
+  color: var(--medium-gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--medium-gray);
+  border-color: var(--medium-gray);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+/* Search Results Header */
+.search-movie-card+.col-md-12 h5 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--dark-blue) !important;
+}
+
+/* Filter Card Styling */
+.shadow-sm {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+  border: none !important;
+  border-radius: 12px !important;
+}
+
+.card-body.p-4 {
+  background-color: var(--white);
+  border-radius: 12px;
+}
+
+/* Active Filter Indicator */
+.custom-select option:checked {
+  background-color: var(--orange);
+  color: var(--white);
 }
 
 .btn-group .btn {
@@ -873,21 +916,20 @@ h6 {
   color: var(--white);
 }
 
-/* Movie Grid Card (Vertical Layout) */
-.movie-grid-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+/* Responsive Search Page */
+@media (max-width: 768px) {
+  .search-movie-card .card-img-top {
+    height: 300px;
+  }
 
-.movie-grid-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(255, 140, 66, 0.3) !important;
-}
+  .input-group-lg .btn-primary {
+    padding: 0.75rem 1rem;
+  }
 
-.movie-grid-card .card-img-top {
-  height: 300px;
-  object-fit: cover;
+  .col-form-label {
+    font-size: 0.85rem;
+  }
 }
-
 
 /* Genre Filter Bar */
 .genre-filter-bar {

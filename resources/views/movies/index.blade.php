@@ -55,18 +55,20 @@
               <div class="row">
                 @foreach($genre->movies->take(6) as $movie)
                   <div class="col-md-4 col-sm-6 mb-4">
-                    <div class="card featured-movie-card shadow-lg">
-                      <div class="featured-movie-overlay">
-                        <div class="featured-movie-info">
-                          <h4 class="movie-title">{{ $movie->title }}</h4>
-                          <p class="movie-meta"><i class="fa fa-calendar"></i> {{ $movie->release_date ? $movie->release_date->format('Y') : 'N/A' }}</p>
-                          <p class="movie-meta"><i class="fa fa-film"></i> {{ $movie->genres->pluck('name')->join(', ') ?: 'N/A' }}</p>
-                          <p class="movie-meta"><i class="fa fa-clock-o"></i> {{ $movie->runtime ?? 'N/A' }} minutes</p>
-                          <p class="movie-meta"><i class="fa fa-language"></i> {{ strtoupper($movie->language ?? 'N/A') }}</p>
-                          <a href="{{ route('movies.details', $movie->id)}}" class="btn btn-primary btn-block mt-3">View Details</a>
-                        </div>
+                    <div class="card search-movie-card h-100">
+                      <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="card-img-top" alt="{{ $movie->title }}">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ $movie->title }}</h5>
+                        <p class="text-muted small mb-2">
+                          {{ $movie->release_date ? $movie->release_date->format('Y') : 'N/A' }} • 
+                          {{ $movie->genres->pluck('name')->join(', ') }}
+                        </p>
+                        <p class="mb-2">
+                          <i class="fa fa-clock"></i> {{ $movie->runtime ?? 'N/A' }} min
+                        </p>
+                        <p class="card-text small">{{ Str::limit($movie->description, 100) }}</p>
+                        <a href="{{ route('movies.details', $movie->id) }}" class="btn btn-sm btn-primary btn-block">View Details</a>
                       </div>
-                      <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/400x600' }}" class="card-img" alt="{{ $movie->title }} Poster">
                     </div>
                   </div>
                 @endforeach

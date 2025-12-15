@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbar-toggler">
           <ul class="navbar-nav">
             <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Search</a></li>
+            <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
             <li class="nav-item"><a href="#" class="nav-link">My Watchlist</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Request Movie</a></li>
             <li class="nav-item"><a href="{{ route('admin.movies.create') }}" class="nav-link">Add Movie</a></li>
@@ -43,6 +43,9 @@
 
     <!-- Genre Filter Bar (only on movies page) -->
     @yield('genre-filter')
+
+    <!-- Search Filter Bar (only on search page) -->
+    @yield('search-filter')
 
     <!-- content -->
     <main class="py-5">

@@ -12,15 +12,133 @@ class MovieController extends Controller
     // Function to redirectd to movies index page
     public function index()
     {
-        $genres = Genre::with('movies')->get();
+        $genres = Genre::with('movies')->get(); // Load genres with their movies
         return view('movies.index', compact('genres'));
     }
 
     // Function to show movie details
     public function details($id)
     {
-        $movie = Movie::findorFail($id);
+        $movie = Movie::findorFail($id); // Fetch movie by ID or fail
         return view('movies.details', compact('movie'));
+    }
+
+    // Function to show search page with filtering
+    public function search(Request $request)
+    {
+        // Start building the query
+        $query = Movie::with('genres');
+
+        // Apply filters
+        $this->applySearchFilters($query, $request);
+        $this->applySorting($query, $request);
+
+        // Get results and genres
+        $movies = $query->paginate(12);
+        $genres = Genre::all();
+
+        return view('movies.search', compact('movies', 'genres'));
+    }
+
+    // Apply all search filters to the query
+    private function applySearchFilters($query, $request)
+    {
+        // Search by title
+        if ($request->filled('search')) 
+        {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by genre
+        if ($request->filled('genre')) 
+        {
+            $query->whereHas('genres', function($q) use ($request) 
+            {
+                $q->where('genres.id', $request->genre);
+            });
+        }
+
+        // Filter by year or decade
+        if ($request->filled('year')) 
+        {
+            $this->applyYearFilter($query, $request->year);
+        }
+
+        // Filter by language
+        if ($request->filled('language')) 
+        {
+            $query->where('language', $request->language);
+        }
+
+        // Filter by runtime
+        if ($request->filled('runtime')) 
+        {
+            $this->applyRuntimeFilter($query, $request->runtime);
+        }
+    }
+
+    // Apply year/decade filter
+    private function applyYearFilter($query, $year){
+        $decades = [
+            '2010s' => ['2010-01-01', '2019-12-31'],
+            '2000s' => ['2000-01-01', '2009-12-31'],
+            '1990s' => ['1990-01-01', '1999-12-31'],
+            '1980s' => ['1980-01-01', '1989-12-31'],
+        ];
+
+        if (isset($decades[$year])) {
+            $query->whereBetween('release_date', $decades[$year]);
+        } elseif ($year === 'older') {
+            $query->where('release_date', '<', '1980-01-01');
+        } else {
+            $query->whereYear('release_date', $year);
+        }
+    }
+
+    // Apply runtime filter
+    private function applyRuntimeFilter($query, $runtime)
+    {
+        $runtimeRanges = [
+            'short'  => ['<', 90],
+            'medium' => ['between', [90, 120]],
+            'long'   => ['between', [120, 150]],
+            'epic'   => ['>', 150],
+        ];
+
+        if (isset($runtimeRanges[$runtime])) 
+        {
+            $range = $runtimeRanges[$runtime];
+            if ($range[0] === 'between') 
+            {
+                $query->whereBetween('runtime', $range[1]);
+            } 
+            else 
+            {
+                $query->where('runtime', $range[0], $range[1]);
+            }
+        }
+    }
+
+    // Apply sorting to the query
+    private function applySorting($query, $request)
+    {
+        $sortOptions = [
+            'year-desc'  => ['release_date', 'desc'],
+            'year-asc'   => ['release_date', 'asc'],
+            'title-asc'  => ['title', 'asc'],
+            'title-desc' => ['title', 'desc'],
+        ];
+
+        $sort = $request->get('sort', 'title-asc');
+        
+        if (isset($sortOptions[$sort])) 
+        {
+            $query->orderBy($sortOptions[$sort][0], $sortOptions[$sort][1]);
+        } 
+        else 
+        {
+            $query->orderBy('title', 'asc');
+        }
     }
 
     // Function to show the create movie form -> Admin only
@@ -30,8 +148,7 @@ class MovieController extends Controller
         return view('admin.add', compact('genres')); // Form to add a new movie
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         // Validate the request
         $validated = $request->validate(
             [

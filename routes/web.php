@@ -27,6 +27,7 @@ Route::get('/', function ()
 // Movie Routes (public)
 
 Route::get('/movies', [MovieController::class, 'index'])->name('movies.index'); // views/movies/index.blade.php
+Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search'); // views/movies/search.blade.php
 Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
 
 // Admin Routes (only admins)
