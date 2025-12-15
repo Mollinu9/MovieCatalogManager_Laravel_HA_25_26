@@ -3,41 +3,66 @@
 @section('content')
     <!-- content -->
     <main class="py-5">
-      <div class="container">
+      <div class="container-fluid px-4">
         <div class="row">
-          <!-- Movie Info -->
-          <div class="col-md-4">
-            <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="img-fluid rounded" alt="Movie Poster">
-            <div class="mt-3">
-              <button class="btn btn-success btn-block"><i class="fa fa-plus"></i> Add to Watchlist</button>
-              <button class="btn btn-info btn-block"><i class="fa fa-check"></i> Mark as Watched</button>
+          <!-- Movie Poster -->
+          <div class="col-lg-3 col-md-4 mb-4">
+            <div class="movie-details-poster">
+              <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="img-fluid" alt="{{ $movie->title }} Poster">
             </div>
           </div>
 
-          <div class="col-md-8">
-            <div class="card">
+          <!-- Movie Details -->
+          <div class="col-lg-9 col-md-8">
+            <div class="card movie-details-card">
               <div class="card-body">
                 <h2 class="card-title">{{ $movie->title }}</h2>
-                <p class="text-muted">
-                  <span class="badge badge-secondary">{{ $movie->genres->pluck('name')->join(', ') }}</span>
-                </p>
-                <p><strong>Release Date:</strong> {{ $movie->release_date ? $movie->release_date->format('F j, Y') : 'N/A' }}</p>
-                <p><strong>Runtime:</strong> {{ $movie->runtime ?? 'N/A' }} minutes</p>
-                <p><strong>Language:</strong> {{ strtoupper($movie->language ?? 'N/A') }}</p>
-                <p><strong>Rating:</strong> <i class="fa fa-star text-warning"></i> 9.0/10 (245 reviews)</p>
+                
+                <div class="genre-badge-container">
+                  @foreach($movie->genres as $genre)
+                    <span class="genre-badge">{{ $genre->name }}</span>
+                  @endforeach
+                </div>
+
+                <div class="movie-meta-info">
+                  <p>
+                    <i class="fa fa-calendar"></i>
+                    <strong>Release Date:</strong> 
+                    {{ $movie->release_date ? $movie->release_date->format('F j, Y') : 'N/A' }}
+                  </p>
+                  <p>
+                    <i class="fa fa-clock"></i>
+                    <strong>Runtime:</strong> 
+                    {{ $movie->runtime ?? 'N/A' }} minutes
+                  </p>
+                  <p>
+                    <i class="fa fa-language"></i>
+                    <strong>Language:</strong> 
+                    {{ strtoupper($movie->language ?? 'N/A') }}
+                  </p>
+                  <p>
+                    <i class="fa fa-star"></i>
+                    <strong>Rating:</strong> 
+                    <span class="movie-rating-display">
+                      <i class="fa fa-star"></i> 9.0/10 <small>(245 reviews)</small>
+                    </span>
+                  </p>
+                </div>
                 
                 <hr>
                 
-                <h5>Synopsis</h5>
-                <p class="text-muted">
-                  {{ $movie->description }}
-                </p>
+                <div class="synopsis-section">
+                  <h5>Synopsis</h5>
+                  <p>{{ $movie->description }}</p>
+                </div>
 
                 <hr>
 
-                <h5>Trailer</h5>
-                <div class="embed-responsive embed-responsive-16by9">
-                  <iframe class="embed-responsive-item" src="{{ $movie->embedUrl ?? ''}}" allowfullscreen></iframe>
+                <div class="trailer-section">
+                  <h5>Trailer</h5>
+                  <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="{{ $movie->embedUrl ?? ''}}" allowfullscreen></iframe>
+                  </div>
                 </div>
               </div>
             </div>
