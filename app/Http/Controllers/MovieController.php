@@ -21,6 +21,12 @@ class MovieController extends Controller
         return view('admin.add', compact('genres')); // Form to add a new movie
     }
 
+    public function details($id)
+    {
+        $movie = Movie::findorFail($id);
+        return view('movies.details', compact('movie'));
+    }
+
     public function store(Request $request)
     {
         // Validate the request

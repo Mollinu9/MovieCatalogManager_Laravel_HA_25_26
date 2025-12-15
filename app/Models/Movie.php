@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use \Illuminate\Database\Eloquent\Casts\Attribute; // Needed for embedUrl attribute (to get youtube_url)
 use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
@@ -29,5 +30,26 @@ class Movie extends Model
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'genre_movie');
+    }
+
+    // Function to get the YouTube embed URL
+    protected function embedUrl(): Attribute 
+    {
+        return Attribute::make(
+            get: function(mixed $value, array $attributes)
+            {
+                $youtube_url = $attributes['trailer_link'] ?? ''; // Get the original YouTube URL from db
+
+                if (preg_match("/[?&]v=([^&]+)/", $youtube_url, $matches)) // Check that it's a valid YouTube link
+                {
+                    // Extract the video ID from the URL
+                    $video_id = $matches[1];
+                    // Return the correctly formatted embed source link
+                    return "https://www.youtube.com/embed/{$video_id}";
+                }
+
+                return null;
+            }
+        );
     }
 }
