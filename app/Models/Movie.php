@@ -10,6 +10,7 @@ class Movie extends Model
 {
     use HasFactory;
 
+    // Mass assignable attributes
     protected $fillable = [
         'tmdb_id',
         'title',

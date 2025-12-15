@@ -16,7 +16,7 @@ use App\Models\Movie; // Movie model to fetch 3 rnadom movies for the home page
 |
 */
 
-// Home Page refers to home.blade.php
+// Home Page refers to home.blade.php in views folder
 Route::get('/', function () 
 {
     $movies = Movie::inRandomOrder()->take(3)->get();
@@ -25,9 +25,10 @@ Route::get('/', function ()
 
 
 // Movie Routes (public)
-Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
-Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details');
+
+Route::get('/movies', [MovieController::class, 'index'])->name('movies.index'); // views/movies/index.blade.php
+Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
 
 // Admin Routes (only admins)
-Route::get('/admin/movies/create', [MovieController::class, 'create'])->name('admin.movies.create');
-Route::post('/admin/movies', [MovieController::class, 'store'])->name('admin.movies.store');
+Route::get('/admin/movies/create', [MovieController::class, 'create'])->name('admin.movies.create'); // views/admin/movies/create.blade.php
+Route::post('/admin/movies', [MovieController::class, 'store'])->name('admin.movies.store'); // Handle form submission for creating a new movie

@@ -9,22 +9,25 @@ use \Illuminate\Support\Str;
 
 class MovieController extends Controller
 {
+    // Function to redirectd to movies index page
     public function index()
     {
         $genres = Genre::with('movies')->get();
         return view('movies.index', compact('genres'));
     }
 
-    public function create()
-    {
-        $genres = Genre::all(); // Fetch all genres for the dropdown
-        return view('admin.add', compact('genres')); // Form to add a new movie
-    }
-
+    // Function to show movie details
     public function details($id)
     {
         $movie = Movie::findorFail($id);
         return view('movies.details', compact('movie'));
+    }
+
+    // Function to show the create movie form -> Admin only
+    public function create()
+    {
+        $genres = Genre::all(); // Fetch all genres for the dropdown
+        return view('admin.add', compact('genres')); // Form to add a new movie
     }
 
     public function store(Request $request)
@@ -95,6 +98,6 @@ class MovieController extends Controller
             $movie->genres()->attach($request->genres);
         }
 
-        return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
+        return redirect()->route('movies.index')->with('success', 'Movie added successfully!'); // Redirect to movies index with success message
     }
 }
