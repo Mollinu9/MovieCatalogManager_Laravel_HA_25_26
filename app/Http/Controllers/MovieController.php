@@ -95,6 +95,101 @@ class MovieController extends Controller
         return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
     }
 
+    /**
+     * Show the edit movie form
+     */
+    public function edit($id)
+    {
+        $movie = Movie::with('genres')->findOrFail($id);
+        $genres = Genre::all();
+        return view('admin.edit', compact('movie', 'genres'));
+    }
+
+    /**
+     * Update an existing movie in the database
+     */
+    public function update(Request $request, $id)
+    {
+        $movie = Movie::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'release_date' => 'nullable|date',
+            'runtime' => 'nullable|integer|min:1',
+            'language' => 'nullable|string|max:10',
+            'poster_url' => 'nullable|url',
+            'trailer_link' => 'nullable|url',
+            'genres' => 'nullable|array',
+            'genres.*' => 'exists:genres,id',
+        ]);
+
+        // Check for duplicate title (excluding current movie)
+        $existingTitle = Movie::where('title', $validated['title'])
+                              ->where('id', '!=', $id)
+                              ->first();
+        if ($existingTitle) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['title' => 'A movie with this title already exists in the database.']);
+        }
+
+        $validated['slug'] = Str::slug($validated['title']);
+
+        $movie->update($validated);
+
+        // Sync genres
+        if ($request->has('genres')) {
+            $movie->genres()->sync($request->genres);
+        } else {
+            $movie->genres()->detach();
+        }
+
+        return redirect()->route('admin.movies.index')->with('success', 'Movie updated successfully!');
+    }
+
+    /**
+     * Refresh movie data from TMDB
+     */
+    public function refreshFromTmdb($id)
+    {
+        $movie = Movie::findOrFail($id);
+
+        // Only refresh if movie has a valid TMDB ID
+        if (!$movie->tmdb_id || $movie->tmdb_id <= 0) {
+            return redirect()->back()->with('error', 'This movie was added manually and cannot be refreshed from TMDB.');
+        }
+
+        try {
+            $url = "https://api.themoviedb.org/3/movie/{$movie->tmdb_id}?api_key={$this->getTmdbApiKey()}&language=en-US&append_to_response=videos";
+            $movieData = $this->makeTmdbRequest($url);
+
+            $formattedMovie = $this->formatTmdbMovieData($movieData);
+
+            // Update movie with fresh TMDB data
+            $movie->update([
+                'title' => $formattedMovie['title'],
+                'description' => $formattedMovie['description'],
+                'release_date' => $formattedMovie['release_date'],
+                'runtime' => $formattedMovie['runtime'],
+                'language' => $formattedMovie['language'],
+                'poster_url' => $formattedMovie['poster_url'],
+                'trailer_link' => $formattedMovie['trailer_link'],
+                'slug' => Str::slug($formattedMovie['title']),
+            ]);
+
+            // Sync genres
+            if (!empty($formattedMovie['genres'])) {
+                $movie->genres()->sync($formattedMovie['genres']);
+            }
+
+            return redirect()->back()->with('success', 'Movie data refreshed successfully from TMDB!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to refresh movie data from TMDB: ' . $e->getMessage());
+        }
+    }
+
     // ========================================
     // TMDB API INTEGRATION
     // ========================================

@@ -34,6 +34,9 @@ Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.de
 Route::get('/admin/movies', [MovieController::class, 'adminIndex'])->name('admin.movies.index'); // views/admin/index.blade.php
 Route::get('/admin/movies/create', [MovieController::class, 'create'])->name('admin.movies.create'); // views/admin/add.blade.php
 Route::post('/admin/movies', [MovieController::class, 'store'])->name('admin.movies.store'); // Handle form submission for creating a new movie
+Route::get('/admin/movies/{id}/edit', [MovieController::class, 'edit'])->name('admin.movies.edit'); // views/admin/edit.blade.php
+Route::put('/admin/movies/{id}', [MovieController::class, 'update'])->name('admin.movies.update'); // Handle form submission for updating a movie
+Route::post('/admin/movies/{id}/refresh', [MovieController::class, 'refreshFromTmdb'])->name('admin.movies.refresh'); // Refresh movie data from TMDB
 
 // TMDB API Routes
 Route::post('/admin/tmdb/search', [MovieController::class, 'searchTmdb'])->name('admin.tmdb.search'); // Handles searching movie by the id/name

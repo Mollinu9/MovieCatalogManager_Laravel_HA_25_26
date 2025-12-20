@@ -66,9 +66,12 @@
                         </td>
                         <td class="text-center">
                           <a href="{{ route('movies.details', $movie->id) }}" 
-                             class="btn btn-sm btn-circle btn-outline-info" 
-                             title="View Movie Details">
-                            <i class="fa fa-eye"></i>
+                             class="btn btn-sm btn-outline-info mr-1">
+                            <i class="fa fa-eye"></i> Details
+                          </a>
+                          <a href="{{ route('admin.movies.edit', $movie->id) }}" 
+                             class="btn btn-sm btn-outline-secondary">
+                            <i class="fa fa-edit"></i> Edit
                           </a>
                         </td>
                       </tr>
