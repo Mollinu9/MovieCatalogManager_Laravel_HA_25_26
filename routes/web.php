@@ -33,3 +33,7 @@ Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.de
 // Admin Routes (only admins)
 Route::get('/admin/movies/create', [MovieController::class, 'create'])->name('admin.movies.create'); // views/admin/movies/create.blade.php
 Route::post('/admin/movies', [MovieController::class, 'store'])->name('admin.movies.store'); // Handle form submission for creating a new movie
+
+// TMDB API Routes
+Route::post('/admin/tmdb/search', [MovieController::class, 'searchTmdb'])->name('admin.tmdb.search'); // Handles searching movie by the id/name
+Route::post('/admin/tmdb/fetch', [MovieController::class, 'fetchTmdb'])->name('admin.tmdb.fetch'); // Handles getting movie details

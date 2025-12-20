@@ -30,40 +30,39 @@
                     <strong>Release Date:</strong> 
                     {{ $movie->release_date ? $movie->release_date->format('F j, Y') : 'N/A' }}
                   </p>
+                  
                   <p>
                     <i class="fa fa-clock"></i>
                     <strong>Runtime:</strong> 
                     {{ $movie->runtime ?? 'N/A' }} minutes
                   </p>
+                  
                   <p>
                     <i class="fa fa-language"></i>
                     <strong>Language:</strong> 
                     {{ strtoupper($movie->language ?? 'N/A') }}
                   </p>
-                  <p>
-                    <i class="fa fa-star"></i>
-                    <strong>Rating:</strong> 
-                    <span class="movie-rating-display">
-                      <i class="fa fa-star"></i> 9.0/10 <small>(245 reviews)</small>
-                    </span>
-                  </p>
+
+                  <hr>
+
+                  <div class="synopsis-content">
+                    <p>
+                      <i class="fa fa-file-text"></i>
+                      <strong>Synopsis:</strong>
+                    </p>
+                    <p style="margin-left: 2rem; text-align: justify; line-height: 1.8;">{{ $movie->description }}</p>
+                  </div>
                 </div>
                 
+                @if($movie->trailer_link)
                 <hr>
-                
-                <div class="synopsis-section">
-                  <h5>Synopsis</h5>
-                  <p>{{ $movie->description }}</p>
-                </div>
-
-                <hr>
-
                 <div class="trailer-section">
                   <h5>Trailer</h5>
                   <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item" src="{{ $movie->embedUrl ?? ''}}" allowfullscreen></iframe>
                   </div>
                 </div>
+                @endif
               </div>
             </div>
 

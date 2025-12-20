@@ -49,7 +49,9 @@
               <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="mb-0">{{ $genre->name }}</h3>
                 @if($genre->movies->count() > 6)
-                  <a href="#" class="btn btn-sm btn-outline-primary">View All ({{ $genre->movies->count() }})</a>
+                  <a href="{{ route('movies.search', ['genre' => $genre->id]) }}" class="btn btn-sm btn-outline-primary">
+                    View All ({{ $genre->movies->count() }})
+                  </a>
                 @endif
               </div>
               <div class="row">
