@@ -107,7 +107,7 @@
 
 @section('content')
     <main class="py-5">
-      <div class="container">
+      <div class="container-fluid px-4">
 
         <!-- Results Header -->
         <div class="row mb-3">

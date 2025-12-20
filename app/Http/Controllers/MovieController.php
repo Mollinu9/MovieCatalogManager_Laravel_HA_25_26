@@ -190,6 +190,23 @@ class MovieController extends Controller
         }
     }
 
+    /**
+     * Delete a movie from the database
+     */
+    public function destroy($id)
+    {
+        $movie = Movie::findOrFail($id);
+        $movieTitle = $movie->title;
+
+        // Detach all genre relationships
+        $movie->genres()->detach();
+
+        // Delete the movie
+        $movie->delete();
+
+        return redirect()->route('admin.movies.index')->with('success', "Movie '{$movieTitle}' has been deleted successfully!");
+    }
+
     // ========================================
     // TMDB API INTEGRATION
     // ========================================

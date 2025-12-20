@@ -3,7 +3,7 @@
 @section('content')
 <!-- Hero Section -->
 <section class="hero-section py-5">
-  <div class="container">
+  <div class="container-fluid px-4">
     <div class="row align-items-center py-5">
       <div class="col-md-6">
         <h1 class="display-4 font-weight-bold mb-4">Discover & Track Your Favorite Movies</h1>
@@ -26,7 +26,7 @@
 
 <!-- Features Section -->
 <section class="py-5">
-  <div class="container">
+  <div class="container-fluid px-4">
     <div class="text-center mb-5">
       <h2 class="display-5 font-weight-bold">Why Choose Movie Catalog?</h2>
       <p class="lead text-muted">Everything you need to manage your movie experience</p>
@@ -74,7 +74,7 @@
 
 <!-- Movies Section -->
 <section class="py-5 bg-light">
-  <div class="container">
+  <div class="container-fluid px-4">
     <div class="d-flex justify-content-between align-items-center mb-5">
       <h2 class="font-weight-bold mb-0">Movies</h2>
       <a href="{{ route('movies.index') }}" class="btn btn-outline-primary">View All <i class="fa fa-arrow-right"></i></a>
@@ -112,7 +112,7 @@
 
 <!-- CTA Section -->
 <section class="py-5">
-  <div class="container">
+  <div class="container-fluid px-4">
     <div class="card bg-primary text-white text-center shadow-lg">
       <div class="card-body py-5">
         <h2 class="display-5 font-weight-bold mb-3">Ready to Start Your Movie Journey?</h2>

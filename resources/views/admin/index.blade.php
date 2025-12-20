@@ -70,9 +70,18 @@
                             <i class="fa fa-eye"></i> Details
                           </a>
                           <a href="{{ route('admin.movies.edit', $movie->id) }}" 
-                             class="btn btn-sm btn-outline-secondary">
+                             class="btn btn-sm btn-outline-secondary mr-1">
                             <i class="fa fa-edit"></i> Edit
                           </a>
+                          <form action="{{ route('admin.movies.destroy', $movie->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" 
+                                    class="btn btn-sm btn-outline-danger" 
+                                    onclick="return confirm('Are you sure you want to delete \'{{ $movie->title }}\'? This action cannot be undone.')">
+                              <i class="fa fa-trash"></i> Delete
+                            </button>
+                          </form>
                         </td>
                       </tr>
                     @endforeach

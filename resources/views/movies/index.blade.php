@@ -24,7 +24,7 @@
 @section('content')
 <!-- content -->
     <main class="py-5">
-      <div class="container">
+      <div class="container-fluid px-4">
         <!-- Success Message -->
         @if(session('success'))
           <div class="alert alert-success alert-dismissible fade show" role="alert">
