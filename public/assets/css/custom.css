@@ -776,6 +776,146 @@ footer .text-muted {
 }
 
 /* ============================================
+   ADMIN DASHBOARD (Admin Movies List)
+   ============================================ */
+.table {
+  background-color: var(--white);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table thead th {
+  background: linear-gradient(135deg, var(--dark-blue), var(--light-blue));
+  color: var(--white) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border: none;
+  padding: 16px 12px;
+  vertical-align: middle;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid var(--border-gray);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 140, 66, 0.05);
+  transform: scale(1.01);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table tbody td {
+  vertical-align: middle;
+  padding: 16px 12px;
+  color: var(--black);
+  font-size: 0.95rem;
+}
+
+.table tbody th {
+  vertical-align: middle;
+  padding: 16px 12px;
+  color: var(--dark-blue);
+  font-weight: 600;
+}
+
+/* Admin Table Poster Styling */
+.admin-movie-poster {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid var(--border-gray);
+}
+
+.admin-movie-poster:hover {
+  transform: scale(2);
+  box-shadow: 0 8px 20px rgba(255, 140, 66, 0.4);
+  z-index: 10;
+  position: relative;
+  border-color: var(--orange);
+}
+
+/* Action Buttons */
+.btn-circle {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  margin: 0 2px;
+}
+
+.btn-circle:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-info {
+  color: var(--light-blue);
+  border-color: var(--light-blue);
+}
+
+.btn-outline-info:hover {
+  background-color: var(--light-blue);
+  border-color: var(--light-blue);
+  color: var(--white);
+}
+
+.btn-outline-danger {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+
+/* TMDB ID Badge */
+.badge-tmdb {
+  background: linear-gradient(135deg, var(--dark-blue), var(--light-blue));
+  color: var(--white);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Manual Entry Badge */
+.badge-manual {
+  background-color: var(--medium-gray);
+  color: var(--white);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Movie Title in Table */
+.admin-movie-title {
+  color: var(--dark-blue);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Genres in Table */
+.admin-movie-genres {
+  color: var(--medium-gray);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 @media (max-width: 768px) {

@@ -52,6 +52,15 @@ class MovieController extends Controller
     // ========================================
 
     /**
+     * Display admin dashboard with all movies
+     */
+    public function adminIndex()
+    {
+        $movies = Movie::with('genres')->orderBy('created_at', 'desc')->paginate(15);
+        return view('admin.index', compact('movies'));
+    }
+
+    /**
      * Show the create movie form
      */
     public function create()

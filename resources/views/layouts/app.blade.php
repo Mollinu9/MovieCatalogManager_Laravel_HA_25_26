@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}"> <!--Security measure for CRUD -->
 
-    <title>@yield('title', 'Movie Catalog')</title>
+    <title>@yield('title', 'Movie Catalog')</title> <!--Show Constant Movie Catalog-->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Varela+Round">
     <!-- Bootstrap -->
@@ -32,7 +32,7 @@
             <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
             <li class="nav-item"><a href="#" class="nav-link">My Watchlist</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Request Movie</a></li>
-            <li class="nav-item"><a href="{{ route('admin.movies.create') }}" class="nav-link">Add Movie</a></li>
+            <li class="nav-item"><a href="{{ route('admin.movies.index') }}" class="nav-link">Admin</a></li>
           </ul>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
