@@ -7,12 +7,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const checkbox = this.querySelector('input[type="checkbox"]');
             checkbox.checked = !checkbox.checked;
 
+            // Toggle selected class
             if (checkbox.checked) {
-                this.classList.remove('btn-outline-warning');
-                this.classList.add('btn-primary');
+                this.classList.add('selected');
             } else {
-                this.classList.remove('btn-primary');
-                this.classList.add('btn-outline-warning');
+                this.classList.remove('selected');
             }
         });
     });
@@ -21,18 +20,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const tmdbOption = document.getElementById('tmdb-option');
     const manualOption = document.getElementById('manual-option');
     const tmdbSection = document.getElementById('tmdb-section');
-    const tmdbInput = document.getElementById('tmdb_id');
+    const manualSection = document.getElementById('manual-section');
 
-    if (tmdbOption && manualOption && tmdbSection) {
+    if (tmdbOption && manualOption && tmdbSection && manualSection) {
         tmdbOption.addEventListener('click', function () {
-            tmdbSection.style.display = 'flex';
-            tmdbInput.required = false;
+            // Add selected class to TMDB, remove from Manual
+            this.classList.add('selected');
+            manualOption.classList.remove('selected');
+
+            // Show TMDB section, hide manual section
+            tmdbSection.style.display = 'block';
+            manualSection.style.display = 'none';
         });
 
         manualOption.addEventListener('click', function () {
+            // Add selected class to Manual, remove from TMDB
+            this.classList.add('selected');
+            tmdbOption.classList.remove('selected');
+
+            // Hide TMDB section, show manual section
             tmdbSection.style.display = 'none';
-            tmdbInput.required = false;
-            tmdbInput.value = '';
+            manualSection.style.display = 'block';
+        });
+    }
+
+    // TMDB Search Method Toggle (Title vs ID)
+    const searchByTitleOption = document.getElementById('search-by-title-option');
+    const searchByIdOption = document.getElementById('search-by-id-option');
+    const tmdbTitleSearch = document.getElementById('tmdb-title-search');
+    const tmdbIdSearch = document.getElementById('tmdb-id-search');
+
+    if (searchByTitleOption && searchByIdOption && tmdbTitleSearch && tmdbIdSearch) {
+        searchByTitleOption.addEventListener('click', function () {
+            tmdbTitleSearch.style.display = 'flex';
+            tmdbIdSearch.style.display = 'none';
+        });
+
+        searchByIdOption.addEventListener('click', function () {
+            tmdbTitleSearch.style.display = 'none';
+            tmdbIdSearch.style.display = 'flex';
         });
     }
 });

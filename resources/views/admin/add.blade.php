@@ -28,101 +28,166 @@
                   <label class="col-md-3 col-form-label">Input Method</label>
                   <div class="col-md-9">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                      <label class="btn btn-outline-primary active" id="tmdb-option">
+                      <label class="btn input-method-badge text-white selected" id="tmdb-option" style="cursor: pointer;">
                         <input type="radio" name="input_method" value="tmdb" checked> TMDB Import
                       </label>
-                      <label class="btn btn-outline-primary" id="manual-option">
+                      <label class="btn input-method-badge text-white" id="manual-option" style="cursor: pointer;">
                         <input type="radio" name="input_method" value="manual"> Manual Entry
                       </label>
                     </div>
-                    <small class="form-text text-muted">Choose TMDB for automatic data or Manual for local movies</small>
-                  </div>
-                </div>
-
-                <!-- TMDB ID Field (shown only for TMDB import) -->
-                <div class="form-group row" id="tmdb-section">
-                  <label for="tmdb_id" class="col-md-3 col-form-label">TMDb ID</label>
-                  <div class="col-md-9">
-                    <input type="number" name="tmdb_id" id="tmdb_id" class="form-control" placeholder="e.g., 155">
-                    <small class="form-text text-muted">Enter TMDb ID to auto-fill movie details</small>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="title" class="col-md-3 col-form-label">Title</label>
-                  <div class="col-md-9">
-                    <input type="text" name="title" id="title" class="form-control" required>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="description" class="col-md-3 col-form-label">Description</label>
-                  <div class="col-md-9">
-                    <textarea name="description" id="description" rows="4" class="form-control"></textarea>
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="release_date" class="col-md-3 col-form-label">Release Date</label>
-                  <div class="col-md-9">
-                    <input type="date" name="release_date" id="release_date" class="form-control">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="runtime" class="col-md-3 col-form-label">Runtime (minutes)</label>
-                  <div class="col-md-9">
-                    <input type="number" name="runtime" id="runtime" class="form-control">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="language" class="col-md-3 col-form-label">Language</label>
-                  <div class="col-md-9">
-                    <input type="text" name="language" id="language" class="form-control">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="poster_url" class="col-md-3 col-form-label">Poster URL</label>
-                  <div class="col-md-9">
-                    <input type="url" name="poster_url" id="poster_url" class="form-control">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label for="trailer_link" class="col-md-3 col-form-label">Trailer Link</label>
-                  <div class="col-md-9">
-                    <input type="url" name="trailer_link" id="trailer_link" class="form-control">
-                  </div>
-                </div>
-
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label">Genres</label>
-                  <div class="col-md-9">
-                    <div class="d-flex flex-wrap">
-                      @forelse($genres as $genre)
-                        <label class="btn btn-outline-warning btn-sm m-1 genre-badge" style="cursor: pointer;">
-                          <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;">
-                          {{ $genre->name }}
-                        </label>
-                      @empty
-                        <p class="text-muted">No genres available</p>
-                      @endforelse
+                    <div class="mt-2">
+                      <small class="form-text text-muted">Choose TMDB for automatic data or Manual for local movies</small>
+                      <div class="mt-1">
+                        <small class="text-muted">
+                          <span class="badge badge-warning">Orange</span> → Not selected &nbsp;&nbsp;
+                          <span class="badge badge-primary">Blue</span> → Selected
+                        </small>
+                      </div>
                     </div>
-                    <small class="form-text text-muted">Click to select multiple genres</small>
                   </div>
                 </div>
 
                 <hr>
-                <div class="form-group row mb-0">
-                  <div class="col-md-9 offset-md-3">
-                      <button type="button" class="btn btn-primary" id="preview-btn">
-                        <i class="fa fa-eye"></i> Preview Movie
-                      </button>
-                      <a href="{{ route('movies.index') }}" class="btn btn-outline-secondary">Cancel</a>
+
+                <!-- TMDB Search Section (shown only for TMDB import) -->
+                <div id="tmdb-section">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Search Method</label>
+                    <div class="col-md-9">
+                      <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+                        <label class="btn btn-outline-primary active" id="search-by-title-option">
+                          <input type="radio" name="tmdb_search_method" value="title" checked> Search by Title
+                        </label>
+                        <label class="btn btn-outline-primary" id="search-by-id-option">
+                          <input type="radio" name="tmdb_search_method" value="id"> Search by TMDB ID
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Search by Title -->
+                  <div class="form-group row" id="tmdb-title-search">
+                    <label for="tmdb_search_title" class="col-md-3 col-form-label">Movie Title</label>
+                    <div class="col-md-9">
+                      <div class="input-group">
+                        <input type="text" name="tmdb_search_title" id="tmdb_search_title" class="form-control" placeholder="e.g., The Dark Knight">
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-primary" id="search-tmdb-btn">
+                            <i class="fa fa-search"></i> Search
+                          </button>
+                        </div>
+                      </div>
+                      <small class="form-text text-muted">Search for a movie on TMDB by its title</small>
+                    </div>
+                  </div>
+
+                  <!-- Search by TMDB ID -->
+                  <div class="form-group row" id="tmdb-id-search" style="display: none;">
+                    <label for="tmdb_id" class="col-md-3 col-form-label">TMDB ID</label>
+                    <div class="col-md-9">
+                      <div class="input-group">
+                        <input type="number" name="tmdb_id" id="tmdb_id" class="form-control" placeholder="e.g., 155">
+                        <div class="input-group-append">
+                          <button type="button" class="btn btn-primary" id="fetch-tmdb-btn">
+                            <i class="fa fa-download"></i> Fetch Data
+                          </button>
+                        </div>
+                      </div>
+                      <small class="form-text text-muted">Enter the TMDB ID from <a href="https://www.themoviedb.org/" target="_blank">themoviedb.org</a></small>
+                    </div>
+                  </div>
+
+                  <!-- Search Results (will be populated by JavaScript) -->
+                  <div id="tmdb-search-results" class="mb-3"></div>
+                </div>
+
+                <!-- Manual Entry Section (hidden by default) -->
+                <div id="manual-section" style="display: none;">
+                  <div class="form-group row">
+                    <label for="title" class="col-md-3 col-form-label">Title</label>
+                    <div class="col-md-9">
+                      <input type="text" name="title" id="title" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="description" class="col-md-3 col-form-label">Description</label>
+                    <div class="col-md-9">
+                      <textarea name="description" id="description" rows="4" class="form-control"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="release_date" class="col-md-3 col-form-label">Release Date</label>
+                    <div class="col-md-9">
+                      <input type="date" name="release_date" id="release_date" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="runtime" class="col-md-3 col-form-label">Runtime (minutes)</label>
+                    <div class="col-md-9">
+                      <input type="number" name="runtime" id="runtime" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="language" class="col-md-3 col-form-label">Language</label>
+                    <div class="col-md-9">
+                      <input type="text" name="language" id="language" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="poster_url" class="col-md-3 col-form-label">Poster URL</label>
+                    <div class="col-md-9">
+                      <input type="url" name="poster_url" id="poster_url" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="trailer_link" class="col-md-3 col-form-label">Trailer Link</label>
+                    <div class="col-md-9">
+                      <input type="url" name="trailer_link" id="trailer_link" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Genres</label>
+                    <div class="col-md-9">
+                      <div class="d-flex flex-wrap">
+                        @forelse($genres as $genre)
+                          <label class="btn btn-sm m-1 genre-badge text-white" style="cursor: pointer;">
+                            <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;">
+                            {{ $genre->name }}
+                          </label>
+                        @empty
+                          <p class="text-muted">No genres available</p>
+                        @endforelse
+                      </div>
+                      <div class="mt-2">
+                        <small class="form-text text-muted">Click to select multiple genres</small>
+                        <div class="mt-1">
+                          <small class="text-muted">
+                            <span class="badge badge-warning">Orange</span> → Not selected &nbsp;&nbsp;
+                            <span class="badge badge-primary">Blue</span> → Selected
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr>
+                  <div class="form-group row mb-0">
+                    <div class="col-md-9 offset-md-3">
+                        <button type="button" class="btn btn-primary" id="preview-btn">
+                          <i class="fa fa-eye"></i> Preview Movie
+                        </button>
+                        <a href="{{ route('movies.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </form>

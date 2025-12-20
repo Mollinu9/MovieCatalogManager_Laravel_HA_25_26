@@ -1,4 +1,6 @@
-/* Color Palette */
+/* ============================================
+   COLOR PALETTE
+   ============================================ */
 :root {
   --dark-blue: #1e3a5f;
   --light-blue: #2c5282;
@@ -12,15 +14,90 @@
   --border-gray: #dee2e6;
 }
 
+/* ============================================
+   GLOBAL STYLES (All Pages)
+   ============================================ */
 body {
   font-family: 'Varela Round', sans-serif;
-  background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 25%, var(--orange) 75%, var(--dark-orange) 100%);
-  background-attachment: fixed;
+  background: #ffffff;
   color: var(--black);
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Navbar */
+main {
+  background-color: transparent;
+  min-height: 60vh;
+  flex: 1;
+}
+
+footer {
+  margin-top: auto;
+}
+
+p {
+  color: var(--black);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--dark-blue);
+}
+
+small {
+  color: var(--medium-gray) !important;
+}
+
+.text-white,
+.text-white * {
+  color: var(--white) !important;
+}
+
+.text-muted {
+  color: var(--medium-gray) !important;
+}
+
+.text-primary {
+  color: var(--orange) !important;
+}
+
+.text-danger {
+  color: var(--red) !important;
+}
+
+hr {
+  border-top: 1px solid var(--border-gray);
+}
+
+hr.bg-secondary {
+  background-color: #374151;
+}
+
+.shadow-sm {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
+}
+
+.bg-primary {
+  background-color: var(--dark-blue) !important;
+  color: var(--white) !important;
+}
+
+.bg-light {
+  background-color: var(--light-gray) !important;
+}
+
+/* ============================================
+   NAVBAR (All Pages)
+   ============================================ */
 .navbar {
   background: linear-gradient(135deg, var(--dark-blue), var(--light-blue)) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -61,7 +138,6 @@ body {
   background-color: rgba(255, 140, 66, 0.15);
 }
 
-/* Navbar buttons (Login/Register) */
 .navbar-light .navbar-nav .nav-link.btn {
   background-color: var(--orange) !important;
   border: 2px solid var(--orange) !important;
@@ -74,7 +150,6 @@ body {
   border-color: var(--dark-orange) !important;
 }
 
-/* Navbar toggler for mobile */
 .navbar-toggler {
   border-color: var(--orange) !important;
 }
@@ -83,7 +158,25 @@ body {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 140, 66, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
 }
 
-/* Cards */
+/* ============================================
+   FOOTER (All Pages)
+   ============================================ */
+footer {
+  background-color: var(--black) !important;
+  color: var(--white);
+}
+
+footer h5 {
+  color: var(--orange);
+}
+
+footer .text-muted {
+  color: #9ca3af !important;
+}
+
+/* ============================================
+   CARDS (All Pages)
+   ============================================ */
 .card {
   background-color: var(--white);
   border: 1px solid var(--border-gray);
@@ -97,7 +190,11 @@ body {
   box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
 }
 
-/* Card titles inside card-body should be dark blue */
+.card-body {
+  background-color: var(--white);
+  color: var(--black);
+}
+
 .card-body h5,
 .card-body h4,
 .card-body h6 {
@@ -111,31 +208,12 @@ body {
   border: none;
 }
 
-/* Card header with card-title class should have blue background and white text */
-.card-header.card-title {
-  background: linear-gradient(135deg, var(--dark-blue), var(--light-blue)) !important;
-  padding: 16px 20px;
-  border-bottom: 2px solid var(--orange);
-  color: var(--white) !important;
+.card-body p {
+  color: var(--black) !important;
 }
 
-.card-header.card-title h1,
-.card-header.card-title h2,
-.card-header.card-title h3,
-.card-header.card-title h4,
-.card-header.card-title h5,
-.card-header.card-title h6,
-.card-header.card-title strong {
-  color: var(--white) !important;
-}
-
-.card-header.card-title * {
-  color: var(--white) !important;
-}
-
-.card-body {
-  background-color: var(--white);
-  color: var(--black);
+.card-text {
+  color: var(--black) !important;
 }
 
 .card-header {
@@ -145,7 +223,20 @@ body {
   font-weight: 600;
 }
 
-/* Buttons */
+.card-header.card-title {
+  background: linear-gradient(135deg, var(--dark-blue), var(--light-blue)) !important;
+  padding: 16px 20px;
+  border-bottom: 2px solid var(--orange);
+  color: var(--white) !important;
+}
+
+.card-header.card-title * {
+  color: var(--white) !important;
+}
+
+/* ============================================
+   BUTTONS (All Pages)
+   ============================================ */
 .btn-primary {
   background-color: var(--orange) !important;
   border-color: var(--orange) !important;
@@ -207,57 +298,19 @@ body {
   color: var(--white);
 }
 
-.btn-outline-info {
-  color: var(--light-blue);
-  border-color: var(--light-blue);
-}
-
-.btn-outline-info:hover {
-  background-color: var(--light-blue);
+.btn-outline-light {
   color: var(--white);
+  border-color: var(--white);
 }
 
-.btn-outline-danger {
-  color: var(--red);
-  border-color: var(--red);
+.btn-outline-light:hover {
+  background-color: var(--white);
+  color: var(--dark-blue);
 }
 
-.btn-outline-danger:hover {
-  background-color: var(--red);
-  color: var(--white);
-}
-
-.btn-outline-warning {
-  color: var(--orange);
-  border-color: var(--orange);
-}
-
-.btn-outline-warning:hover {
-  background-color: var(--orange);
-  color: var(--white);
-}
-
-.btn-outline-success {
-  color: #28a745;
-  border-color: #28a745;
-}
-
-.btn-outline-success:hover {
-  background-color: #28a745;
-  color: var(--white);
-}
-
-.btn-circle {
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 15px;
-}
-
-/* Forms */
+/* ============================================
+   FORMS (All Pages)
+   ============================================ */
 .form-control {
   background-color: var(--white);
   border: 1px solid var(--border-gray);
@@ -287,10 +340,6 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
 }
 
-.form-control-plaintext {
-  color: var(--black);
-}
-
 .col-form-label {
   color: var(--dark-blue);
   font-weight: 500;
@@ -300,42 +349,11 @@ body {
   color: var(--medium-gray);
 }
 
-/* Tables */
-.table {
-  color: var(--black) !important;
-  background-color: var(--white);
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: var(--light-gray);
-}
-
-.table-hover tbody tr:hover {
-  background-color: rgba(255, 140, 66, 0.1);
-  color: var(--black) !important;
-}
-
-.table thead th {
-  border-bottom: 2px solid var(--orange);
-  color: var(--dark-blue) !important;
-  font-weight: 600;
-  background-color: var(--white);
-}
-
-.table td,
-.table th {
-  border-top: 1px solid var(--border-gray);
-  color: var(--black) !important;
-}
-
-/* Badges */
+/* ============================================
+   BADGES (All Pages)
+   ============================================ */
 .badge-primary {
   background-color: var(--light-blue);
-  color: var(--white);
-}
-
-.badge-success {
-  background-color: #28a745;
   color: var(--white);
 }
 
@@ -344,114 +362,35 @@ body {
   color: var(--white);
 }
 
-.badge-danger {
-  background-color: var(--red);
-  color: var(--white);
-}
-
 .badge-secondary {
   background-color: var(--medium-gray);
   color: var(--white);
 }
 
-/* Text Colors */
-.text-muted {
-  color: var(--medium-gray) !important;
-}
-
-.text-primary {
-  color: var(--orange) !important;
-}
-
-.text-warning {
-  color: var(--orange) !important;
-}
-
-.text-danger {
-  color: var(--red) !important;
-}
-
-/* Alerts */
+/* ============================================
+   ALERTS (All Pages)
+   ============================================ */
 .alert-info {
   background-color: rgba(44, 82, 130, 0.1);
   border-color: var(--light-blue);
   color: var(--dark-blue);
 }
 
-/* Hero Section */
-.hero-section {
-  background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%) !important;
-  color: var(--white) !important;
+.alert-success {
+  background-color: rgba(40, 167, 69, 0.1);
+  border-color: #28a745;
+  color: #155724;
 }
 
-.hero-section h1,
-.hero-section p,
-.hero-section .lead {
-  color: var(--white) !important;
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  border-color: var(--red);
+  color: #721c24;
 }
 
-.hero-icon {
-  font-size: 200px;
-  opacity: 0.3;
-  color: var(--white);
-}
-
-/* Feature Icons */
-.feature-icon {
-  color: var(--orange);
-}
-
-/* Footer */
-footer {
-  background-color: var(--black) !important;
-  color: var(--white);
-}
-
-footer h5,
-footer h6 {
-  color: var(--orange);
-}
-
-footer a {
-  color: #9ca3af !important;
-  transition: color 0.3s ease;
-  text-decoration: none;
-}
-
-footer a:hover {
-  color: var(--orange) !important;
-  text-decoration: none;
-}
-
-footer .text-muted {
-  color: #9ca3af !important;
-}
-
-/* Background Colors */
-.bg-primary {
-  background-color: var(--dark-blue) !important;
-  color: var(--white) !important;
-}
-
-.bg-light {
-  background-color: var(--light-gray) !important;
-}
-
-.bg-dark {
-  background-color: var(--black) !important;
-  color: var(--white) !important;
-}
-
-/* Media */
-.media-body h6 {
-  color: var(--dark-blue);
-}
-
-/* Pagination */
-ul.pagination {
-  margin-bottom: 0;
-}
-
+/* ============================================
+   PAGINATION (Search Page)
+   ============================================ */
 .page-link {
   background-color: var(--white);
   border-color: var(--border-gray);
@@ -469,105 +408,30 @@ ul.pagination {
   border-color: var(--orange);
 }
 
-/* Star Rating */
-.fa-star.text-warning {
-  color: var(--orange) !important;
-}
-
-/* Thumbnail Images */
-.img-thumbnail {
-  background-color: var(--white);
-  border: 1px solid var(--border-gray);
-}
-
-/* Embed Responsive */
-.embed-responsive {
-  border: 2px solid var(--orange);
-  border-radius: 4px;
-}
-
-/* HR */
-hr {
-  border-top: 1px solid var(--border-gray);
-}
-
-hr.bg-secondary {
-  background-color: #374151;
-}
-
-/* Small text */
-small {
-  color: var(--medium-gray) !important;
-}
-
-/* Main content sections */
-main {
-  background-color: transparent;
-  min-height: 60vh;
-}
-
-section {
-  background-color: var(--white);
-}
-
-section.bg-light {
-  background-color: var(--light-gray) !important;
-}
-
-/* Ensure proper text contrast */
-.card-text {
-  color: var(--black) !important;
-}
-
-.card-body p {
-  color: var(--black) !important;
-}
-
-.card-body h1,
-.card-body h2,
-.card-body h3,
-.card-body h4,
-.card-body h5,
-.card-body h6 {
-  color: var(--dark-blue) !important;
-}
-
-.card-body small {
-  color: var(--medium-gray) !important;
-}
-
-p {
-  color: var(--black);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--dark-blue);
-}
-
-.text-white,
-.text-white * {
+/* ============================================
+   HOME PAGE
+   ============================================ */
+.hero-section {
+  background: linear-gradient(135deg, var(--dark-blue) 0%, var(--light-blue) 100%) !important;
   color: var(--white) !important;
 }
 
-/* Feature cards specific styling */
-.card.text-center .card-body {
-  background-color: var(--white) !important;
+.hero-section h1,
+.hero-section p,
+.hero-section .lead {
+  color: var(--white) !important;
 }
 
-.card.text-center .card-body h4 {
-  color: var(--dark-blue) !important;
+.hero-icon {
+  font-size: 200px;
+  opacity: 0.3;
+  color: var(--white);
 }
 
-.card.text-center .card-body p {
-  color: var(--black) !important;
+.feature-icon {
+  color: var(--orange);
 }
 
-/* Feature cards with alternating colors */
 .row .col-md-4:nth-child(1) .card.text-center {
   background: linear-gradient(135deg, var(--dark-blue), var(--light-blue)) !important;
   border: none;
@@ -622,128 +486,18 @@ h6 {
   color: var(--orange) !important;
 }
 
-/* Shadow utilities */
-.shadow-sm {
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+/* ============================================
+   MOVIES INDEX PAGE
+   ============================================ */
+.genre-filter-bar {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.shadow-lg {
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
-}
-
-/* Hidden review form */
-.review-form-hidden {
-  display: none;
-}
-
-/* Movies Browse Page */
-.movies-browse {
-  background-color: transparent !important;
-  min-height: 100vh;
-}
-
-.movies-browse h2,
-.movies-browse h3 {
-  color: var(--dark-blue) !important;
-}
-
-.genre-select {
-  background-color: var(--white);
-  border: 1px solid var(--border-gray);
-  color: var(--black);
-  padding: 8px 16px;
-  border-radius: 4px;
-  max-width: 200px;
-}
-
-.genre-select:focus {
-  background-color: var(--white);
-  border-color: var(--orange);
-  color: var(--black);
-  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
-}
-
-.genre-select option {
-  background-color: var(--white);
-  color: var(--black);
-}
-
-/* Movie Row */
-.movie-row {
-  margin-bottom: 3rem;
-}
-
-.row-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--dark-blue);
-  margin-bottom: 1rem;
-  padding-left: 4px;
-}
-
-.movie-row-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.movie-row-scroll {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 10px 4px 20px 4px;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-
-.movie-row-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-
-.movie-row-scroll::-webkit-scrollbar-track {
-  background: var(--border-gray);
-  border-radius: 4px;
-}
-
-.movie-row-scroll::-webkit-scrollbar-thumb {
-  background: var(--orange);
-  border-radius: 4px;
-}
-
-.movie-row-scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-orange);
-}
-
-
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .movie-card {
-    width: 300px;
-  }
-
-  .movie-card img {
-    height: 450px;
-  }
-
-  .row-title {
-    font-size: 1.2rem;
-  }
-}
-
-@media (min-width: 1400px) {
-  .movie-card {
-    width: 440px;
-  }
-
-  .movie-card img {
-    height: 660px;
-  }
-}
-
-/* Search Page Styles */
-
-/* Search Filter Card Enhancement */
+/* ============================================
+   SEARCH PAGE
+   ============================================ */
 .search-movie-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: none;
@@ -809,7 +563,6 @@ h6 {
   border-radius: 6px;
 }
 
-/* Search Input Enhancement */
 .input-group-lg .form-control {
   font-size: 1.1rem;
   border-radius: 8px 0 0 8px;
@@ -831,118 +584,9 @@ h6 {
   letter-spacing: 0.5px;
 }
 
-/* Filter Labels */
-.col-form-label {
-  font-weight: 600;
-  color: var(--dark-blue) !important;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Custom Select Enhancement */
-.custom-select {
-  border: 2px solid var(--border-gray);
-  border-radius: 8px;
-  padding: 0.65rem 1rem;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-  background-color: var(--white);
-  cursor: pointer;
-}
-
-.custom-select:hover {
-  border-color: var(--light-blue);
-}
-
-.custom-select:focus {
-  border-color: var(--orange);
-  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
-}
-
-/* Reset Button Enhancement */
-.btn-outline-secondary {
-  border: 2px solid var(--medium-gray);
-  color: var(--medium-gray);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: 8px;
-  padding: 0.65rem 1rem;
-  transition: all 0.3s ease;
-}
-
-.btn-outline-secondary:hover {
-  background-color: var(--medium-gray);
-  border-color: var(--medium-gray);
-  color: var(--white);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-}
-
-/* Search Results Header */
-.search-movie-card+.col-md-12 h5 {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--dark-blue) !important;
-}
-
-/* Filter Card Styling */
-.shadow-sm {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
-  border: none !important;
-  border-radius: 12px !important;
-}
-
-.card-body.p-4 {
-  background-color: var(--white);
-  border-radius: 12px;
-}
-
-/* Active Filter Indicator */
-.custom-select option:checked {
-  background-color: var(--orange);
-  color: var(--white);
-}
-
-.btn-group .btn {
-  padding: 0.5rem 1rem;
-}
-
-.btn-group .btn.active {
-  background-color: var(--orange);
-  border-color: var(--orange);
-  color: var(--white);
-}
-
-/* Responsive Search Page */
-@media (max-width: 768px) {
-  .search-movie-card .card-img-top {
-    height: 300px;
-  }
-
-  .input-group-lg .btn-primary {
-    padding: 0.75rem 1rem;
-  }
-
-  .col-form-label {
-    font-size: 0.85rem;
-  }
-}
-
-/* Genre Filter Bar */
-.genre-filter-bar {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-bottom: 1px solid #dee2e6;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.genre-filter-bar .btn {
-  white-space: nowrap;
-}
-
-/* Movie Details Page Enhancements */
+/* ============================================
+   MOVIE DETAILS PAGE
+   ============================================ */
 .movie-details-poster {
   position: relative;
   border-radius: 12px;
@@ -966,7 +610,6 @@ h6 {
   display: block;
 }
 
-/* Movie Details Card */
 .movie-details-card {
   border: none;
   border-radius: 12px;
@@ -986,7 +629,6 @@ h6 {
   line-height: 1.2;
 }
 
-/* Genre Badges */
 .genre-badge-container {
   display: flex;
   flex-wrap: wrap;
@@ -1005,7 +647,6 @@ h6 {
   border: none;
 }
 
-/* Movie Meta Information */
 .movie-meta-info {
   background-color: var(--light-gray);
   border-radius: 8px;
@@ -1038,7 +679,6 @@ h6 {
   text-align: center;
 }
 
-/* Rating Display */
 .movie-rating-display {
   background: linear-gradient(135deg, var(--orange), var(--dark-orange));
   color: var(--white) !important;
@@ -1057,7 +697,6 @@ h6 {
   font-size: 1.2rem;
 }
 
-/* Synopsis Section */
 .synopsis-section {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -1080,7 +719,6 @@ h6 {
   text-align: justify;
 }
 
-/* Trailer Section */
 .trailer-section {
   margin-top: 2rem;
 }
@@ -1102,66 +740,49 @@ h6 {
   border: 3px solid var(--orange);
 }
 
-/* Action Buttons */
-.movie-action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 1.5rem;
-}
+/* ============================================
+   ADD MOVIE PAGE (Admin)
+   ============================================ */
 
-.movie-action-buttons .btn {
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 12px 20px;
-  border-radius: 8px;
+/* Genre Selection Badges - Default Orange, Selected Blue */
+.genre-badge.btn {
+  background-color: #ff9800 !important;
+  border-color: #ff9800 !important;
+  color: #ffffff !important;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 500;
 }
 
-.movie-action-buttons .btn i {
-  font-size: 1.1rem;
+.genre-badge.btn.selected {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: #ffffff !important;
 }
 
-.movie-action-buttons .btn-success {
-  background: linear-gradient(135deg, #28a745, #20c997) !important;
-  border: none;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+/* Input Method Badges - Default Orange, Selected Blue */
+.input-method-badge.btn {
+  background-color: #ff9800 !important;
+  border-color: #ff9800 !important;
+  color: #ffffff !important;
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
-.movie-action-buttons .btn-success:hover {
-  background: linear-gradient(135deg, #218838, #1aa179) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(40, 167, 69, 0.4);
+.input-method-badge.btn.active,
+.input-method-badge.btn.selected {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: #ffffff !important;
 }
 
-.movie-action-buttons .btn-info {
-  background: linear-gradient(135deg, var(--light-blue), var(--dark-blue)) !important;
-  border: none;
-  box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);
-}
-
-.movie-action-buttons .btn-info:hover {
-  background: linear-gradient(135deg, var(--dark-blue), #1e3a5f) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(44, 82, 130, 0.4);
-}
-
-/* Divider Styling */
-.movie-details-card hr {
-  border: 0;
-  height: 2px;
-  background: linear-gradient(to right, transparent, var(--orange), transparent);
-  margin: 2rem 0;
-}
-
-/* Responsive Design for Movie Details */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
 @media (max-width: 768px) {
+  .search-movie-card .card-img-top {
+    height: 300px;
+  }
+
   .movie-details-card .card-title {
     font-size: 2rem;
   }
@@ -1172,10 +793,6 @@ h6 {
 
   .synopsis-section p {
     text-align: left;
-  }
-
-  .movie-action-buttons {
-    margin-top: 1rem;
   }
 }
 

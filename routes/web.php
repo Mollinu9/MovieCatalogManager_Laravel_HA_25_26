@@ -19,7 +19,7 @@ use App\Models\Movie; // Movie model to fetch 3 rnadom movies for the home page
 // Home Page refers to home.blade.php in views folder
 Route::get('/', function () 
 {
-    $movies = Movie::inRandomOrder()->take(3)->get();
+    $movies = Movie::inRandomOrder()->take(3)->get(); //Get 3 random movies to display in views/home.blade.php
     return view('home', compact('movies'));
 });
 
