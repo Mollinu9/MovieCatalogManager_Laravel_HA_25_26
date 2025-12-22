@@ -51,7 +51,7 @@
                                class="admin-movie-poster">
                         </td>
                         <td>
-                          <span class="admin-movie-title">{{ $movie->title }}</span>
+                          <span class="admin-movie-title">{{ Str::limit($movie->title, 30) }}</span>
                         </td>
                         <td>
                           @if($movie->tmdb_id > 0)

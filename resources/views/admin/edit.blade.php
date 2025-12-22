@@ -145,7 +145,7 @@
                         $selectedGenres = old('genres', $movie->genres->pluck('id')->toArray());
                       @endphp
                       @forelse($genres as $genre)
-                        <label class="btn btn-sm m-1 genre-badge text-white {{ in_array($genre->id, $selectedGenres) ? 'selected' : '' }}" style="cursor: pointer;">
+                        <label class="btn btn-sm m-1 genre-badge {{ in_array($genre->id, $selectedGenres) ? 'selected' : '' }}" style="cursor: pointer;">
                           <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;" {{ in_array($genre->id, $selectedGenres) ? 'checked' : '' }}>
                           {{ $genre->name }}
                         </label>
@@ -190,12 +190,5 @@
 @endsection
 
 @push('scripts')
-<script>
-// Genre selection toggle
-document.querySelectorAll('.genre-badge').forEach(badge => {
-  badge.addEventListener('click', function() {
-    this.classList.toggle('selected');
-  });
-});
-</script>
+<script src="{{ asset('assets/js/admin.js') }}"></script>
 @endpush
