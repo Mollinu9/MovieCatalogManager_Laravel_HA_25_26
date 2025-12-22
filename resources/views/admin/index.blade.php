@@ -1,23 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-<main class="py-5">
-  <div class="container-fluid px-4">
-    <!-- Success Message -->
-    @if(session('success'))
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fa fa-check-circle"></i> {{ session('success') }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    @endif
+<!-- Success Message -->
+@if(session('success'))
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fa fa-check-circle"></i> {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+@endif
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header card-title">
-            <div class="d-flex align-items-center">
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-title">
+        <div class="d-flex align-items-center">
               <h2 class="mb-0">Manage Movies</h2>
               <div class="ml-auto">
                 <a href="{{ route('admin.movies.create') }}" class="btn btn-success">

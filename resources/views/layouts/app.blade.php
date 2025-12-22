@@ -50,7 +50,9 @@
 
     <!-- content -->
     <main class="py-5">
-        @yield('content')
+        <div class="container-fluid px-4">
+            @yield('content')
+        </div>
     </main>
 
     <!-- Footer -->

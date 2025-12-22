@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid px-4">
-  <div class="row justify-content-md-center">
-    <div class="col-md-10">
-      <div class="card">
-        <div class="card-header card-title">
-          <strong>Edit Movie: {{ $movie->title }}</strong>
-        </div>           
+<div class="row justify-content-md-center">
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header card-title">
+        <strong>Edit Movie: {{ $movie->title }}</strong>
+      </div>           
         <div class="card-body">
           @if ($errors->any())
             <div class="alert alert-danger">

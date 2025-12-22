@@ -68,9 +68,13 @@ class MovieController extends Controller
         return view('movies.search', compact('movies', 'genres'));
     }
 
+    /**
+     * Display watchlist page with all movies
+     */
     public function watchlist()
     {
-        return view('movies.watchlist');
+        $movies = Movie::with('genres')->orderBy('title', 'asc')->get();
+        return view('movies.watchlist', compact('movies'));
     }
 
     // ========================================

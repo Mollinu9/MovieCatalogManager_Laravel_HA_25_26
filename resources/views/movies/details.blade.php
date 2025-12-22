@@ -1,16 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-    <!-- content -->
-    <main class="py-5">
-      <div class="container-fluid px-4">
-        <div class="row">
-          <!-- Movie Poster -->
-          <div class="col-lg-3 col-md-4 mb-4">
-            <div class="movie-details-poster">
-              <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="img-fluid" alt="{{ $movie->title }} Poster">
-            </div>
-          </div>
+<div class="row">
+  <!-- Movie Poster -->
+  <div class="col-lg-3 col-md-4 mb-4">
+    <div class="movie-details-poster">
+      <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="img-fluid" alt="{{ $movie->title }} Poster">
+    </div>
+  </div>
 
           <!-- Movie Details -->
           <div class="col-lg-9 col-md-8">
@@ -22,6 +19,16 @@
                   @foreach($movie->genres as $genre)
                     <span class="genre-badge">{{ $genre->name }}</span>
                   @endforeach
+                </div>
+
+                <!-- Watchlist Button -->
+                <div class="mb-3">
+                  <button class="btn btn-primary btn-lg" onclick="if(confirm('Add {{ $movie->title }} to your watchlist?')) { alert('Movie added to your watchlist!'); }">
+                    <i class="fa fa-heart"></i> Add to Watchlist
+                  </button>
+                  <a href="{{ route('movies.watchlist') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fa fa-list"></i> View Watchlist
+                  </a>
                 </div>
 
                 <div class="movie-meta-info">
