@@ -157,7 +157,7 @@
                     <div class="col-md-9">
                       <div class="d-flex flex-wrap">
                         @forelse($genres as $genre)
-                          <label class="btn btn-sm m-1 genre-badge text-white" style="cursor: pointer;">
+                          <label class="btn btn-sm m-1 genre-badge" style="cursor: pointer;">
                             <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;">
                             {{ $genre->name }}
                           </label>

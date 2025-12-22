@@ -636,7 +636,7 @@ footer .text-muted {
   margin-bottom: 1.5rem;
 }
 
-.genre-badge {
+.genre-badge:not(.btn) {
   background: linear-gradient(135deg, var(--dark-blue), var(--light-blue));
   color: var(--white) !important;
   padding: 6px 16px;
