@@ -16,10 +16,27 @@ class MovieController extends Controller
     /**
      * Display movies grouped by genre
      */
-    public function index()
+    public function index(Request $request)
     {
-        $genres = Genre::with('movies')->get();
-        return view('movies.index', compact('genres'));
+        $selectedGenreId = $request->query('genre');
+        
+        // Always get all genres for the filter bar with movie counts
+        $allGenres = Genre::withCount('movies')->get();
+        
+        if ($selectedGenreId) 
+        {
+            // Filter to show only the selected genre with movies
+            $genres = Genre::with('movies')
+                ->where('id', $selectedGenreId)
+                ->get();
+        } 
+        else
+        {
+            // Show all genres with movies
+            $genres = Genre::with('movies')->get();
+        }
+        
+        return view('movies.index', compact('genres', 'allGenres', 'selectedGenreId'));
     }
 
     /**

@@ -6,13 +6,19 @@
   <div class="container">
     <div class="d-flex flex-wrap align-items-center py-3">
       <span class="mr-3 font-weight-bold">Filter by Genre:</span>
-      <a href="{{ route('movies.index') }}" class="btn btn-primary btn-sm m-1">
+      <a href="{{ route('movies.index') }}" class="btn btn-sm m-1 {{ !request('genre') ? 'btn-primary' : 'btn-outline-primary' }}">
         <i class="fa fa-th"></i> All Movies
       </a>
-      @forelse($genres as $genre)
-        <a href="#genre-{{ $genre->slug }}" class="btn btn-outline-primary btn-sm m-1">
-          {{ $genre->name }}
-        </a>
+      @forelse($allGenres as $genre)
+        @if($genre->movies_count > 0)
+          <a href="{{ route('movies.index', ['genre' => $genre->id]) }}" class="btn btn-sm m-1 {{ request('genre') == $genre->id ? 'btn-primary' : 'btn-outline-primary' }}">
+            {{ $genre->name }}
+          </a>
+        @else
+          <button class="btn btn-sm m-1 btn-outline-secondary" disabled style="cursor: not-allowed; opacity: 0.5;">
+            {{ $genre->name }}
+          </button>
+        @endif
       @empty
         <span class="text-muted">No genres available</span>
       @endforelse
