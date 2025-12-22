@@ -30,7 +30,7 @@
           <ul class="navbar-nav">
             <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>
             <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">My Watchlist</a></li>
+            <li class="nav-item"><a href="{{ route('movies.watchlist') }}" class="nav-link">My Watchlist</a></li>
             <li class="nav-item"><a href="#" class="nav-link">Request Movie</a></li>
             <li class="nav-item"><a href="{{ route('admin.movies.index') }}" class="nav-link">Admin</a></li>
           </ul>

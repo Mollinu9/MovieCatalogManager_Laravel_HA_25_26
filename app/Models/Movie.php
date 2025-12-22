@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use \Illuminate\Database\Eloquent\Casts\Attribute; // Needed for embedUrl attribute (to get youtube_url)
 use Illuminate\Database\Eloquent\Model;
+
+use \Illuminate\Database\Eloquent\Casts\Attribute; // Needed for embedUrl attribute (to get youtube_url)
 
 class Movie extends Model
 {

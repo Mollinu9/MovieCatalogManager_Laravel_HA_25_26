@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use App\Models\Movie;
-use App\Models\Genre;
-use Illuminate\Support\Str;
+// Laravel Core Classes
+use Illuminate\Http\Request;// Handles HTTP requests (form data, query params)
+use Illuminate\Support\Facades\Http;// Makes HTTP requests to external APIs (TMDB)
+use Illuminate\Support\Str;// String helpers (e.g., Str::slug() for URLs)
+
+// Application Models
+use App\Models\Movie;// Movie database model
+use App\Models\Genre;// Genre database model
 
 class MovieController extends Controller
 {
@@ -24,13 +27,13 @@ class MovieController extends Controller
         // Always get all genres for the filter bar with movie counts
         $allGenres = Genre::withCount('movies')->get();
         
-        if ($selectedGenreId) 
+        if ($selectedGenreId)
         {
             // Filter to show only the selected genre with movies
             $genres = Genre::with('movies')
                 ->where('id', $selectedGenreId)
                 ->get();
-        } 
+        }
         else
         {
             // Show all genres with movies
@@ -63,6 +66,11 @@ class MovieController extends Controller
         $genres = Genre::all();
 
         return view('movies.search', compact('movies', 'genres'));
+    }
+
+    public function watchlist()
+    {
+        return view('movies.watchlist');
     }
 
     // ========================================
@@ -132,9 +140,7 @@ class MovieController extends Controller
     {
         $movie = Movie::findOrFail($id);
 
-        $validated = $request->validate
-        (
-            [
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'release_date' => 'nullable|date',
@@ -144,20 +150,17 @@ class MovieController extends Controller
             'trailer_link' => 'nullable|url',
             'genres' => 'nullable|array',
             'genres.*' => 'exists:genres,id',
-            ]
-        );
+        ]);
 
         // Check for duplicate title (excluding current movie)
         $existingTitle = Movie::where('title', $validated['title'])
                               ->where('id', '!=', $id)
                               ->first();
-        if ($existingTitle) 
+        if ($existingTitle)
         {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(
-                    ['title' => 'A movie with this title already exists in the database.']
-                );
+                ->withErrors(['title' => 'A movie with this title already exists in the database.']);
         }
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -168,8 +171,8 @@ class MovieController extends Controller
         if ($request->has('genres'))
         {
             $movie->genres()->sync($request->genres);
-        } 
-        else 
+        }
+        else
         {
             $movie->genres()->detach();
         }
@@ -191,7 +194,7 @@ class MovieController extends Controller
                 ->with('error', 'This movie was added manually and cannot be refreshed from TMDB.');
         }
 
-        try 
+        try
         {
             $url = "https://api.themoviedb.org/3/movie/{$movie->tmdb_id}?api_key={$this->getTmdbApiKey()}&language=en-US&append_to_response=videos";
             $movieData = $this->makeTmdbRequest($url);
@@ -199,8 +202,7 @@ class MovieController extends Controller
             $formattedMovie = $this->formatTmdbMovieData($movieData);
 
             // Update movie with fresh TMDB data
-            $movie->update(
-                [
+            $movie->update([
                 'title' => $formattedMovie['title'],
                 'description' => $formattedMovie['description'],
                 'release_date' => $formattedMovie['release_date'],
@@ -209,8 +211,7 @@ class MovieController extends Controller
                 'poster_url' => $formattedMovie['poster_url'],
                 'trailer_link' => $formattedMovie['trailer_link'],
                 'slug' => Str::slug($formattedMovie['title']),
-                ]
-            );
+            ]);
 
             // Sync genres
             if (!empty($formattedMovie['genres']))
@@ -221,8 +222,8 @@ class MovieController extends Controller
             return redirect()
                 ->back()->with('success', 'Movie data refreshed successfully from TMDB!');
 
-        } 
-        catch (\Exception $e) 
+        }
+        catch (\Exception $e)
         {
             return redirect()
                 ->back()->with('error', 'Failed to refresh movie data from TMDB: ' . $e->getMessage());
@@ -263,15 +264,12 @@ class MovieController extends Controller
 
         $data = $this->makeTmdbRequest($url);
 
-        if (isset($data['results'])) 
+        if (isset($data['results']))
         {
-            return response()
-                ->json(
-                [
-                    'success' => true,
-                    'results' => array_slice($data['results'], 0, 10)
-                ]
-            );
+            return response()->json([
+                'success' => true,
+                'results' => array_slice($data['results'], 0, 10)
+            ]);
         }
 
         return response()->json(['error' => 'No results found'], 404);
@@ -289,14 +287,12 @@ class MovieController extends Controller
         if ($this->movieExistsInDatabase($tmdbId))
         {
             $existingMovie = Movie::where('tmdb_id', $tmdbId)->first();
-            return response()
-                ->json(
-                [
-                    'error' => 'This movie already exists in your database',
-                    'existing' => true,
-                    'movie_title' => $existingMovie->title,
-                    'movie_id' => $existingMovie->id
-                ], 409);
+            return response()->json([
+                'error' => 'This movie already exists in your database',
+                'existing' => true,
+                'movie_title' => $existingMovie->title,
+                'movie_id' => $existingMovie->id
+            ], 409);
         }
 
         $url = "https://api.themoviedb.org/3/movie/{$tmdbId}?api_key={$this->getTmdbApiKey()}&language=en-US&append_to_response=videos";
@@ -304,12 +300,10 @@ class MovieController extends Controller
 
         $formattedMovie = $this->formatTmdbMovieData($movieData);
 
-        return response()
-            ->json([
-                'success' => true,
-                'movie' => $formattedMovie
-            ]
-        );
+        return response()->json([
+            'success' => true,
+            'movie' => $formattedMovie
+        ]);
     }
 
     // ========================================
@@ -341,9 +335,11 @@ class MovieController extends Controller
      */
     private function checkForDuplicates($validated)
     {
-        if ($validated['input_method'] === 'tmdb' && $validated['tmdb_id']) {
+        if ($validated['input_method'] === 'tmdb' && $validated['tmdb_id'])
+        {
             $existingMovie = Movie::where('tmdb_id', $validated['tmdb_id'])->first();
-            if ($existingMovie) {
+            if ($existingMovie)
+            {
                 return redirect()->back()
                     ->withInput()
                     ->withErrors(['tmdb_id' => 'A movie with this TMDB ID already exists: ' . $existingMovie->title]);
@@ -351,7 +347,8 @@ class MovieController extends Controller
         }
 
         $existingTitle = Movie::where('title', $validated['title'])->first();
-        if ($existingTitle) {
+        if ($existingTitle)
+        {
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['title' => 'A movie with this title already exists in the database.']);
@@ -384,14 +381,14 @@ class MovieController extends Controller
      */
     private function applySearchFilters($query, $request)
     {
-        if ($request->filled('search')) 
+        if ($request->filled('search'))
         {
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        if ($request->filled('genre')) 
+        if ($request->filled('genre'))
         {
-            $query->whereHas('genres', function($q) use ($request) 
+            $query->whereHas('genres', function($q) use ($request)
             {
                 $q->where('genres.id', $request->genre);
             });
@@ -402,12 +399,12 @@ class MovieController extends Controller
             $this->applyYearFilter($query, $request->year);
         }
 
-        if ($request->filled('language')) 
+        if ($request->filled('language'))
         {
             $query->where('language', $request->language);
         }
 
-        if ($request->filled('runtime')) 
+        if ($request->filled('runtime'))
         {
             $this->applyRuntimeFilter($query, $request->runtime);
         }
@@ -416,23 +413,23 @@ class MovieController extends Controller
     /**
      * Apply year/decade filter
      */
-    private function applyYearFilter($query, $year){
-        $decades = 
-        [
+    private function applyYearFilter($query, $year)
+    {
+        $decades = [
             '2010s' => ['2010-01-01', '2019-12-31'],
             '2000s' => ['2000-01-01', '2009-12-31'],
             '1990s' => ['1990-01-01', '1999-12-31'],
             '1980s' => ['1980-01-01', '1989-12-31'],
         ];
 
-        if (isset($decades[$year])) 
+        if (isset($decades[$year]))
         {
             $query->whereBetween('release_date', $decades[$year]);
-        } 
+        }
         elseif ($year === 'older')
         {
             $query->where('release_date', '<', '1980-01-01');
-        } 
+        }
         else
         {
             $query->whereYear('release_date', $year);
@@ -444,22 +441,21 @@ class MovieController extends Controller
      */
     private function applyRuntimeFilter($query, $runtime)
     {
-        $runtimeRanges = 
-        [
+        $runtimeRanges = [
             'short'  => ['<', 90],
             'medium' => ['between', [90, 120]],
             'long'   => ['between', [120, 150]],
             'epic'   => ['>', 150],
         ];
 
-        if (isset($runtimeRanges[$runtime])) 
+        if (isset($runtimeRanges[$runtime]))
         {
             $range = $runtimeRanges[$runtime];
             if ($range[0] === 'between')
             {
                 $query->whereBetween('runtime', $range[1]);
-            } 
-            else 
+            }
+            else
             {
                 $query->where('runtime', $range[0], $range[1]);
             }
@@ -471,8 +467,7 @@ class MovieController extends Controller
      */
     private function applySorting($query, $request)
     {
-        $sortOptions = 
-        [
+        $sortOptions = [
             'year-desc'  => ['release_date', 'desc'],
             'year-asc'   => ['release_date', 'asc'],
             'title-asc'  => ['title', 'asc'],
@@ -484,7 +479,7 @@ class MovieController extends Controller
         if (isset($sortOptions[$sort]))
         {
             $query->orderBy($sortOptions[$sort][0], $sortOptions[$sort][1]);
-        } 
+        }
         else
         {
             $query->orderBy('title', 'asc');
@@ -501,7 +496,7 @@ class MovieController extends Controller
     private function getTmdbApiKey()
     {
         $apiKey = env('TMDB_API_KEY');
-        if (!$apiKey) 
+        if (!$apiKey)
         {
             throw new \Exception('TMDB API key not configured');
         }
@@ -515,7 +510,8 @@ class MovieController extends Controller
     {
         $response = Http::timeout(10)->get($url);
 
-        if ($response->failed()) {
+        if ($response->failed())
+        {
             throw new \Exception('TMDB API returned status code: ' . $response->status());
         }
 
@@ -527,20 +523,25 @@ class MovieController extends Controller
      */
     private function extractTrailerLink($movieData)
     {
-        if (!isset($movieData['videos']['results']) || !is_array($movieData['videos']['results'])) {
+        if (!isset($movieData['videos']['results']) || !is_array($movieData['videos']['results']))
+        {
             return null;
         }
 
-        foreach ($movieData['videos']['results'] as $video) {
+        foreach ($movieData['videos']['results'] as $video)
+        {
             if (isset($video['type'], $video['site'], $video['key']) 
                 && $video['type'] === 'Trailer' 
-                && $video['site'] === 'YouTube') {
+                && $video['site'] === 'YouTube')
+            {
                 return 'https://www.youtube.com/watch?v=' . $video['key'];
             }
         }
         
-        foreach ($movieData['videos']['results'] as $video) {
-            if (isset($video['site'], $video['key']) && $video['site'] === 'YouTube') {
+        foreach ($movieData['videos']['results'] as $video)
+        {
+            if (isset($video['site'], $video['key']) && $video['site'] === 'YouTube')
+            {
                 return 'https://www.youtube.com/watch?v=' . $video['key'];
             }
         }
@@ -556,7 +557,8 @@ class MovieController extends Controller
         $genreIds = [];
         $genreNames = [];
 
-        if (isset($movieData['genres']) && is_array($movieData['genres'])) {
+        if (isset($movieData['genres']) && is_array($movieData['genres']))
+        {
             $genreNames = array_column($movieData['genres'], 'name');
             $genreIds = Genre::whereIn('name', $genreNames)->pluck('id')->toArray();
         }
