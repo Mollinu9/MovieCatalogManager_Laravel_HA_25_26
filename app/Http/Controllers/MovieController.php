@@ -602,13 +602,17 @@ class MovieController extends Controller
      * Auth redirections
      */
 
-    public function register()
+    public function showRegister()
     {
         return view('auth.register');
     }
 
-    public function login()
+    public function showLogin()
     {
         return view('auth.login');
     }
+
+    public function login() {}
+
+    public function register() {}
 }

@@ -5,16 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController; // MovieController for handling movie-related routes
 
 use App\Models\Movie; // Movie model to fetch 3 rnadom movies for the home page
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 // Home Page refers to home.blade.php in views folder
 Route::get('/', function () 
@@ -23,8 +13,11 @@ Route::get('/', function ()
     return view('home', compact('movies'));
 });
 
-Route::get('/login', [MovieController::class, 'login'])->name('auth.login');
-Route::get('/register', [MovieController::class, 'register'])->name('auth.register');
+Route::get('/login', [MovieController::class, 'showLogin'])->name('auth.login'); // views/auth/login.blade.php
+Route::get('/register', [MovieController::class, 'showRegister'])->name('auth.register'); // views/auth/register.blade.php
+
+// Route::get('/login', [MovieController::class, 'login'])->name('login');
+// Route::get('/register', [MovieController::class, 'register'])->name('register'); 
 
 
 // Movie Routes (public)
