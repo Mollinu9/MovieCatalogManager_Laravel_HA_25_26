@@ -35,8 +35,8 @@
             <li class="nav-item"><a href="{{ route('admin.movies.index') }}" class="nav-link">Admin</a></li>
           </ul>
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
-            <li class="nav-item"><a href="#" class="nav-link btn btn-primary text-white ml-2">Register</a></li>
+            <li class="nav-item"><a href="{{ route('auth.login') }}" class="nav-link">Login</a></li>
+            <li class="nav-item"><a href="{{ route('auth.register') }}" class="nav-link btn btn-primary text-white ml-2">Register</a></li>
           </ul>
         </div>
       </div>

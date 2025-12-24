@@ -596,4 +596,19 @@ class MovieController extends Controller
             'genre_names' => $genres['names']
         ];
     }
+
+
+    /**
+     * Auth redirections
+     */
+
+    public function register()
+    {
+        return view('auth.register');
+    }
+
+    public function login()
+    {
+        return view('auth.login');
+    }
 }

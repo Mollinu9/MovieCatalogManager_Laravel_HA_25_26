@@ -23,6 +23,9 @@ Route::get('/', function ()
     return view('home', compact('movies'));
 });
 
+Route::get('/login', [MovieController::class, 'login'])->name('auth.login');
+Route::get('/register', [MovieController::class, 'register'])->name('auth.register');
+
 
 // Movie Routes (public)
 
