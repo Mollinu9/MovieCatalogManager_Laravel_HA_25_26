@@ -17,7 +17,7 @@ Route::get('/login', [MovieController::class, 'showLogin'])->name('auth.login');
 Route::get('/register', [MovieController::class, 'showRegister'])->name('auth.register'); // views/auth/register.blade.php
 
 // Route::get('/login', [MovieController::class, 'login'])->name('login');
-// Route::get('/register', [MovieController::class, 'register'])->name('register'); 
+Route::post('/register', [MovieController::class, 'register'])->name('auth.register.submit'); // Handle registration form submission  
 
 
 // Movie Routes (public)

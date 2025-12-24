@@ -10,6 +10,7 @@ use Illuminate\Support\Str;// String helpers (e.g., Str::slug() for URLs)
 // Application Models
 use App\Models\Movie;// Movie database model
 use App\Models\Genre;// Genre database model
+use App\Models\User;// User database model
 
 class MovieController extends Controller
 {
@@ -607,12 +608,31 @@ class MovieController extends Controller
         return view('auth.register');
     }
 
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|string|min:8|confirmed'
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password'])
+        ]);
+
+        auth()->login($user);
+
+        return redirect()->route('movies.index')->with('success', 'Account created successfully! Welcome to Movie Catalog.');
+
+    }
+
     public function showLogin()
     {
         return view('auth.login');
     }
 
-    public function login() {}
-
-    public function register() {}
+    public function login() 
+    {}
 }
