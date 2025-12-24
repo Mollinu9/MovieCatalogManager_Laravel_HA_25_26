@@ -102,6 +102,9 @@
 
                 <!-- Manual Entry Section (hidden by default) -->
                 <div id="manual-section" style="display: none;">
+                  <!-- Hidden field for tmdb_id (will be auto-generated as negative number) -->
+                  <input type="hidden" name="tmdb_id_manual" id="tmdb_id_manual" value="">
+                  
                   <div class="form-group row">
                     <label for="title" class="col-md-3 col-form-label">Title</label>
                     <div class="col-md-9">

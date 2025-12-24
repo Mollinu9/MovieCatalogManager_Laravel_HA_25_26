@@ -23,7 +23,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const manualSection = document.getElementById('manual-section');
 
     if (tmdbOption && manualOption && tmdbSection && manualSection) {
+        // Get the tmdb_id input
+        const tmdbIdInput = document.getElementById('tmdb_id');
+        const tmdbSearchTitleInput = document.getElementById('tmdb_search_title');
+
         tmdbOption.addEventListener('click', function () {
+            // Check the radio button
+            const radioBtn = this.querySelector('input[type="radio"]');
+            if (radioBtn) radioBtn.checked = true;
+
+            // Enable TMDB fields
+            if (tmdbIdInput) tmdbIdInput.disabled = false;
+            if (tmdbSearchTitleInput) tmdbSearchTitleInput.disabled = false;
+
             // Add selected class to TMDB, remove from Manual
             this.classList.add('selected');
             manualOption.classList.remove('selected');
@@ -34,6 +46,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         manualOption.addEventListener('click', function () {
+            // Check the radio button
+            const radioBtn = this.querySelector('input[type="radio"]');
+            if (radioBtn) radioBtn.checked = true;
+
+            // Disable and clear TMDB fields so they don't get submitted
+            if (tmdbIdInput) {
+                tmdbIdInput.disabled = true;
+                tmdbIdInput.value = '';
+            }
+            if (tmdbSearchTitleInput) {
+                tmdbSearchTitleInput.disabled = true;
+                tmdbSearchTitleInput.value = '';
+            }
+
             // Add selected class to Manual, remove from TMDB
             this.classList.add('selected');
             tmdbOption.classList.remove('selected');
@@ -271,42 +297,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Save movie to database
     function saveMovieToDatabase(movie) {
-        // Populate form with movie data
-        const form = document.querySelector('form');
-        const formData = new FormData(form);
+        console.log('Saving movie:', movie.title);
 
-        // Set all the fields
-        formData.set('input_method', 'tmdb');
-        formData.set('tmdb_id', movie.tmdb_id);
-        formData.set('title', movie.title);
-        formData.set('description', movie.description || '');
-        formData.set('release_date', movie.release_date || '');
-        formData.set('runtime', movie.runtime || '');
-        formData.set('language', movie.language || '');
-        formData.set('poster_url', movie.poster_url || '');
-        formData.set('trailer_link', movie.trailer_link || '');
+        // Create a new form element
+        const newForm = document.createElement('form');
+        newForm.method = 'POST';
+        newForm.action = '/admin/movies';
+
+        // Add CSRF token
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+            || document.querySelector('input[name="_token"]')?.value;
+
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = csrfToken;
+        newForm.appendChild(csrfInput);
+
+        // Helper function to add hidden input
+        function addInput(name, value) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            input.value = value || '';
+            newForm.appendChild(input);
+        }
+
+        // Add all movie data
+        addInput('input_method', 'tmdb');
+        addInput('tmdb_id', movie.tmdb_id);
+        addInput('title', movie.title);
+        addInput('description', movie.description || '');
+        addInput('release_date', movie.release_date || '');
+        addInput('runtime', movie.runtime || '');
+        addInput('language', movie.language || '');
+        addInput('poster_url', movie.poster_url || '');
+        addInput('trailer_link', movie.trailer_link || '');
 
         // Add genres
-        movie.genres.forEach(genreId => {
-            formData.append('genres[]', genreId);
-        });
-
-        // Submit form
-        fetch(form.action, {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => {
-                if (response.redirected) {
-                    window.location.href = response.url;
-                } else {
-                    return response.text();
-                }
-            })
-            .catch(error => {
-                alert('Error saving movie. Please try again.');
-                console.error('Error:', error);
+        if (movie.genres && movie.genres.length > 0) {
+            movie.genres.forEach(genreId => {
+                addInput('genres[]', genreId);
             });
+        }
+
+        // Append to body and submit
+        document.body.appendChild(newForm);
+        newForm.submit();
     }
 });
 

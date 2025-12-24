@@ -29,7 +29,6 @@
         <div class="collapse navbar-collapse" id="navbar-toggler">
           <ul class="navbar-nav">
             @guest
-              <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">Home</a></li>
               <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
             @else
               <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>

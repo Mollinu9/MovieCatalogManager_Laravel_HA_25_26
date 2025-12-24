@@ -14,7 +14,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $movies = Movie::with('genres')->orderBy('created_at', 'desc')->paginate(15);
+        $movies = Movie::with('genres')->orderBy('created_at', 'asc')->paginate(10);
         return view('admin.index', compact('movies'));
     }
 
@@ -34,13 +34,24 @@ class AdminController extends Controller
     {
         $validated = $this->validateMovieRequest($request);
 
-        $this->checkForDuplicates($validated);
+        // Check for duplicates and return early if found
+        $duplicateCheck = $this->checkForDuplicates($validated);
+        if ($duplicateCheck) {
+            return $duplicateCheck;
+        }
 
         $validated['slug'] = Str::slug($validated['title']);
 
+        // Handle TMDB ID based on input method
         if ($validated['input_method'] === 'manual')
         {
             $validated['tmdb_id'] = $this->generateManualTmdbId();
+        }
+        elseif ($validated['input_method'] === 'tmdb' && empty($validated['tmdb_id']))
+        {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['tmdb_id' => 'TMDB ID is required when using TMDB import method.']);
         }
 
         unset($validated['input_method']);
@@ -52,7 +63,7 @@ class AdminController extends Controller
             $movie->genres()->attach($request->genres);
         }
 
-        return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
+        return redirect()->route('admin.movies.index')->with('success', 'Movie added successfully!');
     }
 
     /**
@@ -190,7 +201,7 @@ class AdminController extends Controller
     {
         return $request->validate([
             'input_method' => 'required|in:tmdb,manual',
-            'tmdb_id' => 'required_if:input_method,tmdb|nullable|integer',
+            'tmdb_id' => 'nullable|integer',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'release_date' => 'nullable|date',
@@ -205,10 +216,12 @@ class AdminController extends Controller
 
     /**
      * Check for duplicate movies
+     * Returns redirect response if duplicate found, null otherwise
      */
     private function checkForDuplicates($validated)
     {
-        if ($validated['input_method'] === 'tmdb' && $validated['tmdb_id'])
+        // Only check TMDB ID if it's provided and not empty
+        if ($validated['input_method'] === 'tmdb' && !empty($validated['tmdb_id']))
         {
             $existingMovie = Movie::where('tmdb_id', $validated['tmdb_id'])->first();
             if ($existingMovie)
@@ -219,6 +232,7 @@ class AdminController extends Controller
             }
         }
 
+        // Always check for duplicate titles
         $existingTitle = Movie::where('title', $validated['title'])->first();
         if ($existingTitle)
         {
@@ -226,6 +240,8 @@ class AdminController extends Controller
                 ->withInput()
                 ->withErrors(['title' => 'A movie with this title already exists in the database.']);
         }
+
+        return null;
     }
 
     /**

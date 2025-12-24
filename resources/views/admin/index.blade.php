@@ -89,7 +89,7 @@
 
               <!-- Pagination -->
               <div class="d-flex justify-content-center mt-4">
-                {{ $movies->links() }}
+                {{ $movies->links('pagination::bootstrap-4') }}
               </div>
             @else
               <div class="alert alert-info">

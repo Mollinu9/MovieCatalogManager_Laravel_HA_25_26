@@ -39,6 +39,7 @@
                       <label class="col-form-label">Year</label>
                       <select name="year" class="custom-select" onchange="this.form.submit()">
                         <option value="">All Years</option>
+                        <option value="2025" {{ request('year') == '2025' ? 'selected' : '' }}>2025</option>
                         <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>2024</option>
                         <option value="2023" {{ request('year') == '2023' ? 'selected' : '' }}>2023</option>
                         <option value="2022" {{ request('year') == '2022' ? 'selected' : '' }}>2022</option>
@@ -150,10 +151,8 @@
         <!-- Pagination -->
         @if($movies->hasPages())
           <div class="row mt-4">
-            <div class="col-md-12">
-              <nav>
-                {{ $movies->appends(request()->query())->links() }}
-              </nav>
+            <div class="col-md-12 d-flex justify-content-center">
+              {{ $movies->appends(request()->query())->links('pagination::bootstrap-4') }}
             </div>
           </div>
         @endif

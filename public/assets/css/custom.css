@@ -391,21 +391,51 @@ footer .text-muted {
 /* ============================================
    PAGINATION (Search Page)
    ============================================ */
+.pagination {
+  margin: 0;
+}
+
+.page-item {
+  margin: 0 3px;
+}
+
 .page-link {
   background-color: var(--white);
-  border-color: var(--border-gray);
+  border: 1px solid var(--border-gray);
   color: var(--orange);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .page-link:hover {
   background-color: var(--orange);
   border-color: var(--orange);
   color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(255, 140, 66, 0.3);
 }
 
 .page-item.active .page-link {
   background-color: var(--orange);
   border-color: var(--orange);
+  color: var(--white);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 140, 66, 0.3);
+}
+
+.page-item.disabled .page-link {
+  background-color: var(--light-gray);
+  border-color: var(--border-gray);
+  color: var(--medium-gray);
+  cursor: not-allowed;
+}
+
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
+  z-index: 3;
 }
 
 /* ============================================
