@@ -42,20 +42,20 @@ Route::get('/movies/watchlist', [MovieController::class, 'watchlist'])->name('mo
 Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
 
 // ========================================
-// ADMIN ROUTES
+// ADMIN ROUTES (Requires authentication + admin role)
 // ========================================
 
-Route::get('/admin/movies', [AdminController::class, 'index'])->name('admin.movies.index'); // views/admin/index.blade.php
-Route::get('/admin/movies/create', [AdminController::class, 'create'])->name('admin.movies.create'); // views/admin/add.blade.php
-Route::post('/admin/movies', [AdminController::class, 'store'])->name('admin.movies.store'); // Handle form submission for creating a new movie
-Route::get('/admin/movies/{id}/edit', [AdminController::class, 'edit'])->name('admin.movies.edit'); // views/admin/edit.blade.php
-Route::put('/admin/movies/{id}', [AdminController::class, 'update'])->name('admin.movies.update'); // Handle form submission for updating a movie
-Route::delete('/admin/movies/{id}', [AdminController::class, 'destroy'])->name('admin.movies.destroy'); // Delete a movie
-Route::post('/admin/movies/{id}/refresh', [AdminController::class, 'refreshFromTmdb'])->name('admin.movies.refresh'); // Refresh movie data from TMDB
-
-// ========================================
-// TMDB API ROUTES
-// ========================================
-
-Route::post('/admin/tmdb/search', [TmdbController::class, 'search'])->name('admin.tmdb.search'); // Handles searching movie by id/name from TMDB
-Route::post('/admin/tmdb/fetch', [TmdbController::class, 'fetch'])->name('admin.tmdb.fetch'); // Handles getting movie details from TMDB
+Route::middleware(['auth', 'admin'])->group(function () 
+{
+    Route::get('/admin/movies', [AdminController::class, 'index'])->name('admin.movies.index'); // views/admin/index.blade.php
+    Route::get('/admin/movies/create', [AdminController::class, 'create'])->name('admin.movies.create'); // views/admin/add.blade.php
+    Route::post('/admin/movies', [AdminController::class, 'store'])->name('admin.movies.store'); // Handle form submission for creating a new movie
+    Route::get('/admin/movies/{id}/edit', [AdminController::class, 'edit'])->name('admin.movies.edit'); // views/admin/edit.blade.php
+    Route::put('/admin/movies/{id}', [AdminController::class, 'update'])->name('admin.movies.update'); // Handle form submission for updating a movie
+    Route::delete('/admin/movies/{id}', [AdminController::class, 'destroy'])->name('admin.movies.destroy'); // Delete a movie
+    Route::post('/admin/movies/{id}/refresh', [AdminController::class, 'refreshFromTmdb'])->name('admin.movies.refresh'); // Refresh movie data from TMDB
+    
+    // TMDB API Routes
+    Route::post('/admin/tmdb/search', [TmdbController::class, 'search'])->name('admin.tmdb.search'); // Handles searching movie by id/name from TMDB
+    Route::post('/admin/tmdb/fetch', [TmdbController::class, 'fetch'])->name('admin.tmdb.fetch'); // Handles getting movie details from TMDB
+});
