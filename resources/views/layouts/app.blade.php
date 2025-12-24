@@ -28,15 +28,32 @@
         <!-- /.navbar-header -->
         <div class="collapse navbar-collapse" id="navbar-toggler">
           <ul class="navbar-nav">
-            <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>
-            <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
-            <li class="nav-item"><a href="{{ route('movies.watchlist') }}" class="nav-link">My Watchlist</a></li>
-            <li class="nav-item"><a href="#" class="nav-link">Request Movie</a></li>
-            <li class="nav-item"><a href="{{ route('admin.movies.index') }}" class="nav-link">Admin</a></li>
+            @guest
+              <li class="nav-item"><a href="{{ url('/') }}" class="nav-link">Home</a></li>
+              <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
+            @else
+              <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>
+              <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
+              <li class="nav-item"><a href="{{ route('movies.watchlist') }}" class="nav-link">My Watchlist</a></li>
+              <li class="nav-item"><a href="#" class="nav-link">Request Movie</a></li>
+              <li class="nav-item"><a href="{{ route('admin.movies.index') }}" class="nav-link">Admin</a></li>
+            @endguest
           </ul>
           <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a href="{{ route('auth.login') }}" class="nav-link">Login</a></li>
-            <li class="nav-item"><a href="{{ route('auth.register') }}" class="nav-link btn btn-primary text-white ml-2">Register</a></li>
+            @auth
+              <li class="nav-item">
+                <span class="nav-link">Hi, {{ Auth::user()->name }}</span>
+              </li>
+              <li class="nav-item">
+                <form action="{{ route('auth.logout') }}" method="POST" class="d-inline">
+                  @csrf
+                  <button type="submit" class="nav-link btn btn-link">Logout</button>
+                </form>
+              </li>
+            @else
+              <li class="nav-item"><a href="{{ route('auth.login') }}" class="nav-link">Login</a></li>
+              <li class="nav-item"><a href="{{ route('auth.register') }}" class="nav-link btn btn-primary text-white ml-2">Register</a></li>
+            @endauth
           </ul>
         </div>
       </div>

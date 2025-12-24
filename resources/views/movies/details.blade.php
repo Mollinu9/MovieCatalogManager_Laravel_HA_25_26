@@ -22,6 +22,7 @@
                 </div>
 
                 <!-- Watchlist Button -->
+                @auth
                 <div class="mb-3">
                   <button class="btn btn-primary btn-lg" onclick="if(confirm('Add {{ $movie->title }} to your watchlist?')) { alert('Movie added to your watchlist!'); }">
                     <i class="fa fa-heart"></i> Add to Watchlist
@@ -30,6 +31,7 @@
                     <i class="fa fa-list"></i> View Watchlist
                   </a>
                 </div>
+                @endauth
 
                 <div class="movie-meta-info">
                   <p>

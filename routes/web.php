@@ -18,6 +18,7 @@ Route::get('/register', [MovieController::class, 'showRegister'])->name('auth.re
 
 Route::post('/login', [MovieController::class, 'login'])->name('auth.login.submit'); // Handle login form submission
 Route::post('/register', [MovieController::class, 'register'])->name('auth.register.submit'); // Handle registration form submission  
+Route::post('/logout', [MovieController::class, 'logout'])->name('auth.logout'); // Handle logout  
 
 
 // Movie Routes (public)
