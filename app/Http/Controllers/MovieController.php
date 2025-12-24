@@ -633,6 +633,25 @@ class MovieController extends Controller
         return view('auth.login');
     }
 
-    public function login() 
-    {}
+    public function login(Request $request) 
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
+
+        $remember = $request->has('remember');
+
+        if (auth()->attempt($credentials, $remember))
+        {
+            $request->session()->regenerate();
+            
+            return redirect()->intended(route('movies.index'))
+                ->with('success', 'Welcome back, ' . auth()->user()->name . '!');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.'
+        ])->onlyInput('email');
+    }
 }

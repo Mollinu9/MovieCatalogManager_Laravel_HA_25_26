@@ -8,19 +8,37 @@
                 <h4 class="mb-0"><i class="fa fa-sign-in"></i> Login to Your Account</h4>
               </div>           
               <div class="card-body">
-                <form>
+                @if ($errors->any())
+                  <div class="alert alert-danger">
+                    <ul class="mb-0">
+                      @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                      @endforeach
+                    </ul>
+                  </div>
+                @endif
+
+                <form action="{{ route('auth.login.submit') }}" method="POST">
+                  @csrf
+                  
                   <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter your email" value="{{ old('email') }}" required>
+                    @error('email')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                   </div>
 
                   <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" placeholder="Enter your password" required>
+                    @error('password')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                   </div>
 
                   <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="remember">
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
                     <label class="form-check-label" for="remember">Remember me</label>
                   </div>
 
