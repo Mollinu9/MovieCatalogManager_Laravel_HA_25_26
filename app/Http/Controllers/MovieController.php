@@ -40,7 +40,15 @@ class MovieController extends Controller
     public function details($id)
     {
         $movie = Movie::with('genres')->findOrFail($id);
-        return view('movies.details', compact('movie'));
+        
+        // Check if movie is in user's watchlist (if authenticated)
+        $inWatchlist = false;
+        if (auth()->check()) 
+        {
+            $inWatchlist = auth()->user()->watchlistMovies()->where('movie_id', $id)->exists();
+        }
+        
+        return view('movies.details', compact('movie', 'inWatchlist'));
     }
 
     /**
@@ -60,12 +68,65 @@ class MovieController extends Controller
     }
 
     /**
-     * Display watchlist page with all movies
+     * Display watchlist page with user's movies only
      */
     public function watchlist()
     {
-        $movies = Movie::with('genres')->orderBy('title', 'asc')->get();
+        // Get only the authenticated user's watchlist movies with genres
+        $movies = auth()->user()->watchlistMovies()->with('genres')->orderBy('title', 'asc')->get();
         return view('movies.watchlist', compact('movies'));
+    }
+
+    /**
+     * Toggle movie in user's watchlist (add or remove)
+     */
+    public function toggleWatchlist($id)
+    {
+        $user = auth()->user();
+        $movie = Movie::findOrFail($id);
+
+        // Check if movie is already in watchlist
+        if ($user->watchlistMovies()->where('movie_id', $id)->exists()) 
+        {
+            // Remove from watchlist
+            $user->watchlistMovies()->detach($id);
+            return back()->with('success', 'Movie removed from your watchlist!');
+        } 
+        else 
+        {
+            // Add to watchlist with default status
+            $user->watchlistMovies()->attach($id, ['status' => 'to_watch']);
+            return back()->with('success', 'Movie added to your watchlist!');
+        }
+    }
+
+    /**
+     * Remove movie from user's watchlist
+     */
+    public function removeFromWatchlist($id)
+    {
+        $user = auth()->user();
+        $user->watchlistMovies()->detach($id);
+        return back()->with('success', 'Movie removed from your watchlist!');
+    }
+
+    /**
+     * Update the status of a movie in user's watchlist
+     */
+    public function updateWatchlistStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:watched,watching,to_watch,not_watched'
+        ]);
+
+        $user = auth()->user();
+        
+        // Update the pivot table status
+        $user->watchlistMovies()->updateExistingPivot($id, [
+            'status' => $request->status
+        ]);
+
+        return back()->with('success', 'Status updated successfully!');
     }
 
     // ========================================

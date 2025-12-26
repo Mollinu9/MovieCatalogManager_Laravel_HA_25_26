@@ -43,4 +43,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean', // Cast is_admin as boolean
     ];
+
+    /**
+     * Get the movies in the user's watchlist
+     */
+    public function watchlistMovies()
+    {
+        return $this->belongsToMany(Movie::class, 'user_movie', 'user_id', 'movie_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
 }

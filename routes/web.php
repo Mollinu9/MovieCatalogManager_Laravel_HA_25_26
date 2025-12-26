@@ -38,7 +38,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout'); 
 
 Route::get('/movies', [MovieController::class, 'index'])->name('movies.index'); // views/movies/index.blade.php
 Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search'); // views/movies/search.blade.php
-Route::get('/movies/watchlist', [MovieController::class, 'watchlist'])->name('movies.watchlist'); // views/movies/watchlist.blade.php
+
+// Watchlist management routes (requires authentication)
+Route::middleware('auth')->group(function () 
+{
+    Route::get('/movies/watchlist', [MovieController::class, 'watchlist'])->name('movies.watchlist'); // views/movies/watchlist.blade.php
+    Route::post('/movies/{id}/watchlist/toggle', [MovieController::class, 'toggleWatchlist'])->name('movies.watchlist.toggle');
+    Route::delete('/movies/{id}/watchlist', [MovieController::class, 'removeFromWatchlist'])->name('movies.watchlist.remove');
+    Route::patch('/movies/{id}/watchlist/status', [MovieController::class, 'updateWatchlistStatus'])->name('movies.watchlist.updateStatus');
+});
+
 Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
 
 // ========================================

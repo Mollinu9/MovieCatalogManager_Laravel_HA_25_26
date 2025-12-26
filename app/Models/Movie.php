@@ -34,6 +34,14 @@ class Movie extends Model
         return $this->belongsToMany(Genre::class, 'genre_movie');
     }
 
+    // Many-to-many relationship with User (watchlist)
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_movie', 'movie_id', 'user_id')
+                    ->withPivot('status')
+                    ->withTimestamps();
+    }
+
     // Function to get the YouTube embed URL
     protected function embedUrl(): Attribute 
     {
