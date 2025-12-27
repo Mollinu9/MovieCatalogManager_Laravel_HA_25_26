@@ -7,6 +7,8 @@ use App\Http\Controllers\MovieController; // Handles public movie browsing
 use App\Http\Controllers\AuthController; // Handles user authentication (login, register, logout)
 use App\Http\Controllers\AdminController; // Handles admin movie management (CRUD operations)
 use App\Http\Controllers\TmdbController; // Handles TMDB API integration (search, fetch movie data)
+use App\Http\Controllers\ReviewController; 
+use App\Http\Controllers\MovieRequestController; 
 
 // Models
 use App\Models\Movie; // Movie model for fetching random movies on home page
