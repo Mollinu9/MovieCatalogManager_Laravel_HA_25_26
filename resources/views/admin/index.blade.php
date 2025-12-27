@@ -46,7 +46,9 @@
                         <td>
                           <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/50x75?text=No+Image' }}" 
                                alt="{{ $movie->title }}" 
-                               class="admin-movie-poster">
+                               class="admin-movie-poster"
+                               onclick="openPosterModal('{{ $movie->poster_url ?? 'https://via.placeholder.com/50x75?text=No+Image' }}', '{{ addslashes($movie->title) }}')"
+                               title="Click to view full poster">
                         </td>
                         <td>
                           <span class="admin-movie-title">{{ Str::limit($movie->title, 30) }}</span>
@@ -102,4 +104,41 @@
     </div>
   </div>
 </main>
+
+<!-- Poster Modal -->
+<div id="posterModal" class="poster-modal" onclick="closePosterModal()">
+  <span class="poster-modal-close">&times;</span>
+  <img class="poster-modal-content" id="posterModalImage" alt="Movie Poster">
+  <div id="posterModalCaption"></div>
+</div>
+
+<script>
+function openPosterModal(posterUrl, movieTitle) {
+  const modal = document.getElementById('posterModal');
+  const modalImg = document.getElementById('posterModalImage');
+  const caption = document.getElementById('posterModalCaption');
+  
+  modal.style.display = 'block';
+  modalImg.src = posterUrl;
+  caption.textContent = movieTitle;
+  
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = 'hidden';
+}
+
+function closePosterModal() {
+  const modal = document.getElementById('posterModal');
+  modal.style.display = 'none';
+  
+  // Restore body scroll
+  document.body.style.overflow = 'auto';
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closePosterModal();
+  }
+});
+</script>
 @endsection

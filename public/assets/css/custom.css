@@ -891,16 +891,21 @@ footer .text-muted {
   object-fit: cover;
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   border: 2px solid var(--border-gray);
+  cursor: pointer;
 }
 
 .admin-movie-poster:hover {
-  transform: scale(2);
   box-shadow: 0 8px 20px rgba(255, 140, 66, 0.4);
-  z-index: 10;
-  position: relative;
   border-color: var(--orange);
+}
+
+/* Allow poster to expand on hover without being clipped */
+.table td:has(.admin-movie-poster),
+.watchlist-table td:has(.admin-movie-poster) {
+  overflow: visible;
+  position: relative;
 }
 
 /* Action Buttons */
@@ -1094,26 +1099,24 @@ footer .text-muted {
 
 /* Watchlist Poster */
 .watchlist-poster {
-  width: 80px;
-  height: 120px;
+  width: 160px;
+  height: 240px;
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   border: 2px solid var(--border-gray);
+  cursor: pointer;
 }
 
 .watchlist-poster:hover {
-  transform: scale(1.8);
   box-shadow: 0 8px 20px rgba(255, 140, 66, 0.4);
-  z-index: 100;
-  position: relative;
   border-color: var(--orange);
 }
 
 .watchlist-poster-placeholder {
-  width: 80px;
-  height: 120px;
+  width: 160px;
+  height: 240px;
   background: linear-gradient(135deg, var(--light-gray), var(--border-gray));
   border-radius: 8px;
   display: flex;
@@ -1123,8 +1126,83 @@ footer .text-muted {
 }
 
 .watchlist-poster-placeholder i {
-  font-size: 2rem;
+  font-size: 3rem;
   color: var(--medium-gray);
+}
+
+/* Poster Modal */
+.poster-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  padding-top: 50px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.95);
+  animation: fadeIn 0.3s;
+}
+
+.poster-modal-content {
+  margin: auto;
+  display: block;
+  max-width: 90%;
+  max-height: 85vh;
+  object-fit: contain;
+  animation: zoomIn 0.3s;
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(255, 140, 66, 0.5);
+}
+
+.poster-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+.poster-modal-close:hover,
+.poster-modal-close:focus {
+  color: var(--orange);
+}
+
+#posterModalCaption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #fff;
+  padding: 20px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }
 
 /* Watchlist Movie Title */
@@ -1210,13 +1288,13 @@ footer .text-muted {
   }
 
   .watchlist-poster {
-    width: 60px;
-    height: 90px;
+    width: 120px;
+    height: 180px;
   }
 
   .watchlist-poster-placeholder {
-    width: 60px;
-    height: 90px;
+    width: 120px;
+    height: 180px;
   }
 
   .btn-circle {

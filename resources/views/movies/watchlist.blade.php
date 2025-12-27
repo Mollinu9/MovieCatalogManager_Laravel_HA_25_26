@@ -71,7 +71,9 @@
                           @if($movie->poster_url)
                             <img src="{{ $movie->poster_url }}" 
                                  alt="{{ $movie->title }}" 
-                                 class="watchlist-poster">
+                                 class="watchlist-poster"
+                                 onclick="openPosterModal('{{ $movie->poster_url }}', '{{ addslashes($movie->title) }}')"
+                                 title="Click to view full poster">
                           @else
                             <div class="watchlist-poster-placeholder">
                               <i class="fa fa-film"></i>
@@ -147,4 +149,41 @@
     </div>
   </div>
 </div>
+
+<!-- Poster Modal -->
+<div id="posterModal" class="poster-modal" onclick="closePosterModal()">
+  <span class="poster-modal-close">&times;</span>
+  <img class="poster-modal-content" id="posterModalImage" alt="Movie Poster">
+  <div id="posterModalCaption"></div>
+</div>
+
+<script>
+function openPosterModal(posterUrl, movieTitle) {
+  const modal = document.getElementById('posterModal');
+  const modalImg = document.getElementById('posterModalImage');
+  const caption = document.getElementById('posterModalCaption');
+  
+  modal.style.display = 'block';
+  modalImg.src = posterUrl;
+  caption.textContent = movieTitle;
+  
+  // Prevent body scroll when modal is open
+  document.body.style.overflow = 'hidden';
+}
+
+function closePosterModal() {
+  const modal = document.getElementById('posterModal');
+  modal.style.display = 'none';
+  
+  // Restore body scroll
+  document.body.style.overflow = 'auto';
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closePosterModal();
+  }
+});
+</script>
 @endsection
