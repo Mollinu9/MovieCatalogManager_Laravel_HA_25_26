@@ -34,8 +34,6 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login.submit
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit'); // Handle registration form submission
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout'); // Handle logout
 
-Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request');
-
 // ========================================
 // PUBLIC MOVIE ROUTES
 // ========================================
@@ -52,8 +50,13 @@ Route::middleware('auth')->group(function ()
     Route::patch('/movies/{id}/watchlist/status', [MovieController::class, 'updateWatchlistStatus'])->name('movies.watchlist.updateStatus');
 });
 
-Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
+// Require auth only made for people who have account registered
+Route::middleware('auth')->group(function ()
+{
+    Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request');
+});
 
+Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
 
 
 // ========================================
