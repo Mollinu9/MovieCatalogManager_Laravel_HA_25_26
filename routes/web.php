@@ -7,7 +7,7 @@ use App\Http\Controllers\MovieController; // Handles public movie browsing
 use App\Http\Controllers\AuthController; // Handles user authentication (login, register, logout)
 use App\Http\Controllers\AdminController; // Handles admin movie management (CRUD operations)
 use App\Http\Controllers\TmdbController; // Handles TMDB API integration (search, fetch movie data)
-use App\Http\Controllers\ReviewController; 
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MovieRequestController; 
 
 // Models
@@ -45,19 +45,13 @@ Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.s
 Route::middleware('auth')->group(function () 
 {
     Route::get('/movies/watchlist', [MovieController::class, 'watchlist'])->name('movies.watchlist'); // views/movies/watchlist.blade.php
+    Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request'); // views/movies/request.blade.php
     Route::post('/movies/{id}/watchlist/toggle', [MovieController::class, 'toggleWatchlist'])->name('movies.watchlist.toggle');
     Route::delete('/movies/{id}/watchlist', [MovieController::class, 'removeFromWatchlist'])->name('movies.watchlist.remove');
     Route::patch('/movies/{id}/watchlist/status', [MovieController::class, 'updateWatchlistStatus'])->name('movies.watchlist.updateStatus');
 });
 
-// Require auth only made for people who have account registered
-Route::middleware('auth')->group(function ()
-{
-    Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request');
-});
-
 Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
-
 
 // ========================================
 // ADMIN ROUTES (Requires authentication + admin role)

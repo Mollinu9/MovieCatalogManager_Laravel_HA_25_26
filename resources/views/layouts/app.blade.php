@@ -84,7 +84,7 @@
         </div>
         <hr class="bg-secondary">
         <div class="text-center text-muted">
-          <p class="mb-0">&copy; 2025 Movie Catalog J.M. All rights reserved.</p>
+          <p class="mb-0">&copy; 2026 Movie Catalog J.M. All rights reserved.</p>
         </div>
       </div>
     </footer>
