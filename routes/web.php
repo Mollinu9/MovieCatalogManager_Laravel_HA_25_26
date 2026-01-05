@@ -3,56 +3,62 @@
 use Illuminate\Support\Facades\Route;
 
 // Controllers
-use App\Http\Controllers\MovieController; // Handles public movie browsing
-use App\Http\Controllers\AuthController; // Handles user authentication (login, register, logout)
-use App\Http\Controllers\AdminController; // Handles admin movie management (CRUD operations)
-use App\Http\Controllers\TmdbController; // Handles TMDB API integration (search, fetch movie data)
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\MovieRequestController; 
-
-// Models
-use App\Models\Movie; // Movie model for fetching random movies on home page
-
-// ========================================
-// HOME PAGE
-// ========================================
-
-Route::get('/', function () 
-{
-    $movies = Movie::inRandomOrder()->take(3)->get();
-    return view('home', compact('movies'));
-});
+use App\Http\Controllers\{
+    MovieController,        // Public movie browsing, watchlist management
+    AuthController,         // User authentication (login, register, logout)
+    AdminController,        // Admin movie management (CRUD operations)
+    TmdbController,         // TMDB API integration (search, fetch movie data)
+    ReviewController,       // Movie reviews and ratings
+    MovieRequestController  // User movie requests for admin approval
+};
 
 // ========================================
 // AUTHENTICATION ROUTES
 // ========================================
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('auth.login'); // views/auth/login.blade.php
-Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.register'); // views/auth/register.blade.php
-
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login.submit'); // Handle login form submission
-Route::post('/register', [AuthController::class, 'register'])->name('auth.register.submit'); // Handle registration form submission
-Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout'); // Handle logout
+Route::controller(AuthController::class)->group(function () 
+{
+    // Display authentication forms
+    Route::get('/login', 'showLogin')->name('auth.login');
+    Route::get('/register', 'showRegister')->name('auth.register');
+    
+    // Process authentication actions
+    Route::post('/login', 'login')->name('auth.login.submit');
+    Route::post('/register', 'register')->name('auth.register.submit');
+    Route::post('/logout', 'logout')->name('auth.logout');
+});
 
 // ========================================
 // PUBLIC MOVIE ROUTES
 // ========================================
 
-Route::get('/movies', [MovieController::class, 'index'])->name('movies.index'); // views/movies/index.blade.php
-Route::get('/movies/search', [MovieController::class, 'search'])->name('movies.search'); // views/movies/search.blade.php
-
-// Watchlist management routes (requires authentication)
-Route::middleware('auth')->group(function () 
+Route::controller(MovieController::class)->group(function () 
 {
-    Route::get('/movies/watchlist', [MovieController::class, 'watchlist'])->name('movies.watchlist'); // views/movies/watchlist.blade.php
-    Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request'); // views/movies/request.blade.php
-    Route::post('/movies/request', [MovieRequestController::class, 'store'])->name('movies.request.store'); // Handle movie request submission
-    Route::post('/movies/{id}/watchlist/toggle', [MovieController::class, 'toggleWatchlist'])->name('movies.watchlist.toggle');
-    Route::delete('/movies/{id}/watchlist', [MovieController::class, 'removeFromWatchlist'])->name('movies.watchlist.remove');
-    Route::patch('/movies/{id}/watchlist/status', [MovieController::class, 'updateWatchlistStatus'])->name('movies.watchlist.updateStatus');
+    // Home Page
+    Route::get('/', 'home')->name('home');
+    
+    // Browse and search movies (accessible to all users)
+    Route::get('/movies', 'index')->name('movies.index');
+    Route::get('/movies/search', 'search')->name('movies.search');
+    
+    // Movie requests (users can request movies to be added by admin)
+    Route::middleware('auth')->group(function () 
+    {
+        Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request');
+        Route::post('/movies/request', [MovieRequestController::class, 'store'])->name('movies.request.store');
+    });
+    
+    // Authenticated user watchlist features
+    Route::middleware('auth')->group(function () 
+    {
+        Route::get('/movies/watchlist', 'watchlist')->name('movies.watchlist');
+        Route::post('/movies/{id}/watchlist/toggle', 'toggleWatchlist')->name('movies.watchlist.toggle');
+        Route::delete('/movies/{id}/watchlist', 'removeFromWatchlist')->name('movies.watchlist.remove');
+        Route::patch('/movies/{id}/watchlist/status', 'updateWatchlistStatus')->name('movies.watchlist.updateStatus');
+    });
+    
+    Route::get('/movies/{id}', 'details')->name('movies.details');
 });
-
-Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.details'); // views/movies/details.blade.php
 
 // ========================================
 // ADMIN ROUTES (Requires authentication + admin role)
@@ -60,15 +66,22 @@ Route::get('/movies/{id}', [MovieController::class, 'details'])->name('movies.de
 
 Route::middleware(['auth', 'admin'])->group(function () 
 {
-    Route::get('/admin/movies', [AdminController::class, 'index'])->name('admin.movies.index'); // views/admin/index.blade.php
-    Route::get('/admin/movies/create', [AdminController::class, 'create'])->name('admin.movies.create'); // views/admin/add.blade.php
-    Route::post('/admin/movies', [AdminController::class, 'store'])->name('admin.movies.store'); // Handle form submission for creating a new movie
-    Route::get('/admin/movies/{id}/edit', [AdminController::class, 'edit'])->name('admin.movies.edit'); // views/admin/edit.blade.php
-    Route::put('/admin/movies/{id}', [AdminController::class, 'update'])->name('admin.movies.update'); // Handle form submission for updating a movie
-    Route::delete('/admin/movies/{id}', [AdminController::class, 'destroy'])->name('admin.movies.destroy'); // Delete a movie
-    Route::post('/admin/movies/{id}/refresh', [AdminController::class, 'refreshFromTmdb'])->name('admin.movies.refresh'); // Refresh movie data from TMDB
+    // Admin movie management
+    Route::controller(AdminController::class)->group(function () 
+    {
+        Route::get('/admin/movies', 'index')->name('admin.movies.index');
+        Route::get('/admin/movies/create', 'create')->name('admin.movies.create');
+        Route::post('/admin/movies', 'store')->name('admin.movies.store');
+        Route::get('/admin/movies/{id}/edit', 'edit')->name('admin.movies.edit');
+        Route::put('/admin/movies/{id}', 'update')->name('admin.movies.update');
+        Route::delete('/admin/movies/{id}', 'destroy')->name('admin.movies.destroy');
+        Route::post('/admin/movies/{id}/refresh', 'refreshFromTmdb')->name('admin.movies.refresh');
+    });
     
-    // TMDB API Routes
-    Route::post('/admin/tmdb/search', [TmdbController::class, 'search'])->name('admin.tmdb.search'); // Handles searching movie by id/name from TMDB
-    Route::post('/admin/tmdb/fetch', [TmdbController::class, 'fetch'])->name('admin.tmdb.fetch'); // Handles getting movie details from TMDB
+    // TMDB API integration (search and fetch movie data)
+    Route::controller(TmdbController::class)->group(function () 
+    {
+        Route::post('/admin/tmdb/search', 'search')->name('admin.tmdb.search');
+        Route::post('/admin/tmdb/fetch', 'fetch')->name('admin.tmdb.fetch');
+    });
 });

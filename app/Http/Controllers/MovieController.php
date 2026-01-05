@@ -9,6 +9,15 @@ use App\Models\Genre; // Genre database model for filtering by genre
 class MovieController extends Controller
 {
     /**
+     * Display home page with random featured movies
+     */
+    public function home()
+    {
+        $movies = Movie::inRandomOrder()->take(3)->get();
+        return view('home', compact('movies'));
+    }
+
+    /**
      * Display movies grouped by genre
      */
     public function index(Request $request)
