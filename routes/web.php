@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function ()
 {
     Route::get('/movies/watchlist', [MovieController::class, 'watchlist'])->name('movies.watchlist'); // views/movies/watchlist.blade.php
     Route::get('/movies/request', [MovieRequestController::class, 'request'])->name('movies.request'); // views/movies/request.blade.php
+    Route::post('/movies/request', [MovieRequestController::class, 'store'])->name('movies.request.store'); // Handle movie request submission
     Route::post('/movies/{id}/watchlist/toggle', [MovieController::class, 'toggleWatchlist'])->name('movies.watchlist.toggle');
     Route::delete('/movies/{id}/watchlist', [MovieController::class, 'removeFromWatchlist'])->name('movies.watchlist.remove');
     Route::patch('/movies/{id}/watchlist/status', [MovieController::class, 'updateWatchlistStatus'])->name('movies.watchlist.updateStatus');

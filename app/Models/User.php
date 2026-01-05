@@ -53,4 +53,12 @@ class User extends Authenticatable
                     ->withPivot('status')
                     ->withTimestamps();
     }
+
+    /**
+     * Get the user's movie requests
+     */
+    public function movieRequests()
+    {
+        return $this->hasMany(MovieRequest::class);
+    }
 }
