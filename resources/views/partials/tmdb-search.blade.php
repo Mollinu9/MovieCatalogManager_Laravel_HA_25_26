@@ -1,6 +1,3 @@
-{{-- TMDB Search Partial --}}
-{{-- Usage: @include('partials.tmdb-search', ['context' => 'admin' or 'user']) --}}
-
 <!-- Search Method Selection -->
 <div class="form-group {{ isset($formLayout) && $formLayout === 'horizontal' ? 'row' : '' }}">
   <label class="{{ isset($formLayout) && $formLayout === 'horizontal' ? 'col-md-3 col-form-label' : '' }}">Search Method</label>
