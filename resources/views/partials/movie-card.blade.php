@@ -22,6 +22,9 @@
         </p>
         <p class="mb-2">
           <i class="fa fa-clock"></i> {{ $movie->runtime ?? 'N/A' }} min
+          @if($movie->language)
+            • <i class="fa fa-language"></i> {{ strtoupper($movie->language) }}
+          @endif
         </p>
         <p class="card-text small">{{ Str::limit($movie->description, 100) }}</p>
         
@@ -50,6 +53,9 @@
                 N/A
               @endif
               • {{ $movie->genres->pluck('name')->join(', ') }} • {{ $movie->runtime ?? 'N/A' }} min
+              @if($movie->language)
+                • {{ strtoupper($movie->language) }}
+              @endif
             </p>
             <p class="card-text">{{ Str::limit($movie->description, 200) }}</p>
             

@@ -39,16 +39,11 @@
                       <label class="col-form-label">Year</label>
                       <select name="year" class="custom-select" onchange="this.form.submit()">
                         <option value="">All Years</option>
-                        <option value="2025" {{ request('year') == '2025' ? 'selected' : '' }}>2025</option>
-                        <option value="2024" {{ request('year') == '2024' ? 'selected' : '' }}>2024</option>
-                        <option value="2023" {{ request('year') == '2023' ? 'selected' : '' }}>2023</option>
-                        <option value="2022" {{ request('year') == '2022' ? 'selected' : '' }}>2022</option>
-                        <option value="2021" {{ request('year') == '2021' ? 'selected' : '' }}>2021</option>
-                        <option value="2020" {{ request('year') == '2020' ? 'selected' : '' }}>2020</option>
-                        <option value="2010s" {{ request('year') == '2010s' ? 'selected' : '' }}>2010-2019</option>
-                        <option value="2000s" {{ request('year') == '2000s' ? 'selected' : '' }}>2000-2009</option>
-                        <option value="1990s" {{ request('year') == '1990s' ? 'selected' : '' }}>1990-1999</option>
-                        <option value="1980s" {{ request('year') == '1980s' ? 'selected' : '' }}>1980-1989</option>
+                        <option value="2020s" {{ request('year') == '2020s' ? 'selected' : '' }}>2020s</option>
+                        <option value="2010s" {{ request('year') == '2010s' ? 'selected' : '' }}>2010s</option>
+                        <option value="2000s" {{ request('year') == '2000s' ? 'selected' : '' }}>2000s</option>
+                        <option value="1990s" {{ request('year') == '1990s' ? 'selected' : '' }}>1990s</option>
+                        <option value="1980s" {{ request('year') == '1980s' ? 'selected' : '' }}>1980s</option>
                         <option value="older" {{ request('year') == 'older' ? 'selected' : '' }}>Before 1980</option>
                       </select>
                     </div>

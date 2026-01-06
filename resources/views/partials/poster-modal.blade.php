@@ -1,5 +1,5 @@
 {{-- Poster Modal Partial --}}
-{{-- Usage: @include('partials.poster-modal') - Include once per page --}}
+{{-- Usage: @include('partials.poster-modal')--}}
 
 <div id="posterModal" class="poster-modal" onclick="closePosterModal()">
   <span class="poster-modal-close">&times;</span>

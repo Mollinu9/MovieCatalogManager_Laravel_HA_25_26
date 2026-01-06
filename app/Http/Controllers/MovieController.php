@@ -182,6 +182,7 @@ class MovieController extends Controller
     private function applyYearFilter($query, $year)
     {
         $decades = [
+            '2020s' => ['2020-01-01', '2029-12-31'],
             '2010s' => ['2010-01-01', '2019-12-31'],
             '2000s' => ['2000-01-01', '2009-12-31'],
             '1990s' => ['1990-01-01', '1999-12-31'],
@@ -198,6 +199,7 @@ class MovieController extends Controller
         }
         else
         {
+            // Handle specific year if needed
             $query->whereYear('release_date', $year);
         }
     }
