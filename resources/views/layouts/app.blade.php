@@ -33,18 +33,40 @@
             @else
               <li class="nav-item"><a href="{{ route('movies.index') }}" class="nav-link">Movies</a></li>
               <li class="nav-item"><a href="{{ route('movies.search') }}" class="nav-link">Search</a></li>
-              <li class="nav-item"><a href="{{ route('movies.watchlist') }}" class="nav-link">My Watchlist</a></li>
-              <li class="nav-item"><a href="{{ route('movies.request') }}" class="nav-link">Request Movie</a></li>
+              
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{ Auth::user()->name }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="userDropdown">
+                  <a class="dropdown-item" href="{{ route('movies.watchlist') }}">
+                    <i class="fa fa-heart"></i> My Watchlist
+                  </a>
+                  <a class="dropdown-item" href="{{ route('movies.request') }}">
+                    <i class="fa fa-plus-circle"></i> Request a Movie
+                  </a>
+                </div>
+              </li>
+
               @if(Auth::user()->is_admin)
-                <li class="nav-item"><a href="{{ route('admin.movies.index') }}" class="nav-link">Admin</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Admin
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                    <a class="dropdown-item" href="{{ route('admin.movies.index') }}">
+                      <i class="fa fa-film"></i> Manage Movies
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <i class="fa fa-inbox"></i> Movie Requests
+                    </a>
+                  </div>
+                </li>
               @endif
             @endguest
           </ul>
           <ul class="navbar-nav ml-auto">
             @auth
-              <li class="nav-item">
-                <span class="nav-link">Hi, {{ Auth::user()->name }}</span>
-              </li>
               <li class="nav-item">
                 <form action="{{ route('auth.logout') }}" method="POST" class="d-inline">
                   @csrf
