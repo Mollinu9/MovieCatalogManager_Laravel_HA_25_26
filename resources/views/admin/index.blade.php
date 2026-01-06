@@ -3,12 +3,10 @@
 @section('content')
 <!-- Success Message -->
 @if(session('success'))
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fa fa-check-circle"></i> {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+  @include('partials.alert', [
+    'type' => 'success',
+    'message' => session('success')
+  ])
 @endif
 
 <div class="row">
@@ -94,9 +92,11 @@
                 {{ $movies->links('pagination::bootstrap-4') }}
               </div>
             @else
-              <div class="alert alert-info">
-                <i class="fa fa-info-circle"></i> No movies found. Start by adding your first movie!
-              </div>
+              @include('partials.empty-state', [
+                'icon' => 'fa-film',
+                'title' => 'No movies found',
+                'description' => 'Start by adding your first movie!'
+              ])
             @endif
           </div>
         </div>
@@ -105,40 +105,5 @@
   </div>
 </main>
 
-<!-- Poster Modal -->
-<div id="posterModal" class="poster-modal" onclick="closePosterModal()">
-  <span class="poster-modal-close">&times;</span>
-  <img class="poster-modal-content" id="posterModalImage" alt="Movie Poster">
-  <div id="posterModalCaption"></div>
-</div>
-
-<script>
-function openPosterModal(posterUrl, movieTitle) {
-  const modal = document.getElementById('posterModal');
-  const modalImg = document.getElementById('posterModalImage');
-  const caption = document.getElementById('posterModalCaption');
-  
-  modal.style.display = 'block';
-  modalImg.src = posterUrl;
-  caption.textContent = movieTitle;
-  
-  // Prevent body scroll when modal is open
-  document.body.style.overflow = 'hidden';
-}
-
-function closePosterModal() {
-  const modal = document.getElementById('posterModal');
-  modal.style.display = 'none';
-  
-  // Restore body scroll
-  document.body.style.overflow = 'auto';
-}
-
-// Close modal on Escape key
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    closePosterModal();
-  }
-});
-</script>
+@include('partials.poster-modal')
 @endsection

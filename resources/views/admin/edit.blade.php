@@ -19,26 +19,22 @@
           @endif
 
           @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-              <i class="fa fa-check-circle"></i> {{ session('success') }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+            @include('partials.alert', [
+              'type' => 'success',
+              'message' => session('success')
+            ])
           @endif
 
           @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-              <i class="fa fa-exclamation-circle"></i> {{ session('error') }}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+            @include('partials.alert', [
+              'type' => 'error',
+              'message' => session('error')
+            ])
           @endif
 
           <!-- Refresh from TMDB Button (only for TMDB movies) -->
           @if($movie->tmdb_id > 0)
-            <div class="alert alert-info d-flex align-items-center justify-content-between">
+            <div class="alert alert-info d-flex align-items-center justify-content-between" role="alert">
               <div>
                 <i class="fa fa-info-circle"></i> This movie was imported from TMDB. You can refresh it with the latest data.
               </div>

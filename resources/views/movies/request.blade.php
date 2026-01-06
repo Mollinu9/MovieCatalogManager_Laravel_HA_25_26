@@ -9,9 +9,10 @@
         <strong>Request a Movie</strong>
       </div>           
       <div class="card-body">
-        <div class="alert alert-info">
-          <i class="fa fa-info-circle"></i> Can't find a movie in our catalog? Search for it below and request it to be added!
-        </div>
+        @include('partials.alert', [
+          'type' => 'info',
+          'message' => "Can't find a movie in our catalog? Search for it below and request it to be added!"
+        ])
 
         @include('partials.tmdb-search')
       </div>

@@ -17,18 +17,19 @@
         
         <div class="genre-badge-container">
           @foreach($movie->genres as $genre)
-            <span class="genre-badge">{{ $genre->name }}</span>
+            @include('partials.genre-badge', [
+              'genre' => $genre,
+              'size' => 'medium'
+            ])
           @endforeach
         </div>
 
         <!-- Success Message -->
         @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-          {{ session('success') }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+          @include('partials.alert', [
+            'type' => 'success',
+            'message' => session('success')
+          ])
         @endif
 
         <!-- Watchlist Button -->
@@ -102,9 +103,10 @@
       </div>
       <div class="card-body">
         Add Review Form (Only for logged in users who watched)
-        <div class="alert alert-info">
-          <i class="fa fa-info-circle"></i> Mark this movie as watched to submit a review.
-        </div>
+        @include('partials.alert', [
+          'type' => 'info',
+          'message' => 'Mark this movie as watched to submit a review.'
+        ])
 
          Review Form (shown when user has watched) 
         <form class="mb-4 review-form-hidden">

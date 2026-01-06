@@ -13,23 +13,20 @@
       <div class="card-body">
         <!-- Success Message -->
         @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-          {{ session('success') }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+          @include('partials.alert', [
+            'type' => 'success',
+            'message' => session('success')
+          ])
         @endif
 
         @if($movies->isEmpty())
-          <div class="text-center py-5">
-            <i class="fa fa-film" style="font-size: 80px; color: #dee2e6;"></i>
-            <h4 class="mt-4 text-muted">Your watchlist is empty</h4>
-            <p class="text-muted">Start adding movies to your watchlist!</p>
-            <a href="{{ route('movies.index') }}" class="btn btn-primary mt-3">
-              <i class="fa fa-search mr-2"></i>Browse Movies
-            </a>
-          </div>
+          @include('partials.empty-state', [
+            'icon' => 'fa-film',
+            'title' => 'Your watchlist is empty',
+            'description' => 'Start adding movies to your watchlist!',
+            'actionUrl' => route('movies.index'),
+            'actionText' => 'Browse Movies'
+          ])
         @else
           @php
             // Group movies by status
@@ -150,40 +147,5 @@
   </div>
 </div>
 
-<!-- Poster Modal -->
-<div id="posterModal" class="poster-modal" onclick="closePosterModal()">
-  <span class="poster-modal-close">&times;</span>
-  <img class="poster-modal-content" id="posterModalImage" alt="Movie Poster">
-  <div id="posterModalCaption"></div>
-</div>
-
-<script>
-function openPosterModal(posterUrl, movieTitle) {
-  const modal = document.getElementById('posterModal');
-  const modalImg = document.getElementById('posterModalImage');
-  const caption = document.getElementById('posterModalCaption');
-  
-  modal.style.display = 'block';
-  modalImg.src = posterUrl;
-  caption.textContent = movieTitle;
-  
-  // Prevent body scroll when modal is open
-  document.body.style.overflow = 'hidden';
-}
-
-function closePosterModal() {
-  const modal = document.getElementById('posterModal');
-  modal.style.display = 'none';
-  
-  // Restore body scroll
-  document.body.style.overflow = 'auto';
-}
-
-// Close modal on Escape key
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-    closePosterModal();
-  }
-});
-</script>
+@include('partials.poster-modal')
 @endsection

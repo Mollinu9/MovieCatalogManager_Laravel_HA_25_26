@@ -78,27 +78,20 @@
   <div class="row justify-content-center">
     @forelse($movies as $movie)
       <div class="col-md-4 mb-4">
-        <div class="card search-movie-card h-100">
-          <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="card-img-top" alt="{{ $movie->title }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ $movie->title }}</h5>
-            <p class="text-muted small mb-2">
-              {{ $movie->release_date ? $movie->release_date->format('Y') : 'N/A' }} • 
-              {{ $movie->genres->pluck('name')->join(', ') }}
-            </p>
-            <p class="mb-2">
-              <i class="fa fa-clock"></i> {{ $movie->runtime ?? 'N/A' }} min
-            </p>
-            <p class="card-text small">{{ Str::limit($movie->description, 100) }}</p>
-            <a href="{{ route('movies.details', $movie->id) }}" class="btn btn-sm btn-primary btn-block">View Details</a>
-          </div>
-        </div>
+        @include('partials.movie-card', [
+          'movie' => $movie,
+          'layout' => 'grid'
+        ])
       </div>
     @empty
-      <div class="col-md-12 text-center py-5">
-        <i class="fa fa-film fa-5x text-muted mb-3"></i>
-        <p class="text-muted">No movies available yet. Add some movies to get started!</p>
-        <a href="{{ route('admin.movies.create') }}" class="btn btn-primary">Add Your First Movie</a>
+      <div class="col-md-12">
+        @include('partials.empty-state', [
+          'icon' => 'fa-film',
+          'title' => 'No movies available yet',
+          'description' => 'Add some movies to get started!',
+          'actionUrl' => route('admin.movies.create'),
+          'actionText' => 'Add Your First Movie'
+        ])
       </div>
     @endforelse
   </div>

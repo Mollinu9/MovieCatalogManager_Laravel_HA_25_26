@@ -50,7 +50,9 @@
 
                 <!-- TMDB Search Section (shown only for TMDB import) -->
                 <div id="tmdb-section">
-                  @include('partials.tmdb-search', ['formLayout' => 'horizontal'])
+                  @include('partials.tmdb-search', [
+                    'formLayout' => 'horizontal'
+                  ])
                 </div>
 
                 <!-- Manual Entry Section (hidden by default) -->
