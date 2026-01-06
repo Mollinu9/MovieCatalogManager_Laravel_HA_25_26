@@ -84,4 +84,10 @@ Route::middleware(['auth', 'admin'])->group(function ()
         Route::post('/admin/tmdb/search', 'search')->name('admin.tmdb.search');
         Route::post('/admin/tmdb/fetch', 'fetch')->name('admin.tmdb.fetch');
     });
+
+    // Admin movie request management
+    Route::controller(MovieRequestController::class)->group(function ()
+    {
+        Route::get('/admin/requests', 'index')->name('admin.requests.index');
+    });
 });

@@ -43,7 +43,7 @@
                     <i class="fa fa-heart"></i> My Watchlist
                   </a>
                   <a class="dropdown-item" href="{{ route('movies.request') }}">
-                    <i class="fa fa-plus-circle"></i> Request a Movie
+                    <i class="fa fa-plus-circle"></i> Request Movie
                   </a>
                 </div>
               </li>
@@ -57,7 +57,7 @@
                     <a class="dropdown-item" href="{{ route('admin.movies.index') }}">
                       <i class="fa fa-film"></i> Manage Movies
                     </a>
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="{{ route('admin.requests.index') }}">
                       <i class="fa fa-inbox"></i> Movie Requests
                     </a>
                   </div>

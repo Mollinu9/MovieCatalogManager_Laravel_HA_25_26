@@ -65,4 +65,9 @@ class MovieRequestController extends Controller
             'message' => 'Movie request submitted successfully!'
         ]);
     }
+
+    public function index()
+    {
+        return view('admin.requests');
+    }
 }
