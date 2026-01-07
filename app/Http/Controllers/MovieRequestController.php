@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+use App\Http\Controllers\TmdbController;
+
 use App\Models\MovieRequest;
 use App\Models\Movie;
+use App\Models\Genre;
 
 class MovieRequestController extends Controller
 {
@@ -39,15 +44,14 @@ class MovieRequestController extends Controller
             ], 409);
         }
 
-        // Check if user already requested this movie
-        $existingRequest = MovieRequest::where('user_id', auth()->id())
-            ->where('tmdb_id', $validated['tmdb_id'])
-            ->where('status', 'pending')
+        // Check if ANY user has already requested this movie (pending or approved)
+        $existingRequest = MovieRequest::where('tmdb_id', $validated['tmdb_id'])
+            ->whereIn('status', ['pending', 'approved'])
             ->first();
 
         if ($existingRequest) {
             return response()->json([
-                'error' => 'You have already requested this movie',
+                'error' => 'This movie has already been requested and is awaiting approval',
                 'duplicate' => true
             ], 409);
         }
@@ -66,10 +70,14 @@ class MovieRequestController extends Controller
         ]);
     }
 
+    /**
+     * Display all movie requests for admin (only pending)
+     */
     public function index()
     {
+        // Only show pending requests to admin
         $requests = MovieRequest::with('user')
-            ->orderByRaw("FIELD(status, 'pending', 'approved', 'rejected')")
+            ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
@@ -81,40 +89,85 @@ class MovieRequestController extends Controller
     }
 
     /**
-     * Approve a movie request
+     * Approve a movie request and add it to the database
      */
     public function approve($id)
     {
-        $request = MovieRequest::findOrFail($id);
+        $movieRequest = MovieRequest::findOrFail($id);
 
-        if (Movie::where('tmdb_id', $request->tmdb_id)->exists()) {
+        // Check if movie already exists in database
+        if (Movie::where('tmdb_id', $movieRequest->tmdb_id)->exists()) {
             return back()->with('error', 'This movie already exists in the database');
         }
 
-        $request->update(['status' => 'approved']);
+        // Fetch movie data from TMDB and save to database
+        try {
+            $tmdbController = new TmdbController();
+            $movieData = $tmdbController->fetchMovieData($movieRequest->tmdb_id);
 
-        return back()->with('success', 'Movie request approved! TMDB ID: ' . $request->tmdb_id);
+            // Double-check movie doesn't exist (in case it was added while processing)
+            if (Movie::where('tmdb_id', $movieData['tmdb_id'])->exists()) {
+                $movieRequest->update(['status' => 'approved']);
+                return back()->with('error', 'This movie was already added to the database');
+            }
+
+            // Generate slug from title
+            $slug = Str::slug($movieData['title']);
+            
+            // Ensure slug is unique
+            $originalSlug = $slug;
+            $counter = 1;
+            while (Movie::where('slug', $slug)->exists()) {
+                $slug = $originalSlug . '-' . $counter;
+                $counter++;
+            }
+
+            // Create the movie in database
+            $movie = Movie::create([
+                'tmdb_id' => $movieData['tmdb_id'],
+                'title' => $movieData['title'],
+                'slug' => $slug,
+                'description' => $movieData['description'],
+                'release_date' => $movieData['release_date'],
+                'runtime' => $movieData['runtime'],
+                'language' => $movieData['language'],
+                'poster_url' => $movieData['poster_url'],
+                'trailer_link' => $movieData['trailer_link']
+            ]);
+
+            // Attach genres
+            if (!empty($movieData['genres'])) {
+                $movie->genres()->attach($movieData['genres']);
+            }
+
+            // Update request status to approved
+            $movieRequest->update(['status' => 'approved']);
+
+            return back()->with('success', 'Movie "' . $movie->title . '" has been added to the database!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to fetch movie from TMDB: ' . $e->getMessage());
+        }
     }
 
     /**
-     * Reject a movie request
+     * Reject a movie request (hides from admin, visible to user)
      */
     public function reject($id)
     {
-        $request = MovieRequest::findOrFail($id);
-        $request->update(['status' => 'rejected']);
+        $movieRequest = MovieRequest::findOrFail($id);
+        $movieRequest->update(['status' => 'rejected']);
 
         return back()->with('success', 'Movie request rejected');
     }
 
     /**
-     * Delete a movie request
+     * Delete a movie request permanently
      */
     public function destroy($id)
     {
-        $request = MovieRequest::findOrFail($id);
-        $request->delete();
+        $movieRequest = MovieRequest::findOrFail($id);
+        $movieRequest->delete();
 
-        return back()->with('success', 'Movie request deleted');
+        return back()->with('success', 'Movie request deleted permanently');
     }
 }

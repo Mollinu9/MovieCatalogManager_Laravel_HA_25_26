@@ -305,7 +305,7 @@ function requestMovie(movie) {
                 tmdbSearchResults.innerHTML = `
                     <div class="alert alert-warning">
                         <h5><i class="fa fa-exclamation-triangle"></i> Already Requested</h5>
-                        <p>You have already requested this movie. Please wait for admin approval.</p>
+                        <p>${data.error}</p>
                         <button type="button" class="btn btn-sm btn-outline-secondary" id="search-again-dup">
                             <i class="fa fa-search"></i> Search Another Movie
                         </button>
@@ -313,6 +313,18 @@ function requestMovie(movie) {
                 `;
 
                 document.getElementById('search-again-dup').addEventListener('click', clearSearch);
+            } else if (data.existing) {
+                tmdbSearchResults.innerHTML = `
+                    <div class="alert alert-info">
+                        <h5><i class="fa fa-info-circle"></i> Movie Already in Database</h5>
+                        <p>${data.error}</p>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="search-again-exist">
+                            <i class="fa fa-search"></i> Search Another Movie
+                        </button>
+                    </div>
+                `;
+
+                document.getElementById('search-again-exist').addEventListener('click', clearSearch);
             } else {
                 alert(data.error || 'Failed to submit request');
                 requestBtn.disabled = false;
