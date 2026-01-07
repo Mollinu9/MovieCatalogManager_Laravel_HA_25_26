@@ -14,7 +14,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $movies = Movie::with('genres')->orderBy('created_at', 'asc')->paginate(10);
+        $movies = Movie::with('genres')->orderBy('created_at', 'asc')->paginate(20);
         return view('admin.index', compact('movies'));
     }
 

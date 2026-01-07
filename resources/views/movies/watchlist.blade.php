@@ -48,95 +48,15 @@
                   <span class="badge badge-{{ $statusConfig[$status]['color'] }}">{{ $groupedMovies[$status]->count() }}</span>
                 </h4>
                 
-                <div class="table-responsive">
-                  <table class="table table-hover watchlist-table">
-                    <thead>
-                      <tr>
-                        <th scope="col" width="120">Poster</th>
-                        <th scope="col" width="250">Title</th>
-                        <th scope="col" width="100">Year</th>
-                        <th scope="col" width="200">Genres</th>
-                        <th scope="col" width="100">Runtime</th>
-                        <th scope="col" width="150">Status</th>
-                        <th scope="col" width="150" class="text-center">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($groupedMovies[$status] as $movie)
-                      <tr>
-                        <td>
-                          @if($movie->poster_url)
-                            <img src="{{ $movie->poster_url }}" 
-                                 alt="{{ $movie->title }}" 
-                                 class="watchlist-poster"
-                                 onclick="openPosterModal('{{ $movie->poster_url }}', '{{ addslashes($movie->title) }}')"
-                                 title="Click to view full poster">
-                          @else
-                            <div class="watchlist-poster-placeholder">
-                              <i class="fa fa-film"></i>
-                            </div>
-                          @endif
-                        </td>
-                        <td>
-                          <strong class="watchlist-movie-title">{{ $movie->title }}</strong>
-                        </td>
-                        <td>
-                          @if($movie->release_date)
-                            {{ \Carbon\Carbon::parse($movie->release_date)->format('Y') }}
-                          @else
-                            <span class="text-muted">N/A</span>
-                          @endif
-                        </td>
-                        <td>
-                          @if($movie->genres->isNotEmpty())
-                            <span class="watchlist-genres">
-                              {{ $movie->genres->pluck('name')->join(', ') }}
-                            </span>
-                          @else
-                            <span class="text-muted">No genres</span>
-                          @endif
-                        </td>
-                        <td>
-                          @if($movie->runtime)
-                            {{ $movie->runtime }} min
-                          @else
-                            <span class="text-muted">N/A</span>
-                          @endif
-                        </td>
-                        <td>
-                          <form action="{{ route('movies.watchlist.updateStatus', $movie->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('PATCH')
-                            <select name="status" class="form-control form-control-sm" onchange="this.form.submit()">
-                              <option value="to_watch" {{ $movie->pivot->status == 'to_watch' ? 'selected' : '' }}>To Watch</option>
-                              <option value="watching" {{ $movie->pivot->status == 'watching' ? 'selected' : '' }}>Watching</option>
-                              <option value="watched" {{ $movie->pivot->status == 'watched' ? 'selected' : '' }}>Watched</option>
-                            </select>
-                          </form>
-                        </td>
-                        <td class="text-center">
-                          <a href="{{ route('movies.details', $movie->id) }}" 
-                             class="btn btn-sm btn-circle btn-outline-info" 
-                             title="View Details">
-                            <i class="fa fa-eye"></i>
-                          </a>
-                          <form action="{{ route('movies.watchlist.remove', $movie->id) }}" 
-                                method="POST" 
-                                style="display: inline;"
-                                onsubmit="return confirm('Remove {{ $movie->title }} from your watchlist?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" 
-                                    class="btn btn-sm btn-circle btn-outline-danger" 
-                                    title="Remove from Watchlist">
-                              <i class="fa fa-times"></i>
-                            </button>
-                          </form>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+                <div class="row">
+                  @foreach($groupedMovies[$status] as $movie)
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3">
+                      @include('partials.movie-card', [
+                        'movie' => $movie,
+                        'layout' => 'watchlist'
+                      ])
+                    </div>
+                  @endforeach
                 </div>
               </div>
             @endif

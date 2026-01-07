@@ -24,67 +24,16 @@
           </div>
           <div class="card-body">
             @if($movies->count() > 0)
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Poster</th>
-                      <th scope="col">Title</th>
-                      <th scope="col">TMDB ID</th>
-                      <th scope="col">Year</th>
-                      <th scope="col">Genres</th>
-                      <th scope="col" class="text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($movies as $index => $movie)
-                      <tr>
-                        <th scope="row">{{ $movies->firstItem() + $index }}</th>
-                        <td>
-                          <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/50x75?text=No+Image' }}" 
-                               alt="{{ $movie->title }}" 
-                               class="admin-movie-poster"
-                               onclick="openPosterModal('{{ $movie->poster_url ?? 'https://via.placeholder.com/50x75?text=No+Image' }}', '{{ addslashes($movie->title) }}')"
-                               title="Click to view full poster">
-                        </td>
-                        <td>
-                          <span class="admin-movie-title">{{ Str::limit($movie->title, 30) }}</span>
-                        </td>
-                        <td>
-                          @if($movie->tmdb_id > 0)
-                            <span class="badge badge-tmdb">{{ $movie->tmdb_id }}</span>
-                          @else
-                            <span class="badge badge-manual">Manual</span>
-                          @endif
-                        </td>
-                        <td>{{ $movie->release_date ? $movie->release_date->format('Y') : 'N/A' }}</td>
-                        <td>
-                          <span class="admin-movie-genres">{{ $movie->genres->pluck('name')->join(', ') ?: 'N/A' }}</span>
-                        </td>
-                        <td class="text-center">
-                          <a href="{{ route('movies.details', $movie->id) }}" 
-                             class="btn btn-sm btn-outline-info mr-1">
-                            <i class="fa fa-eye"></i> Details
-                          </a>
-                          <a href="{{ route('admin.movies.edit', $movie->id) }}" 
-                             class="btn btn-sm btn-outline-secondary mr-1">
-                            <i class="fa fa-edit"></i> Edit
-                          </a>
-                          <form action="{{ route('admin.movies.destroy', $movie->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" 
-                                    class="btn btn-sm btn-outline-danger" 
-                                    onclick="return confirm('Are you sure you want to delete \'{{ $movie->title }}\'? This action cannot be undone.')">
-                              <i class="fa fa-trash"></i> Delete
-                            </button>
-                          </form>
-                        </td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-                </table>
+              <div class="row">
+                @foreach($movies as $index => $movie)
+                  <div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+                    @include('partials.movie-card', [
+                      'movie' => $movie,
+                      'layout' => 'admin',
+                      'index' => $movies->firstItem() + $index
+                    ])
+                  </div>
+                @endforeach
               </div>
 
               <!-- Pagination -->
