@@ -26,19 +26,19 @@
 
 <!-- Movies by Genre -->
 @forelse($genres as $genre)
-  @if($genre->movies->count() > 0)
+  @if($genre->movies->count() > 1)
     <div class="mb-5" id="genre-{{ $genre->slug }}">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="mb-0">{{ $genre->name }}</h3>
-        @if($genre->movies->count() > 6)
+        @if($genre->movies->count() > 4)
           <a href="{{ route('movies.search', ['genre' => $genre->id]) }}" class="btn btn-sm btn-outline-primary">
             View All ({{ $genre->movies->count() }})
           </a>
         @endif
       </div>
       <div class="row">
-        @foreach($genre->movies->take(6) as $movie)
-          <div class="col-md-4 col-sm-6 mb-4">
+        @foreach($genre->movies->take(4) as $movie)
+          <div class="col-md-3 col-sm-6 mb-4">
             @include('partials.movie-card', [
               'movie' => $movie,
               'layout' => 'grid'
