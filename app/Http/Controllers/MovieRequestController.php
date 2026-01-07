@@ -68,6 +68,53 @@ class MovieRequestController extends Controller
 
     public function index()
     {
-        return view('admin.requests');
+        $requests = MovieRequest::with('user')
+            ->orderByRaw("FIELD(status, 'pending', 'approved', 'rejected')")
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        $pendingCount = MovieRequest::where('status', 'pending')->count();
+        $approvedCount = MovieRequest::where('status', 'approved')->count();
+        $rejectedCount = MovieRequest::where('status', 'rejected')->count();
+
+        return view('admin.requests', compact('requests', 'pendingCount', 'approvedCount', 'rejectedCount'));
+    }
+
+    /**
+     * Approve a movie request
+     */
+    public function approve($id)
+    {
+        $request = MovieRequest::findOrFail($id);
+
+        if (Movie::where('tmdb_id', $request->tmdb_id)->exists()) {
+            return back()->with('error', 'This movie already exists in the database');
+        }
+
+        $request->update(['status' => 'approved']);
+
+        return back()->with('success', 'Movie request approved! TMDB ID: ' . $request->tmdb_id);
+    }
+
+    /**
+     * Reject a movie request
+     */
+    public function reject($id)
+    {
+        $request = MovieRequest::findOrFail($id);
+        $request->update(['status' => 'rejected']);
+
+        return back()->with('success', 'Movie request rejected');
+    }
+
+    /**
+     * Delete a movie request
+     */
+    public function destroy($id)
+    {
+        $request = MovieRequest::findOrFail($id);
+        $request->delete();
+
+        return back()->with('success', 'Movie request deleted');
     }
 }
