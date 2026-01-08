@@ -42,6 +42,30 @@ class Movie extends Model
                     ->withTimestamps();
     }
 
+    /**
+     * Get all reviews for the current movie.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Get average rating for this movie
+     */
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating');
+    }
+
+    /**
+     * Get total number of reviews for this movie
+     */
+    public function reviewCount()
+    {
+        return $this->reviews()->count();
+    }
+
     // Function to get the YouTube embed URL
     protected function embedUrl(): Attribute 
     {

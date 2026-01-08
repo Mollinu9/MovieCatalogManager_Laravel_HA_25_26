@@ -61,4 +61,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(MovieRequest::class);
     }
+
+    /**
+     * Get all reviews written by current user
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
