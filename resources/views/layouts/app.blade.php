@@ -60,6 +60,9 @@
                     <a class="dropdown-item" href="{{ route('admin.requests.index') }}">
                       <i class="fa fa-inbox"></i> Movie Requests
                     </a>
+                    <a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                      <i class="fa fa-users"></i> Manage Users
+                    </a>
                   </div>
                 </li>
               @endif

@@ -21,11 +21,13 @@ Route::controller(AuthController::class)->group(function ()
     // Display authentication forms
     Route::get('/login', 'showLogin')->name('auth.login');
     Route::get('/register', 'showRegister')->name('auth.register');
+    Route::get('/forgot-password', 'showForgotPassword')->name('auth.forgot');
     
     // Process authentication actions
     Route::post('/login', 'login')->name('auth.login.submit');
     Route::post('/register', 'register')->name('auth.register.submit');
     Route::post('/logout', 'logout')->name('auth.logout');
+    Route::post('/reset-password', 'resetPassword')->name('auth.reset');
 });
 
 // ========================================
@@ -93,4 +95,9 @@ Route::middleware(['auth', 'admin'])->group(function ()
         Route::post('/admin/requests/{id}/reject', 'reject')->name('admin.requests.reject');
         Route::delete('/admin/requests/{id}', 'destroy')->name('admin.requests.destroy');
     });
+
+    // Admin user management
+    Route::get('/admin/users', [AdminController::class, 'usersIndex'])->name('admin.users.index');
+    Route::post('/admin/users/{id}/toggle-admin', [AdminController::class, 'toggleUserAdmin'])->name('admin.users.toggleAdmin');
+    Route::delete('/admin/users/{id}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 });

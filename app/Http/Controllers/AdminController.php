@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request; // Handles HTTP requests (form data, validation)
 use Illuminate\Support\Str; // String helpers (e.g., Str::slug() for creating URL-friendly slugs)
+use Illuminate\Support\Facades\Auth; // Authentication helper
+
 use App\Models\Movie; // Movie database model for CRUD operations
 use App\Models\Genre; // Genre database model for managing movie genres
+use App\Models\User; // User database model for user management
 
 class AdminController extends Controller
 {
@@ -259,5 +262,63 @@ class AdminController extends Controller
     private function movieExistsInDatabase($tmdbId)
     {
         return Movie::where('tmdb_id', $tmdbId)->exists();
+    }
+
+    // ========================================
+    // USER MANAGEMENT
+    // ========================================
+
+    /**
+     * Display a listing of users (Admin only)
+     */
+    public function usersIndex()
+    {
+        $users = User::orderBy('created_at', 'desc')->paginate(20);
+        return view('admin.users', compact('users'));
+    }
+
+    /**
+     * Toggle user admin status (Admin only)
+     */
+    public function toggleUserAdmin($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Prevent admin from removing their own admin status
+        if ($user->id === Auth::id()) {
+            return redirect()->back()->with('error', 'You cannot change your own admin status.');
+        }
+
+        $user->is_admin = !$user->is_admin;
+        $user->save();
+
+        $status = $user->is_admin ? 'granted' : 'revoked';
+        return redirect()->back()->with('success', "Admin privileges {$status} for {$user->name}.");
+    }
+
+    /**
+     * Delete a user account (Admin only)
+     */
+    public function destroyUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Prevent admin from deleting their own account
+        if ($user->id === Auth::id()) {
+            return redirect()->back()->with('error', 'You cannot delete your own account.');
+        }
+
+        $userName = $user->name;
+
+        // Delete user's watchlist entries
+        $user->watchlistMovies()->detach();
+
+        // Delete user's movie requests
+        $user->movieRequests()->delete();
+
+        // Delete the user
+        $user->delete();
+
+        return redirect()->back()->with('success', "User '{$userName}' has been deleted successfully.");
     }
 }

@@ -82,4 +82,30 @@ class AuthController extends Controller
         
         return redirect('/')->with('success', 'You have been logged out successfully.');
     }
+
+    /**
+     * Show the forgot password form
+     */
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    /**
+     * Handle password reset
+     */
+    public function resetPassword(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8|confirmed'
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+        
+        $user->password = bcrypt($validated['password']);
+        $user->save();
+
+        return redirect()->route('auth.login')->with('success', 'Password reset successfully! You can now login with your new password.');
+    }
 }
