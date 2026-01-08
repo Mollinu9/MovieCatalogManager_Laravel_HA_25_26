@@ -63,6 +63,15 @@ Route::controller(MovieController::class)->group(function ()
 });
 
 // ========================================
+// REVIEW ROUTES (Requires authentication)
+// ========================================
+
+Route::middleware('auth')->group(function () 
+{
+    Route::post('/movies/{id}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+});
+
+// ========================================
 // ADMIN ROUTES (Requires authentication + admin role)
 // ========================================
 

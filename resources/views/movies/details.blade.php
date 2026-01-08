@@ -106,7 +106,7 @@
         @if($movie->trailer_link)
           <hr class="my-2">
           <h6 class="mb-2">Trailer</h6>
-          <div class="embed-responsive embed-responsive-16by9" style="max-width: 50%;">
+          <div class="embed-responsive embed-responsive-16by9">
             <iframe class="embed-responsive-item" 
                     src="{{ $movie->embedUrl ?? ''}}" 
                     allowfullscreen></iframe>
@@ -126,7 +126,9 @@
             <h6 class="mb-0"><i class="fa fa-star text-warning"></i> Write a Review</h6>
           </div>
           <div class="card-body p-2">
-            <form>
+            <form action="{{ route('reviews.store', $movie->id) }}" method="POST">
+              @csrf
+              
               <div class="form-group">
                 <label for="rating" class="small">Your Rating</label>
                 <select class="form-control form-control-sm" name="rating" id="rating" required>
@@ -145,7 +147,10 @@
                           id="comment" 
                           rows="4" 
                           placeholder="Share your thoughts..." 
-                          required></textarea>
+                          required
+                          minlength="10"
+                          maxlength="1000"></textarea>
+                <small class="text-muted">Min 10 characters</small>
               </div>
               
               <button type="submit" class="btn btn-primary btn-sm btn-block">
@@ -192,7 +197,7 @@
                   @endfor
                 </span>
               </div>
-              <p class="small text-muted mb-1">{{ $review->created_at->diffForHumans() }}</p>
+              <p class="small text-muted mb-1">{{ $review->created_at }}</p>
               <p class="small mb-0">{{ $review->comment }}</p>
             </div>
           @endforeach

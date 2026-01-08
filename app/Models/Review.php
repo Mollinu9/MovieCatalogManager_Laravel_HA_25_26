@@ -19,7 +19,7 @@ class Review extends Model
     /**
      * Get the user that wrote the review
      */
-    public function user_author()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -27,7 +27,7 @@ class Review extends Model
     /**
      * Get the movie that is being reviewed
      */
-    public function movie_reviewed()
+    public function movie()
     {
         return $this->belongsTo(Movie::class);
     }
