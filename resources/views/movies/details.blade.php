@@ -1,163 +1,206 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Success Message -->
+@if(session('success'))
+  @include('partials.alert', [
+    'type' => 'success',
+    'message' => session('success')
+  ])
+@endif
+
 <div class="row">
-  <!-- Movie Poster -->
-  <div class="col-lg-3 col-md-4 mb-4">
-    <div class="movie-details-poster">
-      <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" class="img-fluid" alt="{{ $movie->title }} Poster">
-    </div>
+  <!-- Left: Movie Poster -->
+  <div class="col-md-2">
+    <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/300x450' }}" 
+         class="img-fluid rounded" 
+         alt="{{ $movie->title }} Poster">
   </div>
 
-  <!-- Movie Details -->
-  <div class="col-lg-9 col-md-8">
-    <div class="card movie-details-card">
-      <div class="card-body">
-        <h2 class="card-title">{{ $movie->title }}</h2>
-        
-        <div class="genre-badge-container">
+  <!-- Middle: Movie Details + Trailer -->
+  <div class="col-md-7">
+    <!-- Movie Details Card -->
+    <div class="card">
+      <div class="card-body p-3">
+        <!-- Title and Year -->
+        <h4 class="mb-1">
+          {{ $movie->title }}
+          @if($movie->release_date)
+            <span class="text-muted">({{ $movie->release_date->format('Y') }})</span>
+          @endif
+        </h4>
+
+        <!-- Meta Info -->
+        <p class="text-muted mb-2 small">
+          @if($movie->release_date)
+            {{ $movie->release_date->format('m/d/Y') }} (US)
+          @endif
+          • 
+          @if($movie->genres->count() > 0)
+            {{ $movie->genres->pluck('name')->join(', ') }}
+          @endif
+          @if($movie->runtime)
+            • {{ $movie->runtime }}m
+          @endif
+        </p>
+
+        <!-- Genres -->
+        <div class="mb-2">
           @foreach($movie->genres as $genre)
             @include('partials.genre-badge', [
               'genre' => $genre,
-              'size' => 'medium'
+              'size' => 'small'
             ])
           @endforeach
         </div>
 
-        <!-- Success Message -->
-        @if(session('success'))
-          @include('partials.alert', [
-            'type' => 'success',
-            'message' => session('success')
-          ])
-        @endif
-
-        <!-- Watchlist Button -->
-        @auth
-        <div class="mb-3">
-          <form action="{{ route('movies.watchlist.toggle', $movie->id) }}" method="POST" style="display: inline;">
-            @csrf
-            @if($inWatchlist)
-              <button type="submit" class="btn btn-danger btn-lg">
-                <i class="fa fa-heart"></i> Remove from Watchlist
-              </button>
-            @else
-              <button type="submit" class="btn btn-primary btn-lg">
-                <i class="fa fa-heart"></i> Add to Watchlist
-              </button>
-            @endif
-          </form>
-          <a href="{{ route('movies.watchlist') }}" class="btn btn-outline-primary btn-lg">
-            <i class="fa fa-list"></i> View Watchlist
-          </a>
+        <!-- Action Buttons -->
+        <div class="mb-2">
+          @auth
+            <form action="{{ route('movies.watchlist.toggle', $movie->id) }}" method="POST" class="d-inline">
+              @csrf
+              @if($inWatchlist)
+                <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="fa fa-heart"></i> In Watchlist
+                </button>
+              @else
+                <button type="submit" class="btn btn-primary btn-sm">
+                  <i class="fa fa-heart-o"></i> Add to Watchlist
+                </button>
+              @endif
+            </form>
+          @endauth
         </div>
-        @endauth
 
-        <div class="movie-meta-info">
-          <p>
-            <i class="fa fa-calendar"></i>
-            <strong>Release Date:</strong> 
-            {{ $movie->release_date ? $movie->release_date->format('F j, Y') : 'N/A' }}
-          </p>
-          
-          <p>
-            <i class="fa fa-clock"></i>
-            <strong>Runtime:</strong> 
-            {{ $movie->runtime ?? 'N/A' }} minutes
-          </p>
-          
-          <p>
-            <i class="fa fa-language"></i>
-            <strong>Language:</strong> 
-            {{ strtoupper($movie->language ?? 'N/A') }}
-          </p>
+        <!-- Synopsis -->
+        <div class="mb-2">
+          <h6 class="mb-1">Overview</h6>
+          <p class="small mb-0" style="line-height: 1.5;">{{ $movie->description }}</p>
+        </div>
 
-          <hr>
+        <hr class="my-2">
 
-          <div class="synopsis-content">
-            <p>
-              <i class="fa fa-file-text"></i>
-              <strong>Synopsis:</strong>
+        <!-- Additional Info -->
+        <div class="row small">
+          <div class="col-md-4">
+            <p class="mb-0">
+              <strong><i class="fa fa-calendar"></i> Release</strong><br>
+              <span class="text-muted">{{ $movie->release_date ? $movie->release_date->format('M d, Y') : 'N/A' }}</span>
             </p>
-            <p style="margin-left: 2rem; text-align: justify; line-height: 1.8;">{{ $movie->description }}</p>
+          </div>
+          <div class="col-md-4">
+            <p class="mb-0">
+              <strong><i class="fa fa-clock"></i> Runtime</strong><br>
+              <span class="text-muted">{{ $movie->runtime ?? 'N/A' }} min</span>
+            </p>
+          </div>
+          <div class="col-md-4">
+            <p class="mb-0">
+              <strong><i class="fa fa-language"></i> Language</strong><br>
+              <span class="text-muted">{{ strtoupper($movie->language ?? 'N/A') }}</span>
+            </p>
           </div>
         </div>
-        
+
+        <!-- Trailer Section -->
         @if($movie->trailer_link)
-        <hr>
-        <div class="trailer-section">
-          <h5>Trailer</h5>
-          <div class="embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="{{ $movie->embedUrl ?? ''}}" allowfullscreen></iframe>
+          <hr class="my-2">
+          <h6 class="mb-2">Trailer</h6>
+          <div class="embed-responsive embed-responsive-16by9" style="max-width: 50%;">
+            <iframe class="embed-responsive-item" 
+                    src="{{ $movie->embedUrl ?? ''}}" 
+                    allowfullscreen></iframe>
           </div>
-        </div>
         @endif
       </div>
     </div>
+  </div>
 
-    <!--
-    Reviews Section 
-    <div class="card mt-4">
-      <div class="card-header">
-        <h5 class="mb-0">User Reviews</h5>
+  <!-- Right: Reviews Section -->
+  <div class="col-md-3">
+    <!-- Write Review Form (Only for users who watched) -->
+    @auth
+      @if($hasWatched)
+        <div class="card mb-3">
+          <div class="card-header p-2">
+            <h6 class="mb-0"><i class="fa fa-star text-warning"></i> Write a Review</h6>
+          </div>
+          <div class="card-body p-2">
+            <form>
+              <div class="form-group">
+                <label for="rating" class="small">Your Rating</label>
+                <select class="form-control form-control-sm" name="rating" id="rating" required>
+                  <option value="5" selected>5 - Excellent</option>
+                  <option value="4">4 - Very Good</option>
+                  <option value="3">3 - Good</option>
+                  <option value="2">2 - Fair</option>
+                  <option value="1">1 - Poor</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="comment" class="small">Your Review</label>
+                <textarea class="form-control form-control-sm" 
+                          name="comment" 
+                          id="comment" 
+                          rows="4" 
+                          placeholder="Share your thoughts..." 
+                          required></textarea>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-sm btn-block">
+                <i class="fa fa-paper-plane"></i> Submit
+              </button>
+            </form>
+          </div>
+        </div>
+      @else
+        <div class="card mb-3">
+          <div class="card-body p-3 text-center text-muted">
+            <i class="fa fa-star-o fa-2x mb-2"></i>
+            <p class="small mb-0">Mark this movie as "watched" to write a review</p>
+          </div>
+        </div>
+      @endif
+    @else
+      <div class="card mb-3">
+        <div class="card-body p-3 text-center text-muted">
+          <i class="fa fa-lock fa-2x mb-2"></i>
+          <p class="small mb-0">Login to write a review</p>
+        </div>
       </div>
-      <div class="card-body">
-        Add Review Form (Only for logged in users who watched)
-        @include('partials.alert', [
-          'type' => 'info',
-          'message' => 'Mark this movie as watched to submit a review.'
-        ])
+    @endauth
 
-         Review Form (shown when user has watched) 
-        <form class="mb-4 review-form-hidden">
-          <div class="form-group">
-            <label>Your Rating</label>
-            <select class="form-control" name="rating">
-              <option value="1">1 - Poor</option>
-              <option value="2">2 - Fair</option>
-              <option value="3">3 - Good</option>
-              <option value="4">4 - Very Good</option>
-              <option value="5" selected>5 - Excellent</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Your Review</label>
-            <textarea class="form-control" name="comment" rows="3" placeholder="Share your thoughts..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit Review</button>
-        </form>
-
-        <hr>
-
-         Existing Reviews
-        <div class="media mb-3">
-          <div class="media-body">
-            <h6 class="mt-0">John Doe <small class="text-muted">• 2 days ago</small></h6>
-            <p class="mb-1"><i class="fa fa-star text-warning"></i> 5/5</p>
-            <p class="text-muted">
-              Absolutely phenomenal! Heath Ledger's performance as the Joker is unforgettable. 
-              This movie redefined superhero films.
-            </p>
-            <button class="btn btn-sm btn-outline-danger"><i class="fa fa-trash"></i> Delete</button>
-          </div>
-        </div>
-
-        <hr>
-
-        <div class="media mb-3">
-          <div class="media-body">
-            <h6 class="mt-0">Jane Smith <small class="text-muted">• 1 week ago</small></h6>
-            <p class="mb-1"><i class="fa fa-star text-warning"></i> 4.5/5</p>
-            <p class="text-muted">
-              A masterpiece of modern cinema. The action sequences are incredible and the story is gripping.
-            </p>
-          </div>
-        </div>
-
+    <!-- All Reviews (Visible to everyone) -->
+    <div class="card">
+      <div class="card-header p-2">
+        <h6 class="mb-0"><i class="fa fa-comments"></i> Reviews</h6>
+      </div>
+      <div class="card-body p-2">
+        @if($movie->reviews && $movie->reviews->count() > 0)
+          @foreach($movie->reviews as $review)
+            <div class="mb-3 pb-2 border-bottom">
+              <div class="d-flex justify-content-between align-items-start">
+                <strong class="small">{{ $review->user->name }}</strong>
+                <span class="text-warning small">
+                  @for($i = 1; $i <= 5; $i++)
+                    @if($i <= $review->rating)
+                      <i class="fa fa-star"></i>
+                    @else
+                      <i class="fa fa-star-o"></i>
+                    @endif
+                  @endfor
+                </span>
+              </div>
+              <p class="small text-muted mb-1">{{ $review->created_at->diffForHumans() }}</p>
+              <p class="small mb-0">{{ $review->comment }}</p>
+            </div>
+          @endforeach
+        @else
+          <p class="text-center text-muted small mb-0">No reviews yet. Be the first!</p>
+        @endif
       </div>
     </div>
-    -->
-
   </div>
 </div>
 @endsection

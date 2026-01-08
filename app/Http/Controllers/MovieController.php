@@ -48,16 +48,20 @@ class MovieController extends Controller
      */
     public function details($id)
     {
-        $movie = Movie::with('genres')->findOrFail($id);
+        $movie = Movie::with(['genres', 'reviews.user'])->findOrFail($id);
         
         // Check if movie is in user's watchlist (if authenticated)
         $inWatchlist = false;
+        $hasWatched = false;
+        
         if (auth()->check()) 
         {
-            $inWatchlist = auth()->user()->watchlistMovies()->where('movie_id', $id)->exists();
+            $watchlistEntry = auth()->user()->watchlistMovies()->where('movie_id', $id)->first();
+            $inWatchlist = $watchlistEntry !== null;
+            $hasWatched = $watchlistEntry && $watchlistEntry->pivot->status === 'watched';
         }
         
-        return view('movies.details', compact('movie', 'inWatchlist'));
+        return view('movies.details', compact('movie', 'inWatchlist', 'hasWatched'));
     }
 
     /**
