@@ -22,9 +22,20 @@ class AdminController extends Controller
     /**
      * Display admin dashboard with paginated list of all movies
      */
-    public function index()
+    public function index(Request $request)
     {
-        $movies = Movie::with('genres')->orderBy('created_at', 'asc')->paginate(20);
+        // Get search query
+        $search = $request->input('search');
+
+        // Build query with search filter
+        $query = Movie::with('genres')->orderBy('created_at', 'asc');
+
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        $movies = $query->paginate(20);
+
         return view('admin.index', compact('movies'));
     }
 
@@ -42,43 +53,90 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate incoming movie data
-        $validated = $this->validateMovieRequest($request);
+        // Log the incoming request for debugging
+        \Log::info('Movie store attempt', [
+            'user_id' => auth()->id(),
+            'is_admin' => auth()->user()->is_admin,
+            'input_method' => $request->input('input_method'),
+            'title' => $request->input('title'),
+            'all_data' => $request->all()
+        ]);
 
-        // Check for duplicates in database and user requests
-        $duplicateCheck = $this->checkForDuplicates($validated);
-        if ($duplicateCheck) {
-            return $duplicateCheck;
-        }
+        try {
+            // Validate incoming movie data
+            $validated = $this->validateMovieRequest($request);
+            \Log::info('Validation passed', ['validated' => $validated]);
 
-        // Generate URL-friendly slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+            // Check for duplicates in database and user requests
+            $duplicateCheck = $this->checkForDuplicates($validated);
+            if ($duplicateCheck) {
+                \Log::info('Duplicate found, redirecting back');
+                return $duplicateCheck;
+            }
 
-        // Handle TMDB ID based on input method
-        if ($validated['input_method'] === 'manual')
-        {
-            // Generate unique negative TMDB ID for manually added movies
-            $validated['tmdb_id'] = $this->generateManualTmdbId();
-        }
-        elseif ($validated['input_method'] === 'tmdb' && empty($validated['tmdb_id']))
-        {
+            // Generate URL-friendly slug from title
+            $validated['slug'] = Str::slug($validated['title']);
+
+            // Set default values for optional fields if empty
+            if (empty($validated['description'])) {
+                $validated['description'] = null;
+            }
+            if (empty($validated['runtime'])) {
+                $validated['runtime'] = null;
+            }
+            if (empty($validated['poster_url'])) {
+                $validated['poster_url'] = null;
+            }
+            if (empty($validated['trailer_link'])) {
+                $validated['trailer_link'] = null;
+            }
+
+            // Handle TMDB ID based on input method
+            if ($validated['input_method'] === 'manual')
+            {
+                // Generate unique negative TMDB ID for manually added movies
+                $validated['tmdb_id'] = $this->generateManualTmdbId();
+                \Log::info('Generated manual TMDB ID', ['tmdb_id' => $validated['tmdb_id']]);
+            }
+            elseif ($validated['input_method'] === 'tmdb' && empty($validated['tmdb_id']))
+            {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['tmdb_id' => 'TMDB ID is required when using TMDB import method.']);
+            }
+
+            // Remove input_method (not a database column)
+            unset($validated['input_method']);
+
+            \Log::info('About to create movie', ['data' => $validated]);
+
+            // Create movie and attach genres
+            $movie = Movie::create($validated);
+            \Log::info('Movie created', ['movie_id' => $movie->id, 'title' => $movie->title]);
+
+            if ($request->has('genres'))
+            {
+                $movie->genres()->attach($request->genres);
+                \Log::info('Genres attached', ['genres' => $request->genres]);
+            }
+
+            \Log::info('Movie saved successfully, redirecting', ['movie_id' => $movie->id]);
+
+            return redirect()->route('admin.movies.index')->with('success', 'Movie added successfully!');
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation error', ['errors' => $e->errors()]);
+            throw $e;
+        } catch (\Exception $e) {
+            \Log::error('Movie store error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['tmdb_id' => 'TMDB ID is required when using TMDB import method.']);
+                ->withErrors(['error' => 'An error occurred while saving the movie: ' . $e->getMessage()]);
         }
-
-        // Remove input_method (not a database column)
-        unset($validated['input_method']);
-
-        // Create movie and attach genres
-        $movie = Movie::create($validated);
-
-        if ($request->has('genres'))
-        {
-            $movie->genres()->attach($request->genres);
-        }
-
-        return redirect()->route('admin.movies.index')->with('success', 'Movie added successfully!');
     }
 
     /**
@@ -217,10 +275,10 @@ class AdminController extends Controller
             'input_method' => 'required|in:tmdb,manual',
             'tmdb_id' => 'nullable|integer',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'release_date' => 'nullable|date',
+            'description' => 'required|string',
+            'release_date' => 'required|date',
             'runtime' => 'nullable|integer|min:1',
-            'language' => 'nullable|string|max:10',
+            'language' => 'required|string|max:10',
             'poster_url' => 'nullable|url',
             'trailer_link' => 'nullable|url',
             'genres' => 'nullable|array',

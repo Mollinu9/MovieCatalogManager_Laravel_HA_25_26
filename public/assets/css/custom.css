@@ -324,6 +324,16 @@ footer .text-muted {
   box-shadow: 0 0 0 0.2rem rgba(255, 140, 66, 0.25);
 }
 
+.form-control.is-invalid {
+  border-color: var(--red);
+  background-color: #fff5f5;
+}
+
+.form-control.is-invalid:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
 .form-control::placeholder {
   color: var(--medium-gray);
   opacity: 0.7;

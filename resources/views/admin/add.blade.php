@@ -66,60 +66,65 @@
 
                 <!-- Manual Entry Section (hidden by default) -->
                 <div id="manual-section" class="d-none">
+                  <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i> <strong>Note:</strong> Fields marked with <span class="text-danger">*</span> are required.
+                  </div>
+
                   <!-- Hidden field for tmdb_id (will be auto-generated as negative number) -->
                   <input type="hidden" name="tmdb_id_manual" id="tmdb_id_manual" value="">
                   
                   <div class="form-group row">
-                    <label for="title" class="col-md-3 col-form-label">Title</label>
+                    <label for="title" class="col-md-3 col-form-label">Title <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <input type="text" name="title" id="title" class="form-control">
+                      <input type="text" name="title" id="title" class="form-control" placeholder="Enter movie title" required>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label for="description" class="col-md-3 col-form-label">Description</label>
+                    <label for="description" class="col-md-3 col-form-label">Description <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <textarea name="description" id="description" rows="4" class="form-control"></textarea>
+                      <textarea name="description" id="description" rows="4" class="form-control" placeholder="Enter movie description" required></textarea>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label for="release_date" class="col-md-3 col-form-label">Release Date</label>
+                    <label for="release_date" class="col-md-3 col-form-label">Release Date <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <input type="date" name="release_date" id="release_date" class="form-control">
+                      <input type="date" name="release_date" id="release_date" class="form-control" required>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label for="runtime" class="col-md-3 col-form-label">Runtime (minutes)</label>
+                    <label for="runtime" class="col-md-3 col-form-label">Runtime (minutes) <small class="text-muted">(Optional)</small></label>
                     <div class="col-md-9">
-                      <input type="number" name="runtime" id="runtime" class="form-control">
+                      <input type="number" name="runtime" id="runtime" class="form-control" placeholder="e.g. 120" min="1">
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label for="language" class="col-md-3 col-form-label">Language</label>
+                    <label for="language" class="col-md-3 col-form-label">Language <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <input type="text" name="language" id="language" class="form-control">
+                      <input type="text" name="language" id="language" class="form-control" placeholder="e.g. en, fr, es" required maxlength="10">
+                      <small class="form-text text-muted">Use ISO 639-1 language code (e.g., en for English)</small>
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label for="poster_url" class="col-md-3 col-form-label">Poster URL</label>
+                    <label for="poster_url" class="col-md-3 col-form-label">Poster URL <small class="text-muted">(Optional)</small></label>
                     <div class="col-md-9">
-                      <input type="url" name="poster_url" id="poster_url" class="form-control">
+                      <input type="url" name="poster_url" id="poster_url" class="form-control" placeholder="https://example.com/poster.jpg">
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label for="trailer_link" class="col-md-3 col-form-label">Trailer Link</label>
+                    <label for="trailer_link" class="col-md-3 col-form-label">Trailer Link <small class="text-muted">(Optional)</small></label>
                     <div class="col-md-9">
-                      <input type="url" name="trailer_link" id="trailer_link" class="form-control">
+                      <input type="url" name="trailer_link" id="trailer_link" class="form-control" placeholder="https://youtube.com/watch?v=...">
                     </div>
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Genres</label>
+                    <label class="col-md-3 col-form-label">Genres <small class="text-muted">(Optional)</small></label>
                     <div class="col-md-9">
                       <div class="d-flex flex-wrap">
                         @forelse($genres as $genre)
@@ -149,7 +154,10 @@
                         <button type="button" class="btn btn-primary" id="preview-btn">
                           <i class="fa fa-eye"></i> Preview Movie
                         </button>
-                        <a href="{{ route('movies.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">
+                          <i class="fa fa-save"></i> Save Movie
+                        </button>
+                        <a href="{{ route('admin.movies.index') }}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                   </div>
                 </div>
@@ -162,6 +170,7 @@
     </div>
   </div>
 </div>
+
 <!-- Preview Modal -->
 <div class="modal fade" id="previewModal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
@@ -188,11 +197,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-          <i class="fa fa-arrow-left"></i> Go Back
-        </button>
-        <button type="button" class="btn btn-success" id="save-from-preview">
-          <i class="fa fa-check"></i> Confirm & Save
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fa fa-times"></i> Close
         </button>
       </div>
     </div>

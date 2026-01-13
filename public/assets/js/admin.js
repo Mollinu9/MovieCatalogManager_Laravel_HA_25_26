@@ -74,16 +74,15 @@ document.addEventListener('DOMContentLoaded', function () {
             manualSection.classList.remove('d-none');
         });
     }
-});
 
-// Movie Preview functionality
-document.addEventListener('DOMContentLoaded', function () {
+    // Movie Preview functionality (optional - no validation)
     const previewBtn = document.getElementById('preview-btn');
-    const saveFromPreviewBtn = document.getElementById('save-from-preview');
     const movieForm = document.querySelector('form');
 
     if (previewBtn) {
-        previewBtn.addEventListener('click', function () {
+        previewBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
             // Get form values
             const title = document.getElementById('title').value || 'Untitled Movie';
             const description = document.getElementById('description').value || 'No description provided.';
@@ -108,20 +107,12 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('preview-meta').textContent = year + ' • ' + (selectedGenres[0] || 'Genre');
             document.getElementById('preview-description').textContent = description;
             document.getElementById('preview-runtime').textContent = runtime ? runtime + ' minutes' : 'N/A';
-            document.getElementById('preview-language').textContent = language;
+            document.getElementById('preview-language').textContent = language.toUpperCase();
             document.getElementById('preview-genres').textContent = genresText;
             document.getElementById('preview-poster').src = posterUrl;
 
             // Show modal
             $('#previewModal').modal('show');
-        });
-    }
-
-    // Save from preview button
-    if (saveFromPreviewBtn && movieForm) {
-        saveFromPreviewBtn.addEventListener('click', function () {
-            $('#previewModal').modal('hide');
-            movieForm.submit();
         });
     }
 });

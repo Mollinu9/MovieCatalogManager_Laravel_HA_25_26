@@ -26,7 +26,7 @@
 
 <!-- Movies by Genre -->
 @forelse($genres as $genre)
-  @if($genre->movies->count() > 1)
+  @if($genre->movies->count() > 2)
     <div class="mb-5" id="genre-{{ $genre->slug }}">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="mb-0">{{ $genre->name }}</h3>
