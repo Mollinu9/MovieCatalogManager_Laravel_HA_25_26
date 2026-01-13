@@ -19,7 +19,7 @@
     <nav class="navbar navbar-expand-lg navbar-light">
       <div class="container">
         <a class="navbar-brand text-uppercase" href="{{ url('/') }}">            
-            <strong>Movie Catalog </strong> J.M.
+            <strong>Movie Catalog </strong>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggler" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -56,6 +56,9 @@
                   <div class="dropdown-menu" aria-labelledby="adminDropdown">
                     <a class="dropdown-item" href="{{ route('admin.movies.index') }}">
                       <i class="fa fa-film"></i> Manage Movies
+                    </a>
+                    <a class="dropdown-item" href="{{ route('admin.movies.create') }}">
+                      <i class="fa fa-plus-circle"></i> Add New Movie
                     </a>
                     <a class="dropdown-item" href="{{ route('admin.requests.index') }}">
                       <i class="fa fa-inbox"></i> Movie Requests
@@ -109,7 +112,7 @@
         </div>
         <hr class="bg-secondary">
         <div class="text-center text-muted">
-          <p class="mb-0">&copy; 2026 Movie Catalog J.M. All rights reserved.</p>
+          <p class="mb-0">&copy; 2026 Movie Catalog All rights reserved.</p>
         </div>
       </div>
     </footer>

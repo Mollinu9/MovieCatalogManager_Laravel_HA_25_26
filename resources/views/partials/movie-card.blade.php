@@ -160,7 +160,7 @@
     <div class="card mb-3">
       <div class="row no-gutters">
         <div class="col-md-2">
-          <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/150x225' }}" class="card-img" alt="{{ $movie->title }}" style="height: 100%; object-fit: cover;">
+          <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/150x225' }}" class="card-img movie-card-img-list" alt="{{ $movie->title }}">
         </div>
         <div class="col-md-10">
           <div class="card-body">
@@ -191,7 +191,7 @@
   
   @case('compact')
     <div class="media mb-3">
-      <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/80x120' }}" class="mr-3" alt="{{ $movie->title }}" style="width: 80px; height: 120px; object-fit: cover; border-radius: 4px;">
+      <img src="{{ $movie->poster_url ?? 'https://via.placeholder.com/80x120' }}" class="mr-3 movie-card-img-compact" alt="{{ $movie->title }}">
       <div class="media-body">
         <h6 class="mt-0">{{ $movie->title }}</h6>
         <p class="text-muted small mb-1">

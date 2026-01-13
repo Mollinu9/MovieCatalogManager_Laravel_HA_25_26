@@ -21,7 +21,7 @@
             {{ $genre->name }}
           </a>
         @else
-          <button class="btn btn-sm m-1 btn-outline-secondary" disabled style="cursor: not-allowed; opacity: 0.5;">
+          <button class="btn btn-sm m-1 btn-outline-secondary genre-btn-disabled" disabled>
             {{ $genre->name }}
           </button>
         @endif

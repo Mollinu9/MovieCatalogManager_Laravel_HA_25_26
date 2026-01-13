@@ -11,7 +11,7 @@
 @endphp
 
 <div class="text-center py-5">
-  <i class="fa {{ $icon }}" style="font-size: {{ $iconSize }}; color: #dee2e6;"></i>
+  <i class="fa {{ $icon }} empty-state-icon" style="font-size: {{ $iconSize }};"></i>
   <h4 class="mt-4 text-muted">{{ $title }}</h4>
   
   @if($description)

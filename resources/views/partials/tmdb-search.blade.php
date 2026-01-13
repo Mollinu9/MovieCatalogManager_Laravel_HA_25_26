@@ -30,7 +30,7 @@
 </div>
 
 <!-- Search by TMDB ID -->
-<div class="form-group {{ isset($formLayout) && $formLayout === 'horizontal' ? 'row' : '' }}" id="tmdb-id-search" style="display: none;">
+<div class="form-group {{ isset($formLayout) && $formLayout === 'horizontal' ? 'row' : '' }} d-none" id="tmdb-id-search">
   <label for="tmdb_id" class="{{ isset($formLayout) && $formLayout === 'horizontal' ? 'col-md-3 col-form-label' : '' }}">TMDB ID</label>
   <div class="{{ isset($formLayout) && $formLayout === 'horizontal' ? 'col-md-9' : '' }}">
     <div class="input-group">

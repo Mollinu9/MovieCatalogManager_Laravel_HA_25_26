@@ -13,15 +13,8 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header card-title">
-        <div class="d-flex align-items-center">
-              <h2 class="mb-0">Manage Movies</h2>
-              <div class="ml-auto">
-                <a href="{{ route('admin.movies.create') }}" class="btn btn-success">
-                  <i class="fa fa-plus-circle"></i> Add New Movie
-                </a>
-              </div>
-            </div>
-          </div>
+        <h2 class="mb-0">Manage Movies</h2>
+      </div>
           <div class="card-body">
             @if($movies->count() > 0)
               <div class="row">

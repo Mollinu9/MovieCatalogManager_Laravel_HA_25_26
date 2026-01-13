@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Show TMDB section, hide manual section
             tmdbSection.style.display = 'block';
-            manualSection.style.display = 'none';
+            manualSection.classList.add('d-none');
         });
 
         manualOption.addEventListener('click', function () {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Hide TMDB section, show manual section
             tmdbSection.style.display = 'none';
-            manualSection.style.display = 'block';
+            manualSection.classList.remove('d-none');
         });
     }
 });

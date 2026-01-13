@@ -24,8 +24,6 @@
           <h2 class="mb-0">Movie Requests</h2>
           <div>
             <span class="badge badge-warning">{{ $pendingCount }} Pending</span>
-            <span class="badge badge-success">{{ $approvedCount }} Approved</span>
-            <span class="badge badge-danger">{{ $rejectedCount }} Rejected</span>
           </div>
         </div>
       </div>
@@ -40,7 +38,6 @@
                   <th scope="col">TMDB ID</th>
                   <th scope="col">Requested By</th>
                   <th scope="col">Date</th>
-                  <th scope="col">Status</th>
                   <th scope="col" class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -64,50 +61,26 @@
                       <br>
                       <small class="text-muted">{{ $request->created_at->diffForHumans() }}</small>
                     </td>
-                    <td>
-                      @if($request->status === 'pending')
-                        <span class="badge badge-warning">Pending</span>
-                      @elseif($request->status === 'approved')
-                        <span class="badge badge-success">Approved</span>
-                      @elseif($request->status === 'rejected')
-                        <span class="badge badge-danger">Rejected</span>
-                      @endif
-                    </td>
                     <td class="text-center">
-                      @if($request->status === 'pending')
-                        <!-- Approve Button -->
-                        <form action="{{ route('admin.requests.approve', $request->id) }}" method="POST" style="display: inline;">
-                          @csrf
-                          <button type="submit" 
-                                  class="btn btn-sm btn-success" 
-                                  title="Approve Request">
-                            <i class="fa fa-check"></i> Approve
-                          </button>
-                        </form>
-
-                        <!-- Reject Button -->
-                        <form action="{{ route('admin.requests.reject', $request->id) }}" method="POST" style="display: inline;">
-                          @csrf
-                          <button type="submit" 
-                                  class="btn btn-sm btn-warning" 
-                                  title="Reject Request"
-                                  onclick="return confirm('Reject this movie request?')">
-                            <i class="fa fa-times"></i> Reject
-                          </button>
-                        </form>
-                      @else
-                        <span class="text-muted">No actions</span>
-                      @endif
-
-                      <!-- Delete Button -->
-                      <form action="{{ route('admin.requests.destroy', $request->id) }}" method="POST" style="display: inline;">
+                      <!-- Approve Button (adds movie and deletes request) -->
+                      <form action="{{ route('admin.requests.approve', $request->id) }}" method="POST" class="d-inline-form">
                         @csrf
-                        @method('DELETE')
                         <button type="submit" 
-                                class="btn btn-sm btn-outline-danger" 
-                                title="Delete Request"
-                                onclick="return confirm('Delete this request permanently?')">
-                          <i class="fa fa-trash"></i>
+                                class="btn btn-sm btn-success" 
+                                title="Approve and add movie to database"
+                                onclick="return confirm('Add this movie to the database?')">
+                          <i class="fa fa-check"></i> Approve
+                        </button>
+                      </form>
+
+                      <!-- Reject Button (deletes request) -->
+                      <form action="{{ route('admin.requests.reject', $request->id) }}" method="POST" class="d-inline-form">
+                        @csrf
+                        <button type="submit" 
+                                class="btn btn-sm btn-danger" 
+                                title="Reject and delete request"
+                                onclick="return confirm('Reject and delete this request?')">
+                          <i class="fa fa-times"></i> Reject
                         </button>
                       </form>
 

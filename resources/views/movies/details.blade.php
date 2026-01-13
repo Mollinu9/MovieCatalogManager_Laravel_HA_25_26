@@ -75,7 +75,7 @@
         <!-- Synopsis -->
         <div class="mb-2">
           <h6 class="mb-1">Overview</h6>
-          <p class="small mb-0" style="line-height: 1.5;">{{ $movie->description }}</p>
+          <p class="small mb-0 movie-overview-text">{{ $movie->description }}</p>
         </div>
 
         <hr class="my-2">

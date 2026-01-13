@@ -8,6 +8,15 @@
         <strong>Add New Movie</strong>
       </div>           
         <div class="card-body">
+          @if(session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong><i class="fa fa-exclamation-triangle"></i> Warning:</strong> {{ session('warning') }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          @endif
+
           @if ($errors->any())
             <div class="alert alert-danger">
               <ul class="mb-0">
@@ -27,10 +36,10 @@
                   <label class="col-md-3 col-form-label">Input Method</label>
                   <div class="col-md-9">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                      <label class="btn input-method-badge text-white selected" id="tmdb-option" style="cursor: pointer;">
+                      <label class="btn input-method-badge text-white selected cursor-pointer" id="tmdb-option">
                         <input type="radio" name="input_method" value="tmdb" checked> TMDB Import
                       </label>
-                      <label class="btn input-method-badge text-white" id="manual-option" style="cursor: pointer;">
+                      <label class="btn input-method-badge text-white cursor-pointer" id="manual-option">
                         <input type="radio" name="input_method" value="manual"> Manual Entry
                       </label>
                     </div>
@@ -56,7 +65,7 @@
                 </div>
 
                 <!-- Manual Entry Section (hidden by default) -->
-                <div id="manual-section" style="display: none;">
+                <div id="manual-section" class="d-none">
                   <!-- Hidden field for tmdb_id (will be auto-generated as negative number) -->
                   <input type="hidden" name="tmdb_id_manual" id="tmdb_id_manual" value="">
                   
@@ -114,8 +123,8 @@
                     <div class="col-md-9">
                       <div class="d-flex flex-wrap">
                         @forelse($genres as $genre)
-                          <label class="btn btn-sm m-1 genre-badge" style="cursor: pointer;">
-                            <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;">
+                          <label class="btn btn-sm m-1 genre-badge cursor-pointer">
+                            <input type="checkbox" name="genres[]" value="{{ $genre->id }}" class="d-none">
                             {{ $genre->name }}
                           </label>
                         @empty

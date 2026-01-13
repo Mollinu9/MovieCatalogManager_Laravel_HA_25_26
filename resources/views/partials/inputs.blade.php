@@ -84,7 +84,7 @@
     
     @if($showPreview && $value)
       <div class="mt-2">
-        <img src="{{ $value }}" alt="Preview" style="max-width: 150px; border-radius: 8px;">
+        <img src="{{ $value }}" alt="Preview" class="input-preview-img">
       </div>
     @endif
     

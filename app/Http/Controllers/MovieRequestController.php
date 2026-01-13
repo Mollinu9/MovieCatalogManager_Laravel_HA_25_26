@@ -36,17 +36,12 @@ class MovieRequestController extends Controller
             'tmdb_id' => 'required|integer'
         ]);
 
-        // Check if movie already exists in database
-        if (Movie::where('tmdb_id', $validated['tmdb_id'])->exists()) {
-            return response()->json([
-                'error' => 'This movie already exists in the database',
-                'existing' => true
-            ], 409);
-        }
-
-        // Check if ANY user has already requested this movie (pending or approved)
-        $existingRequest = MovieRequest::where('tmdb_id', $validated['tmdb_id'])
-            ->whereIn('status', ['pending', 'approved'])
+        // Step 1: Check if movie already exists in movie_requests table (by TMDB ID or title)
+        $existingRequest = MovieRequest::where('status', 'pending')
+            ->where(function($query) use ($validated) {
+                $query->where('tmdb_id', $validated['tmdb_id'])
+                      ->orWhere('movie_title', $validated['movie_title']);
+            })
             ->first();
 
         if ($existingRequest) {
@@ -56,7 +51,19 @@ class MovieRequestController extends Controller
             ], 409);
         }
 
-        // Create the request
+        // Step 2: Check if movie already exists in movies table (by TMDB ID or title)
+        $existingMovie = Movie::where('tmdb_id', $validated['tmdb_id'])
+            ->orWhere('title', $validated['movie_title'])
+            ->first();
+
+        if ($existingMovie) {
+            return response()->json([
+                'error' => 'This movie already exists in the database',
+                'existing' => true
+            ], 409);
+        }
+
+        // Step 3: Create the request if not found in either table
         MovieRequest::create([
             'user_id' => auth()->id(),
             'movie_title' => $validated['movie_title'],
@@ -82,10 +89,8 @@ class MovieRequestController extends Controller
             ->paginate(20);
 
         $pendingCount = MovieRequest::where('status', 'pending')->count();
-        $approvedCount = MovieRequest::where('status', 'approved')->count();
-        $rejectedCount = MovieRequest::where('status', 'rejected')->count();
 
-        return view('admin.requests', compact('requests', 'pendingCount', 'approvedCount', 'rejectedCount'));
+        return view('admin.requests', compact('requests', 'pendingCount'));
     }
 
     /**
@@ -107,7 +112,7 @@ class MovieRequestController extends Controller
 
             // Double-check movie doesn't exist (in case it was added while processing)
             if (Movie::where('tmdb_id', $movieData['tmdb_id'])->exists()) {
-                $movieRequest->update(['status' => 'approved']);
+                $movieRequest->delete();
                 return back()->with('error', 'This movie was already added to the database');
             }
 
@@ -140,8 +145,8 @@ class MovieRequestController extends Controller
                 $movie->genres()->attach($movieData['genres']);
             }
 
-            // Update request status to approved
-            $movieRequest->update(['status' => 'approved']);
+            // Delete the request after successful approval
+            $movieRequest->delete();
 
             return back()->with('success', 'Movie "' . $movie->title . '" has been added to the database!');
         } catch (\Exception $e) {
@@ -150,24 +155,13 @@ class MovieRequestController extends Controller
     }
 
     /**
-     * Reject a movie request (hides from admin, visible to user)
+     * Reject a movie request (deletes it permanently)
      */
     public function reject($id)
     {
         $movieRequest = MovieRequest::findOrFail($id);
-        $movieRequest->update(['status' => 'rejected']);
-
-        return back()->with('success', 'Movie request rejected');
-    }
-
-    /**
-     * Delete a movie request permanently
-     */
-    public function destroy($id)
-    {
-        $movieRequest = MovieRequest::findOrFail($id);
         $movieRequest->delete();
 
-        return back()->with('success', 'Movie request deleted permanently');
+        return back()->with('success', 'Movie request rejected and deleted');
     }
 }

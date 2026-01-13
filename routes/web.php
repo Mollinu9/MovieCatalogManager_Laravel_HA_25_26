@@ -102,7 +102,6 @@ Route::middleware(['auth', 'admin'])->group(function ()
         Route::get('/admin/requests', 'index')->name('admin.requests.index');
         Route::post('/admin/requests/{id}/approve', 'approve')->name('admin.requests.approve');
         Route::post('/admin/requests/{id}/reject', 'reject')->name('admin.requests.reject');
-        Route::delete('/admin/requests/{id}', 'destroy')->name('admin.requests.destroy');
     });
 
     // Admin user management

@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request; // Handles HTTP requests (form data, validation)
-use Illuminate\Support\Str; // String helpers (e.g., Str::slug() for creating URL-friendly slugs)
-use Illuminate\Support\Facades\Auth; // Authentication helper
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
-use App\Models\Movie; // Movie database model for CRUD operations
-use App\Models\Genre; // Genre database model for managing movie genres
-use App\Models\User; // User database model for user management
+use App\Models\{
+    MovieRequest,
+    Movie,
+    Genre,
+    User
+};
 
 class AdminController extends Controller
 {
+    // ========================================
+    // MOVIE MANAGEMENT - CRUD OPERATIONS
+    // ========================================
+
     /**
-     * Display admin dashboard with all movies
+     * Display admin dashboard with paginated list of all movies
      */
     public function index()
     {
@@ -22,7 +29,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the create movie form
+     * Show the create movie form with TMDB import or manual entry options
      */
     public function create()
     {
@@ -31,23 +38,26 @@ class AdminController extends Controller
     }
 
     /**
-     * Store a new movie in the database
+     * Store a new movie in the database (TMDB import or manual entry)
      */
     public function store(Request $request)
     {
+        // Validate incoming movie data
         $validated = $this->validateMovieRequest($request);
 
-        // Check for duplicates and return early if found
+        // Check for duplicates in database and user requests
         $duplicateCheck = $this->checkForDuplicates($validated);
         if ($duplicateCheck) {
             return $duplicateCheck;
         }
 
+        // Generate URL-friendly slug from title
         $validated['slug'] = Str::slug($validated['title']);
 
         // Handle TMDB ID based on input method
         if ($validated['input_method'] === 'manual')
         {
+            // Generate unique negative TMDB ID for manually added movies
             $validated['tmdb_id'] = $this->generateManualTmdbId();
         }
         elseif ($validated['input_method'] === 'tmdb' && empty($validated['tmdb_id']))
@@ -57,8 +67,10 @@ class AdminController extends Controller
                 ->withErrors(['tmdb_id' => 'TMDB ID is required when using TMDB import method.']);
         }
 
+        // Remove input_method (not a database column)
         unset($validated['input_method']);
 
+        // Create movie and attach genres
         $movie = Movie::create($validated);
 
         if ($request->has('genres'))
@@ -70,7 +82,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the edit movie form
+     * Show the edit movie form with pre-filled data
      */
     public function edit($id)
     {
@@ -86,6 +98,7 @@ class AdminController extends Controller
     {
         $movie = Movie::findOrFail($id);
 
+        // Validate incoming data
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -109,11 +122,11 @@ class AdminController extends Controller
                 ->withErrors(['title' => 'A movie with this title already exists in the database.']);
         }
 
+        // Update slug and movie data
         $validated['slug'] = Str::slug($validated['title']);
-
         $movie->update($validated);
 
-        // Sync genres
+        // Sync genres (replaces all existing relationships)
         if ($request->has('genres'))
         {
             $movie->genres()->sync($request->genres);
@@ -127,17 +140,15 @@ class AdminController extends Controller
     }
 
     /**
-     * Delete a movie from the database
+     * Delete a movie and all its relationships from the database
      */
     public function destroy($id)
     {
         $movie = Movie::findOrFail($id);
         $movieTitle = $movie->title;
 
-        // Detach all genre relationships
+        // Detach genres and delete movie (cascade deletes watchlist entries and reviews)
         $movie->genres()->detach();
-
-        // Delete the movie
         $movie->delete();
 
         return redirect()->route('admin.movies.index')
@@ -145,13 +156,13 @@ class AdminController extends Controller
     }
 
     /**
-     * Refresh movie data from TMDB
+     * Refresh movie data from TMDB API (only for TMDB-imported movies)
      */
     public function refreshFromTmdb($id)
     {
         $movie = Movie::findOrFail($id);
 
-        // Only refresh if movie has a valid TMDB ID
+        // Only refresh if movie has a valid TMDB ID (positive number)
         if (!$movie->tmdb_id || $movie->tmdb_id <= 0)
         {
             return redirect()->back()
@@ -160,7 +171,7 @@ class AdminController extends Controller
 
         try
         {
-            // Use TmdbController to fetch fresh data
+            // Fetch fresh data from TMDB API
             $tmdbController = new TmdbController();
             $movieData = $tmdbController->fetchMovieData($movie->tmdb_id);
 
@@ -176,7 +187,7 @@ class AdminController extends Controller
                 'slug' => Str::slug($movieData['title']),
             ]);
 
-            // Sync genres
+            // Sync genres with fresh data
             if (!empty($movieData['genres']))
             {
                 $movie->genres()->sync($movieData['genres']);
@@ -198,7 +209,7 @@ class AdminController extends Controller
     // ========================================
 
     /**
-     * Validate movie request data
+     * Validate movie request data for both TMDB import and manual entry
      */
     private function validateMovieRequest($request)
     {
@@ -218,14 +229,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Check for duplicate movies
-     * Returns redirect response if duplicate found, null otherwise
+     * Check for duplicate movies in database and pending user requests (by TMDB ID or title)
      */
     private function checkForDuplicates($validated)
     {
-        // Only check TMDB ID if it's provided and not empty
+        // Check TMDB ID if provided (TMDB import method)
         if ($validated['input_method'] === 'tmdb' && !empty($validated['tmdb_id']))
         {
+            // Check if movie already exists in database by TMDB ID
             $existingMovie = Movie::where('tmdb_id', $validated['tmdb_id'])->first();
             if ($existingMovie)
             {
@@ -233,9 +244,22 @@ class AdminController extends Controller
                     ->withInput()
                     ->withErrors(['tmdb_id' => 'A movie with this TMDB ID already exists: ' . $existingMovie->title]);
             }
+
+            // Check if movie has been requested by a user (by TMDB ID)
+            $existingRequest = MovieRequest::where('tmdb_id', $validated['tmdb_id'])
+                ->where('status', 'pending')
+                ->with('user')
+                ->first();
+            
+            if ($existingRequest)
+            {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('warning', 'Note: This movie has already been requested by ' . $existingRequest->user->name . ' on ' . $existingRequest->created_at->format('M d, Y') . '. Adding it here will NOT automatically remove the request. Please approve the request from the Requests page instead, or manually delete the request after adding the movie here.');
+            }
         }
 
-        // Always check for duplicate titles
+        // Check for duplicate title in database
         $existingTitle = Movie::where('title', $validated['title'])->first();
         if ($existingTitle)
         {
@@ -244,11 +268,24 @@ class AdminController extends Controller
                 ->withErrors(['title' => 'A movie with this title already exists in the database.']);
         }
 
+        // Check if movie title has been requested by a user
+        $existingTitleRequest = MovieRequest::where('movie_title', $validated['title'])
+            ->where('status', 'pending')
+            ->with('user')
+            ->first();
+        
+        if ($existingTitleRequest)
+        {
+            return redirect()->back()
+                ->withInput()
+                ->with('warning', 'Note: A movie with this title has already been requested by ' . $existingTitleRequest->user->name . ' on ' . $existingTitleRequest->created_at->format('M d, Y') . '. Adding it here will NOT automatically remove the request. Please approve the request from the Requests page instead, or manually delete the request after adding the movie here.');
+        }
+
         return null;
     }
 
     /**
-     * Generate unique negative TMDB ID for manual entries
+     * Generate unique negative TMDB ID for manually added movies (-1, -2, -3, etc.)
      */
     private function generateManualTmdbId()
     {
@@ -269,7 +306,7 @@ class AdminController extends Controller
     // ========================================
 
     /**
-     * Display a listing of users (Admin only)
+     * Display paginated list of all registered users
      */
     public function usersIndex()
     {
@@ -278,7 +315,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Toggle user admin status (Admin only)
+     * Toggle user admin status (prevents admin from changing their own status)
      */
     public function toggleUserAdmin($id)
     {
@@ -289,6 +326,7 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'You cannot change your own admin status.');
         }
 
+        // Toggle admin status
         $user->is_admin = !$user->is_admin;
         $user->save();
 
@@ -297,7 +335,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Delete a user account (Admin only)
+     * Delete user and all associated data (watchlist, requests, reviews)
      */
     public function destroyUser($id)
     {
@@ -310,13 +348,11 @@ class AdminController extends Controller
 
         $userName = $user->name;
 
-        // Delete user's watchlist entries
+        // Delete user's watchlist entries and movie requests
         $user->watchlistMovies()->detach();
-
-        // Delete user's movie requests
         $user->movieRequests()->delete();
 
-        // Delete the user
+        // Delete the user (reviews cascade deleted by database)
         $user->delete();
 
         return redirect()->back()->with('success', "User '{$userName}' has been deleted successfully.");

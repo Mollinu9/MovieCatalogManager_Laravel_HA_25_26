@@ -38,7 +38,7 @@
               <div>
                 <i class="fa fa-info-circle"></i> This movie was imported from TMDB. You can refresh it with the latest data.
               </div>
-              <form action="{{ route('admin.movies.refresh', $movie->id) }}" method="POST" style="margin: 0;">
+              <form action="{{ route('admin.movies.refresh', $movie->id) }}" method="POST" class="d-inline-form">
                 @csrf
                 <button type="submit" class="btn btn-info btn-sm" onclick="return confirm('This will overwrite all current data with the latest from TMDB. Continue?')">
                   <i class="fa fa-refresh"></i> Refresh from TMDB
@@ -117,7 +117,7 @@
                     <input type="url" name="poster_url" id="poster_url" class="form-control" value="{{ old('poster_url', $movie->poster_url) }}">
                     @if($movie->poster_url)
                       <div class="mt-2">
-                        <img src="{{ $movie->poster_url }}" alt="{{ $movie->title }}" style="max-width: 150px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                        <img src="{{ $movie->poster_url }}" alt="{{ $movie->title }}" class="admin-poster-preview">
                       </div>
                     @endif
                   </div>
@@ -140,8 +140,8 @@
                         $selectedGenres = old('genres', $movie->genres->pluck('id')->toArray());
                       @endphp
                       @forelse($genres as $genre)
-                        <label class="btn btn-sm m-1 genre-badge {{ in_array($genre->id, $selectedGenres) ? 'selected' : '' }}" style="cursor: pointer;">
-                          <input type="checkbox" name="genres[]" value="{{ $genre->id }}" style="display: none;" {{ in_array($genre->id, $selectedGenres) ? 'checked' : '' }}>
+                        <label class="btn btn-sm m-1 genre-badge cursor-pointer {{ in_array($genre->id, $selectedGenres) ? 'selected' : '' }}">
+                          <input type="checkbox" name="genres[]" value="{{ $genre->id }}" class="d-none" {{ in_array($genre->id, $selectedGenres) ? 'checked' : '' }}>
                           {{ $genre->name }}
                         </label>
                       @empty

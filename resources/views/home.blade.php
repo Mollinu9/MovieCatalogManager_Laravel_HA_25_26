@@ -5,8 +5,8 @@
 <section class="hero-section py-5">
   <div class="row align-items-center py-5">
     <div class="col-md-6">
-      <h1 class="display-4 font-weight-bold mb-4" style="color: #ffffff !important;">Discover & Track Your Favorite Movies</h1>
-      <p class="lead mb-4" style="color: #ffffff !important;">Build your personal movie collection, create watchlists, and never miss a great film again.</p>
+      <h1 class="display-4 font-weight-bold mb-4 text-white">Discover & Track Your Favorite Movies</h1>
+      <p class="lead mb-4 text-white">Build your personal movie collection, create watchlists, and never miss a great film again.</p>
       <div>
         <a href="{{ route('auth.register') }}" class="btn btn-primary btn-lg mr-2">
           <i class="fa fa-user-plus"></i> Sign Up Free

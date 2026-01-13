@@ -1324,3 +1324,76 @@ footer .text-muted {
     font-size: 0.85rem;
   }
 }
+
+/* ============================================
+   ADDITIONAL UTILITY CLASSES
+   ============================================ */
+
+/* Movie overview text styling */
+.movie-overview-text {
+  line-height: 1.5;
+}
+
+/* Hidden elements */
+.d-none {
+  display: none !important;
+}
+
+/* Inline forms */
+.d-inline-form {
+  display: inline;
+  margin: 0;
+}
+
+/* Sticky positioning */
+.sticky-top-20 {
+  position: sticky;
+  top: 20px;
+}
+
+/* Cursor pointer */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Cursor not allowed */
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+/* Admin poster preview */
+.admin-poster-preview {
+  max-width: 150px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Movie card image styles */
+.movie-card-img-list {
+  height: 100%;
+  object-fit: cover;
+}
+
+.movie-card-img-compact {
+  width: 80px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Input preview image */
+.input-preview-img {
+  max-width: 150px;
+  border-radius: 8px;
+}
+
+/* Empty state icon */
+.empty-state-icon {
+  color: #dee2e6;
+}
+
+/* Disabled genre button */
+.genre-btn-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

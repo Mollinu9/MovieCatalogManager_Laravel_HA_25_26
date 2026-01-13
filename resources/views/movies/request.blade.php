@@ -21,7 +21,7 @@
 
   <!-- Right Side: My Requests -->
   <div class="col-lg-4 col-md-5">
-    <div class="card sticky-top" style="top: 20px;">
+    <div class="card sticky-top-20">
       <div class="card-header card-title">
         <strong><i class="fa fa-list"></i> My Requests</strong>
       </div>

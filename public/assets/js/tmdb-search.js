@@ -14,12 +14,12 @@ function initTmdbSearch(context = 'admin') {
     if (searchByTitleOption && searchByIdOption && tmdbTitleSearch && tmdbIdSearch) {
         searchByTitleOption.addEventListener('click', function () {
             tmdbTitleSearch.style.display = 'flex';
-            tmdbIdSearch.style.display = 'none';
+            tmdbIdSearch.classList.add('d-none');
         });
 
         searchByIdOption.addEventListener('click', function () {
             tmdbTitleSearch.style.display = 'none';
-            tmdbIdSearch.style.display = 'flex';
+            tmdbIdSearch.classList.remove('d-none');
         });
     }
 
@@ -341,8 +341,6 @@ function requestMovie(movie) {
 
 // Save movie to database (for admin context)
 function saveMovieToDatabase(movie) {
-    console.log('Saving movie:', movie.title);
-
     // Create a new form element
     const newForm = document.createElement('form');
     newForm.method = 'POST';
