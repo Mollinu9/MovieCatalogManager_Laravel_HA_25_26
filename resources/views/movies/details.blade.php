@@ -126,7 +126,7 @@
             <h6 class="mb-0"><i class="fa fa-star text-warning"></i> Write a Review</h6>
           </div>
           <div class="card-body p-2">
-            <form action="{{ route('reviews.store', $movie->id) }}" method="POST">
+            <form action="{{ route('reviews.store', $movie->slug) }}" method="POST">
               @csrf
               
               <div class="form-group">

@@ -59,7 +59,7 @@ Route::controller(MovieController::class)->group(function ()
         Route::patch('/movies/{id}/watchlist/status', 'updateWatchlistStatus')->name('movies.watchlist.updateStatus');
     });
     
-    Route::get('/movies/{id}', 'details')->name('movies.details');
+    Route::get('/movies/{slug}', 'details')->name('movies.details');
 });
 
 // ========================================
@@ -68,7 +68,7 @@ Route::controller(MovieController::class)->group(function ()
 
 Route::middleware('auth')->group(function () 
 {
-    Route::post('/movies/{id}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::post('/movies/{slug}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
 // ========================================

@@ -28,6 +28,14 @@ class Movie extends Model
         'release_date' => 'date',
     ];
 
+    /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     // Many-to-many relationship with Genre
     public function genres()
     {

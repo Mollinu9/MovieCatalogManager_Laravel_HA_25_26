@@ -62,7 +62,7 @@
         @endif
         
         <div class="mt-auto">
-          <a href="{{ route('movies.details', $movie->id) }}" 
+          <a href="{{ route('movies.details', $movie->slug) }}" 
              class="btn btn-sm btn-outline-info w-100 mb-1">
             <i class="fa fa-eye"></i> View
           </a>
@@ -107,7 +107,7 @@
         </form>
         
         <div class="d-flex">
-          <a href="{{ route('movies.details', $movie->id) }}" 
+          <a href="{{ route('movies.details', $movie->slug) }}" 
              class="btn btn-sm btn-outline-info flex-fill mr-1">
             <i class="fa fa-eye"></i>
           </a>
@@ -148,7 +148,7 @@
         <p class="card-text small">{{ Str::limit($movie->description, 100) }}</p>
         
         @if($showActions)
-          <a href="{{ route('movies.details', $movie->id) }}" class="btn btn-sm btn-primary btn-block">
+          <a href="{{ route('movies.details', $movie->slug) }}" class="btn btn-sm btn-primary btn-block">
             View Details
           </a>
         @endif
@@ -179,7 +179,7 @@
             <p class="card-text">{{ Str::limit($movie->description, 200) }}</p>
             
             @if($showActions)
-              <a href="{{ route('movies.details', $movie->id) }}" class="btn btn-sm btn-primary">
+              <a href="{{ route('movies.details', $movie->slug) }}" class="btn btn-sm btn-primary">
                 View Details
               </a>
             @endif
@@ -205,7 +205,7 @@
         <p class="small mb-2">{{ Str::limit($movie->description, 80) }}</p>
         
         @if($showActions)
-          <a href="{{ route('movies.details', $movie->id) }}" class="btn btn-xs btn-outline-primary">
+          <a href="{{ route('movies.details', $movie->slug) }}" class="btn btn-xs btn-outline-primary">
             View
           </a>
         @endif
