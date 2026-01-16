@@ -17,7 +17,8 @@ class Review extends Model
     ];
 
     /**
-     * Get the user that wrote the review
+     * Many-to-One: A review belongs to one user
+     * Inverse: User can have many reviews
      */
     public function user()
     {
@@ -25,7 +26,8 @@ class Review extends Model
     }
 
     /**
-     * Get the movie that is being reviewed
+     * Many-to-One: A review belongs to one movie
+     * Inverse: Movie can have many reviews
      */
     public function movie()
     {

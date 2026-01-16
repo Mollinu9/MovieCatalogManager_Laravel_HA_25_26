@@ -45,7 +45,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the movies in the user's watchlist
+     * Many-to-Many: A user can have many movies in their watchlist
+     * Inverse: Movie can be in many users' watchlists
      */
     public function watchlistMovies()
     {
@@ -55,7 +56,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user's movie requests
+     * One-to-Many: A user can have many movie requests
+     * Inverse: MovieRequest belongs to one user
      */
     public function movieRequests()
     {
@@ -63,7 +65,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all reviews written by current user
+     * One-to-Many: A user can write many reviews
+     * Inverse: Review belongs to one user
      */
     public function reviews()
     {

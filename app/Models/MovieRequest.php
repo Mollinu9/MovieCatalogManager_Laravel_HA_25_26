@@ -17,7 +17,8 @@ class MovieRequest extends Model
     ];
 
     /**
-     * Get the user who made the request
+     * Many-to-One: A movie request belongs to one user
+     * Inverse: User can have many movie requests
      */
     public function user()
     {

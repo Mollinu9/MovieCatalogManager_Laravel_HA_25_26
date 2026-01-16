@@ -18,7 +18,7 @@ class MovieController extends Controller
     }
 
     /**
-     * Display movies grouped by genre
+     * Display movies grouped by genre with randomized order
      */
     public function index(Request $request)
     {
@@ -29,15 +29,19 @@ class MovieController extends Controller
         
         if ($selectedGenreId)
         {
-            // Filter to show only the selected genre with movies
-            $genres = Genre::with('movies')
+            // Filter to show only the selected genre with movies in random order
+            $genres = Genre::with(['movies' => function($query) {
+                $query->inRandomOrder();
+            }])
                 ->where('id', $selectedGenreId)
                 ->get();
         }
         else
         {
-            // Show all genres with movies
-            $genres = Genre::with('movies')->get();
+            // Show all genres with movies in random order
+            $genres = Genre::with(['movies' => function($query) {
+                $query->inRandomOrder();
+            }])->get();
         }
         
         return view('movies.index', compact('genres', 'allGenres', 'selectedGenreId'));

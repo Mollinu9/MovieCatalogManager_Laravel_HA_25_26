@@ -14,7 +14,10 @@ class Genre extends Model
         'slug',
     ];
 
-    // Many-to-many relationship with Movie
+    /**
+     * Many-to-Many: A genre can have many movies
+     * Inverse: Movie can belong to many genres
+     */
     public function movies()
     {
         return $this->belongsToMany(Movie::class, 'genre_movie');

@@ -36,13 +36,19 @@ class Movie extends Model
         return 'slug';
     }
 
-    // Many-to-many relationship with Genre
+    /**
+     * Many-to-Many: A movie can belong to many genres
+     * Inverse: Genre can have many movies
+     */
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'genre_movie');
     }
 
-    // Many-to-many relationship with User (watchlist)
+    /**
+     * Many-to-Many: A movie can be in many users' watchlists
+     * Inverse: User can have many movies in their watchlist
+     */
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_movie', 'movie_id', 'user_id')
@@ -51,7 +57,8 @@ class Movie extends Model
     }
 
     /**
-     * Get all reviews for the current movie.
+     * One-to-Many: A movie can have many reviews
+     * Inverse: Review belongs to one movie
      */
     public function reviews()
     {
