@@ -105,7 +105,6 @@
                     <label for="language" class="col-md-3 col-form-label">Language <span class="text-danger">*</span></label>
                     <div class="col-md-9">
                       <input type="text" name="language" id="language" class="form-control" placeholder="e.g. en, fr, es">
-                      <small class="form-text text-muted">Use ISO 639-1 language code (e.g., en for English)</small>
                     </div>
                   </div>
 
