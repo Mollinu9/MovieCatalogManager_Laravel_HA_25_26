@@ -30,7 +30,8 @@ class AdminController extends Controller
         // Build query with search filter
         $query = Movie::with('genres')->orderBy('created_at', 'asc');
 
-        if ($search) {
+        if ($search) 
+        {
             $query->where('title', 'like', '%' . $search . '%');
         }
 
@@ -53,13 +54,15 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        try 
+        {
             // Validate incoming movie data
             $validated = $this->validateMovieRequest($request);
 
             // Check for duplicates in database and user requests
             $duplicateCheck = $this->checkForDuplicates($validated);
-            if ($duplicateCheck) {
+            if ($duplicateCheck)
+            {
                 return $duplicateCheck;
             }
 
@@ -67,16 +70,20 @@ class AdminController extends Controller
             $validated['slug'] = Str::slug($validated['title']);
 
             // Set default values for optional fields if empty
-            if (empty($validated['description'])) {
+            if (empty($validated['description'])) 
+            {
                 $validated['description'] = null;
             }
-            if (empty($validated['runtime'])) {
+            if (empty($validated['runtime'])) 
+            {
                 $validated['runtime'] = null;
             }
-            if (empty($validated['poster_url'])) {
+            if (empty($validated['poster_url'])) 
+            {
                 $validated['poster_url'] = null;
             }
-            if (empty($validated['trailer_link'])) {
+            if (empty($validated['trailer_link'])) 
+            {
                 $validated['trailer_link'] = null;
             }
 
@@ -359,7 +366,8 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
 
         // Prevent admin from removing their own admin status
-        if ($user->id === Auth::id()) {
+        if ($user->id === Auth::id()) 
+        {
             return redirect()->back()->with('error', 'You cannot change your own admin status.');
         }
 
@@ -379,7 +387,8 @@ class AdminController extends Controller
         $user = User::findOrFail($id);
 
         // Prevent admin from deleting their own account
-        if ($user->id === Auth::id()) {
+        if ($user->id === Auth::id()) 
+        {
             return redirect()->back()->with('error', 'You cannot delete your own account.');
         }
 

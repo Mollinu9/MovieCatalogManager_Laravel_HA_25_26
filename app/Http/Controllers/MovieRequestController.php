@@ -101,12 +101,14 @@ class MovieRequestController extends Controller
         $movieRequest = MovieRequest::findOrFail($id);
 
         // Check if movie already exists in database
-        if (Movie::where('tmdb_id', $movieRequest->tmdb_id)->exists()) {
+        if (Movie::where('tmdb_id', $movieRequest->tmdb_id)->exists()) 
+        {
             return back()->with('error', 'This movie already exists in the database');
         }
 
         // Fetch movie data from TMDB and save to database
-        try {
+        try 
+        {
             $tmdbController = new TmdbController();
             $movieData = $tmdbController->fetchMovieData($movieRequest->tmdb_id);
 
@@ -122,7 +124,8 @@ class MovieRequestController extends Controller
             // Ensure slug is unique
             $originalSlug = $slug;
             $counter = 1;
-            while (Movie::where('slug', $slug)->exists()) {
+            while (Movie::where('slug', $slug)->exists()) 
+            {
                 $slug = $originalSlug . '-' . $counter;
                 $counter++;
             }
@@ -141,7 +144,8 @@ class MovieRequestController extends Controller
             ]);
 
             // Attach genres
-            if (!empty($movieData['genres'])) {
+            if (!empty($movieData['genres']))
+            {
                 $movie->genres()->attach($movieData['genres']);
             }
 
@@ -149,7 +153,9 @@ class MovieRequestController extends Controller
             $movieRequest->delete();
 
             return back()->with('success', 'Movie "' . $movie->title . '" has been added to the database!');
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) 
+        {
             return back()->with('error', 'Failed to fetch movie from TMDB: ' . $e->getMessage());
         }
     }
