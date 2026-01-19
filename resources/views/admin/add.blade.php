@@ -76,21 +76,21 @@
                   <div class="form-group row">
                     <label for="title" class="col-md-3 col-form-label">Title <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <input type="text" name="title" id="title" class="form-control" placeholder="Enter movie title" required>
+                      <input type="text" name="title" id="title" class="form-control" placeholder="Enter movie title" >
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label for="description" class="col-md-3 col-form-label">Description <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <textarea name="description" id="description" rows="4" class="form-control" placeholder="Enter movie description" required></textarea>
+                      <textarea name="description" id="description" rows="4" class="form-control" placeholder="Enter movie description" ></textarea>
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <label for="release_date" class="col-md-3 col-form-label">Release Date <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <input type="date" name="release_date" id="release_date" class="form-control" required>
+                      <input type="date" name="release_date" id="release_date" class="form-control" >
                     </div>
                   </div>
 
@@ -104,7 +104,7 @@
                   <div class="form-group row">
                     <label for="language" class="col-md-3 col-form-label">Language <span class="text-danger">*</span></label>
                     <div class="col-md-9">
-                      <input type="text" name="language" id="language" class="form-control" placeholder="e.g. en, fr, es" required maxlength="10">
+                      <input type="text" name="language" id="language" class="form-control" placeholder="e.g. en, fr, es">
                       <small class="form-text text-muted">Use ISO 639-1 language code (e.g., en for English)</small>
                     </div>
                   </div>
