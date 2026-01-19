@@ -53,24 +53,13 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        // Log the incoming request for debugging
-        \Log::info('Movie store attempt', [
-            'user_id' => auth()->id(),
-            'is_admin' => auth()->user()->is_admin,
-            'input_method' => $request->input('input_method'),
-            'title' => $request->input('title'),
-            'all_data' => $request->all()
-        ]);
-
         try {
             // Validate incoming movie data
             $validated = $this->validateMovieRequest($request);
-            \Log::info('Validation passed', ['validated' => $validated]);
 
             // Check for duplicates in database and user requests
             $duplicateCheck = $this->checkForDuplicates($validated);
             if ($duplicateCheck) {
-                \Log::info('Duplicate found, redirecting back');
                 return $duplicateCheck;
             }
 
@@ -96,7 +85,6 @@ class AdminController extends Controller
             {
                 // Generate unique negative TMDB ID for manually added movies
                 $validated['tmdb_id'] = $this->generateManualTmdbId();
-                \Log::info('Generated manual TMDB ID', ['tmdb_id' => $validated['tmdb_id']]);
             }
             elseif ($validated['input_method'] === 'tmdb' && empty($validated['tmdb_id']))
             {
@@ -108,31 +96,22 @@ class AdminController extends Controller
             // Remove input_method (not a database column)
             unset($validated['input_method']);
 
-            \Log::info('About to create movie', ['data' => $validated]);
 
             // Create movie and attach genres
             $movie = Movie::create($validated);
-            \Log::info('Movie created', ['movie_id' => $movie->id, 'title' => $movie->title]);
 
             if ($request->has('genres'))
             {
                 $movie->genres()->attach($request->genres);
-                \Log::info('Genres attached', ['genres' => $request->genres]);
             }
-
-            \Log::info('Movie saved successfully, redirecting', ['movie_id' => $movie->id]);
 
             return redirect()->route('admin.movies.index')->with('success', 'Movie added successfully!');
             
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            \Log::error('Validation error', ['errors' => $e->errors()]);
+        } catch (\Illuminate\Validation\ValidationException $e) 
+        {
             throw $e;
-        } catch (\Exception $e) {
-            \Log::error('Movie store error', [
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            
+        } catch (\Exception $e) 
+        {
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['error' => 'An error occurred while saving the movie: ' . $e->getMessage()]);

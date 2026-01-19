@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Review;
+use App\Models\Movie;
 
 class ReviewController extends Controller
 {
@@ -18,7 +19,7 @@ class ReviewController extends Controller
         ]);
 
         // Find movie by slug
-        $movie = \App\Models\Movie::where('slug', $slug)->firstOrFail();
+        $movie = Movie::where('slug', $slug)->firstOrFail();
 
         // Check if user already reviewed this movie
         $existingReview = Review::where('user_id', Auth::id())
